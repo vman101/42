@@ -1,4 +1,7 @@
 test.c
 *.o
 *.so
-.swp
+*.swp
+a.out
+output
+
