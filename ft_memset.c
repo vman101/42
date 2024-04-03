@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:57:27 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/02 17:06:15 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/03 11:18:10 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	*ft_memset(void *s, int c, size_t n)
 
 	str = (char *)s;
 	while (n--)
-		if (str[n])
-			str[n] = c;
+		str[n] = c;
 	return (s);
 }

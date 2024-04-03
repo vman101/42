@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 17:13:18 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/02 18:26:11 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/03 11:51:23 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ void	*ft_memcpy(void *dest, void *src, size_t n)
 	char	*d;
 	char	*s;
 
+	if (n == 0 || (dest == NULL && src == NULL))
+		return (dest);
+	if (dest == NULL || src == NULL)
+	{
+		*(char *)dest = 1;
+		*(char *)src = 1;
+	}
 	d = (char *) dest;
 	s = (char *) src;
 	while (n--)
