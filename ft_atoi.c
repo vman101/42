@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 16:10:59 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 17:08:13 by vvobis           ###   ########.fr       */
+/*   Created: 2024/04/03 16:06:46 by vvobis            #+#    #+#             */
+/*   Updated: 2024/04/04 15:42:34 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char *dest, char *src, size_t size)
+int	ft_atoi(char *s)
 {
-	unsigned int	dlen;
-	unsigned int	slen;
+	int	i;
+	int	sign;
+	int	res;
+	int	mult;
 
-	if (size == 0)
-		return (ft_strlen(src));
-	dlen = ft_strlen(dest);
-	slen = ft_strlen(src);
-	if (size <= dlen)
-		return (slen + size);
-	if (dlen + slen < size)
+	mult = 1;
+	sign = 1;
+	res = 0;
+	i = 0;
+	if (*s == 0x2d)
+		sign = -1;
+	if (*s == 0x2b || *s == 0x2d)
+		s++;
+	while (ft_isdigit(*s))
+		s++;
+	while (*s == 0x20)
+		s++;
+	while (ft_isdigit(*--s))
 	{
-		ft_memcpy(&dest[dlen], src, slen);
-		dest[dlen + slen] = 0;
+		res += (*s - 0x30) * mult;
+		mult *= 0xa;
 	}
-	else
-	{
-		ft_memcpy(&dest[dlen], src, size - dlen);
-		dest[size - 1] = 0;
-	}
-	return (dlen + slen);
+	return (res * sign);
 }

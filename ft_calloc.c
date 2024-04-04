@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 16:10:59 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 17:08:13 by vvobis           ###   ########.fr       */
+/*   Created: 2024/04/04 13:44:00 by vvobis            #+#    #+#             */
+/*   Updated: 2024/04/04 14:24:24 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char *dest, char *src, size_t size)
+void	*ft_calloc(size_t n, size_t s)
 {
-	unsigned int	dlen;
-	unsigned int	slen;
+	char				*tmp;
+	unsigned long		i;
 
-	if (size == 0)
-		return (ft_strlen(src));
-	dlen = ft_strlen(dest);
-	slen = ft_strlen(src);
-	if (size <= dlen)
-		return (slen + size);
-	if (dlen + slen < size)
-	{
-		ft_memcpy(&dest[dlen], src, slen);
-		dest[dlen + slen] = 0;
-	}
-	else
-	{
-		ft_memcpy(&dest[dlen], src, size - dlen);
-		dest[size - 1] = 0;
-	}
-	return (dlen + slen);
+	if (!n || !s)
+		return (NULL);
+	i = 0;
+	tmp = malloc(n * s);
+	while (i < n * s)
+		tmp[i++] = 0;
+	return ((void *)tmp);
 }

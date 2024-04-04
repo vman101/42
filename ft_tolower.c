@@ -1,37 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 16:10:59 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 17:08:13 by vvobis           ###   ########.fr       */
+/*   Created: 2024/04/03 12:01:54 by vvobis            #+#    #+#             */
+/*   Updated: 2024/04/03 12:15:18 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char *dest, char *src, size_t size)
+int	ft_tolower(int c)
 {
-	unsigned int	dlen;
-	unsigned int	slen;
-
-	if (size == 0)
-		return (ft_strlen(src));
-	dlen = ft_strlen(dest);
-	slen = ft_strlen(src);
-	if (size <= dlen)
-		return (slen + size);
-	if (dlen + slen < size)
-	{
-		ft_memcpy(&dest[dlen], src, slen);
-		dest[dlen + slen] = 0;
-	}
-	else
-	{
-		ft_memcpy(&dest[dlen], src, size - dlen);
-		dest[size - 1] = 0;
-	}
-	return (dlen + slen);
+	if (c >= 65 && c <= 90)
+		c += 32;
+	return (c);
 }

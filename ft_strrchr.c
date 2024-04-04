@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 16:10:59 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 17:08:13 by vvobis           ###   ########.fr       */
+/*   Created: 2024/04/03 12:20:50 by vvobis            #+#    #+#             */
+/*   Updated: 2024/04/03 14:59:41 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char *dest, char *src, size_t size)
+char *ft_strrchr(char *s, int c)
 {
-	unsigned int	dlen;
-	unsigned int	slen;
+	char *n;
+	int i;
 
-	if (size == 0)
-		return (ft_strlen(src));
-	dlen = ft_strlen(dest);
-	slen = ft_strlen(src);
-	if (size <= dlen)
-		return (slen + size);
-	if (dlen + slen < size)
+	i = 0;
+	n = NULL;
+	while (s[i] != 0)
 	{
-		ft_memcpy(&dest[dlen], src, slen);
-		dest[dlen + slen] = 0;
+		if (s[i] == c)
+			n = &s[i];
+		i++;
 	}
-	else
-	{
-		ft_memcpy(&dest[dlen], src, size - dlen);
-		dest[size - 1] = 0;
-	}
-	return (dlen + slen);
+	if (c == 0)
+		return (&s[i]);
+	if (n)
+		return (n);
+	return (NULL);
 }
