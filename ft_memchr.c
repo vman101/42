@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:13:59 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 14:26:32 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/04 17:43:57 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*ft_memchr(void *s, int c, size_t n)
 			return (&p[i]);
 		i++;
 	}
-	if (p[i] == c)
+	if (p[i - 1] == c)
 		return (&p[i]);
 	return (NULL);
 }

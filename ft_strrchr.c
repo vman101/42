@@ -6,16 +6,16 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:20:50 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/03 14:59:41 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/04 18:14:55 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char *ft_strrchr(char *s, int c)
+char	*ft_strrchr(char *s, int c)
 {
-	char *n;
-	int i;
+	char	*n;
+	int		i;
 
 	i = 0;
 	n = NULL;
