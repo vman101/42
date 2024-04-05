@@ -33,7 +33,8 @@ int ft_atoi(char *s);
 char *ft_strdup(char *s);
 char *ft_substr(char *s, unsigned int start, size_t len);
 char *ft_strjoin(char *s1, char *s2);
-
 void *ft_calloc(size_t n, size_t s);
+char	*ft_strtrim(char const *s1, char const *set);
+char **ft_split(char const *s, char c);
 
 #endif

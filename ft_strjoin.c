@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:08:03 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 19:24:02 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/05 17:15:24 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	unsigned int	i;
 	unsigned int	j;
 
+	if (!s1 || !s2)
+		return (NULL);
 	tmp = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!tmp)
 		return (NULL);
