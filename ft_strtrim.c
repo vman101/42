@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:30:35 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/05 19:17:21 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/07 17:54:40 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 int	is_set(char c, char const *s)
 {
-	while(*s)
+	while (*s)
 		if (c == *s++)
 			return (1);
 	return (0);
 }
 
-int find_end(char const *s1, char const *set)
+int	find_end(char const *s1, char const *set)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(*s1)
+	while (*s1)
 		s1++;
 	while (is_set(*--s1, set))
 		i++;
@@ -39,7 +39,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (is_set(*s1, set) && *s1)
 		s1++;
 	if (ft_strlen((char *)s1) > find_end(s1, set))
-		return (ft_substr((char *)s1, 0, ft_strlen((char *)s1) - find_end(s1, set)));
+		return (ft_substr((char *)s1, 0,
+				ft_strlen((char *)s1) - find_end(s1, set)));
 	else
 		return (ft_substr(NULL, 0, 0));
 }

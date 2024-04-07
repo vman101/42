@@ -6,72 +6,78 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 20:14:20 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/05 20:15:51 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/07 18:11:49 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-unsigned int	count(char const *s, char c)
+int	count(char const *s, char const c)
 {
-	unsigned int	n;
-	unsigned int	i;
+	int	i;
+	int	n;
 
 	i = 0;
 	n = 0;
-	while (s[i])
+	if (*s != c)
+		n = 1;
+	while (*s)
 	{
-		if (s[i] == c && s[i + 1] != c)
+		if (*s == c && *(s + 1) != c && *(s + 1))
 			n++;
 		i++;
+		s++;
 	}
-	if (n == 0)
-		return (1);
 	return (n);
 }
 
-int	is_split(char const c, char s)
-{
-	if (c == s)
-		return (1);
-	return (0);
-}
-
-char	*copy_word(char const *s, char split)
+int	count_sub(char const *s, char const c)
 {
 	int	i;
 
 	i = 0;
-	while (!is_split(s[i], split))
+	while (*s != c && *s)
+	{
 		i++;
-	return (ft_substr((char *)s, 0, i));
+		s++;
+	}
+	return (i);
 }
 
-char	**ft_split(char const *s, char c)
+char	**free_all(char **back)
+{
+	while (*back)
+		free(*back++);
+	free(back);
+	return (NULL);
+}
+
+char	**ft_split(char const *s, char const c)
 {
 	char	**tmp;
 	char	**back;
-	int		j;
 
 	if (!s)
 		return (NULL);
 	tmp = malloc(sizeof(*tmp) * count(s, c) + 1);
 	if (!tmp)
 		return (NULL);
+	if (!*s)
+		*tmp = NULL;
 	back = tmp;
-	if (c == 0)
-		*tmp = 0;
-	while (1)
+	while (*s)
 	{
-		j = 0;
+		while (*s == c && *s)
+			s++;
 		if (!*s)
 			break ;
-		while (is_split(*s, c) && *s)
+		*tmp = ft_substr(s, 0, count_sub(s, c));
+		if (!*tmp)
+			return (free_all(back));
+		while (*s != c && *s)
 			s++;
-		if (*s)
-			*tmp++ = copy_word(s, c);
-		while (!is_split(*s, c) && *s)
-			s++;
+		tmp++;
 	}
+	tmp = NULL;
 	return (back);
 }

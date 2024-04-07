@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 18:58:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/07 12:25:08 by vvobis           ###   ########.fr       */
+/*   Created: 2024/04/07 18:02:14 by vvobis            #+#    #+#             */
+/*   Updated: 2024/04/07 18:07:55 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+void	ft_putnbr_fd(int n, int fd)
 {
-	char			*tmp;
-	unsigned int	i;
-
-	tmp = malloc(sizeof(*tmp) * len + 1);
-	if (!tmp)
-		return (NULL);
-	i = 0;
-	if (s == NULL || (int)start >= ft_strlen(s) || len <= 0)
+	if (n == INT_MIN)
 	{
-		tmp[i] = 0;
-		return (tmp);
+		ft_putstr_fd("-2147483648", fd);
+		return ;
 	}
-	while (i < len)
+	if (n < 0)
 	{
-		tmp[i] = s[i + start];
-		i++;
+		n *= -1;
+		ft_putchar_fd(0x2d, fd);
 	}
-	tmp[i] = 0;
-	return (tmp);
+	if (n >= 10)
+		ft_putnbr_fd(n / 10, fd);
+	ft_putchar_fd(n % 10 + 0x30, fd);
 }
