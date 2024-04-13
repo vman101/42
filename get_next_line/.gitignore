@@ -1,0 +1,5 @@
+*.o
+input*
+output*
+a.out
+en.subject.pdf

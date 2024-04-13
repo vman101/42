@@ -29,6 +29,7 @@ ssize_t input_content_find(char const *buf, int c)
 	return (0);
 }
 
+
 /*USE MEM/STRCHR*/
 
 char	*ft_strdup(char const *s)
@@ -127,6 +128,7 @@ char	*get_next_line(int fd)
 	return (NULL);
 }
 
+/*
 int	main(void)
 {
 	int		input;
@@ -140,13 +142,13 @@ int	main(void)
 	while (1)
 	{
 		input_line_read = get_next_line(input);
-		if (input_line_read == NULL || !*input_line_read)
-			break ;
 		write(output, input_line_read, ft_strlen(input_line_read));
 		if (input_line_read)
 			free(input_line_read);
+		if (input_line_read == NULL || !*input_line_read)
+			break ;
 	}
 	close(input);
 	close(output);
 	return (0);
-}
+}*/
