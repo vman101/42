@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/15 14:09:57 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/15 20:10:04 by vvobis           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
 size_t	find_newline(char *buf)
@@ -29,115 +17,57 @@ size_t	find_newline(char *buf)
 	return (0);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*handle_no_nl(char *left)
 {
-	char			*tmp;
-	unsigned int	i;
-
-	i = 0;
-	if (!s || start >= ft_strlen(s) || len <= 0)
-	{
-		tmp = malloc(1);
-		if (!tmp)
-			return (NULL);
-		tmp[i] = 0;
-		return (tmp);
-	}
-	if (len + start > ft_strlen(s))
-		len = ft_strlen(s) - start;
-	tmp = malloc(sizeof(*tmp) * len + 1);
-	if (!tmp)
-		return (NULL);
-	while (i < len && s[i])
-	{
-		tmp[i] = s[i + start];
-		i++;
-	}
-	tmp[i] = 0;
-	return (tmp);
-}
-
-void	*buffer_extend(void *ptr_old, size_t size_new, size_t size_old)
-{
-	void	*ptr_new;
-	void	*ptr_back;
-	void	*ptr_old_free;
-
-	ptr_new = ft_calloc(size_new + 1, 1);
-	if (!ptr_new)
-		return (NULL);
-	ptr_back = ptr_new;
-	ptr_old_free = ptr_old;
-	ft_memcpy(ptr_new, ptr_old, size_old);
-	free(ptr_old_free);
-	return (ptr_back);
-}
-
-char	*handle_no_nl(char **buf)
-{
-	if (ft_strlen(*buf))
-		return (*buf);
-	free(*buf);
+	if (ft_strlen(left))
+		return (left);
+	free(left);
+	left = NULL;
 	return (NULL);
 }
 
-
-char	*line_extract(char **buf_fetch)
+char	*line_extract(char *left)
 {
-	static char	*left;
-	char		*buf_joined;
 	char		*line;
 	size_t		line_len;
 
-	buf_joined = ft_strjoin(left, *buf_fetch);
-	free(*buf_fetch);
-	line_len = find_newline(buf_joined);
+	line_len = find_newline(left);
 	if (line_len)
 	{
-		line = ft_substr(buf_joined, 0, line_len);
+		line = ft_substr(left, 0, line_len);
 		if (!line)
-			return (NULL);
-		free(left);
-		left = ft_strdup(buf_joined + line_len);
-		free(buf_joined);
+			return (free(left), NULL);
+		left = ft_strdup(left + line_len);
 		if (!left)
-			return (NULL);
+			return (free(line), NULL);
 		return (line);
 	}
-	free(left);
-	left = NULL;
-	return (handle_no_nl(&buf_joined));
+	return (handle_no_nl(left));
 }
 
 char	*get_next_line(int fd)
 {
 	char		*buf_fetch;
 	ssize_t		bytes_read;
-	size_t		buf_size_cur;
-	size_t		buf_size_prev;
+	static char	*left;
 
-	buf_fetch = ft_calloc(sizeof(*buf_fetch), BUFFER_SIZE + 1);
-	buf_size_prev = 0;
-	buf_size_cur = BUFFER_SIZE;
+	buf_fetch = NULL;
 	while (1)
 	{
+		free(buf_fetch);
+		buf_fetch = NULL;
+		buf_fetch = ft_calloc(sizeof(*buf_fetch), BUFFER_SIZE + 1);
 		if (!buf_fetch)
-			return (NULL);
-		bytes_read = read(fd, buf_fetch + buf_size_prev, BUFFER_SIZE);
-		if (bytes_read == -1)
-		{
-			free(buf_fetch);
-			return (NULL);
-		}
-		if (find_newline(buf_fetch))
-			break ;
-		if (bytes_read == 0)
-			break ;
-		buf_size_cur += BUFFER_SIZE;
-		buf_size_prev += BUFFER_SIZE;
-		buf_fetch = buffer_extend(buf_fetch, buf_size_cur + 1, buf_size_prev);
+			return (free(left), NULL);
+		bytes_read = read(fd, buf_fetch, BUFFER_SIZE);
+		if (bytes_read < 0)
+			return (free(buf_fetch), free(left), NULL);
+		if (bytes_read > 0)
+			left = ft_strjoin(left, buf_fetch);
+		if (find_newline(buf_fetch) || bytes_read == 0)
+			return (free(buf_fetch), line_extract(left));
 	}
-	return (line_extract(&buf_fetch));
+	return (line_extract(left));
 }
 
 /*

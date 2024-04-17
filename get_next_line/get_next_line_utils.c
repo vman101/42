@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:14:13 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/15 19:25:35 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/17 10:59:28 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,7 @@ size_t	ft_strlen(char const *str)
 	return (i);
 }
 
-void	ft_memcpy(void *dest, void *src, size_t n)
-{
-	while (n--)
-		*(char *)dest++ = *(char *)src++;
-}
-
-char	*ft_strdup(char const *s)
+char	*ft_strdup(char *s)
 {
 	char	*tmp;
 	int		i;
@@ -48,10 +42,11 @@ char	*ft_strdup(char const *s)
 		i++;
 	}
 	tmp[i] = 0;
+	free(s);
 	return (tmp);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char			*tmp;
 	unsigned int	i;
@@ -63,7 +58,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	tmp = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(*tmp));
 	if (!tmp)
-		return (NULL);
+		return (free(s1), free(s2), NULL);
 	i = 0;
 	if (s1)
 	{
@@ -77,6 +72,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (s2)
 		while (s2[j])
 			tmp[i++] = s2[j++];
+	free (s1);
 	return (tmp);
 }
 
@@ -98,4 +94,32 @@ void	*ft_calloc(size_t n, size_t s)
 	while (i++ < s * n)
 		*(char *)ptr_new++ = 0;
 	return (ptr_back);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char			*tmp;
+	unsigned int	i;
+
+	i = 0;
+	if (!s || start >= ft_strlen(s) || len <= 0)
+	{
+		tmp = malloc(1);
+		if (!tmp)
+			return (NULL);
+		tmp[i] = 0;
+		return (tmp);
+	}
+	if (len + start > ft_strlen(s))
+		len = ft_strlen(s) - start;
+	tmp = ft_calloc(len + 1, sizeof(*tmp));
+	if (!tmp)
+		return (NULL);
+	while (i < len && s[i])
+	{
+		tmp[i] = s[i + start];
+		i++;
+	}
+	tmp[i] = 0;
+	return (tmp);
 }

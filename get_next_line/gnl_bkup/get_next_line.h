@@ -5,23 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/10 13:28:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/12 19:06:22 by vvobis           ###   ########.fr       */
+/*   Created: 2024/04/15 14:07:36 by vvobis            #+#    #+#             */
+/*   Updated: 2024/04/15 19:10:00 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <fcntl.h>
-#include <unistd.h>
+#ifndef GET_NEXT_LINE_H
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 20
-#endif
+# define GET_NEXT_LINE_H
+
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdint.h>
 
 char	*get_next_line(int fd);
-void	*ft_memcpy(void *dest, void const *src, size_t n);
+char	*ft_strjoin(char const *s1, char const *s2);
 void	*ft_calloc(size_t n, size_t s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-size_t	ft_strlen(char const *s);
+size_t	ft_strlen(char const *str);
+size_t	ft_strlcat(char *dest, char const *src, size_t size);
+void	ft_memcpy(void *dest, void *src, size_t n);
+char	*ft_strdup(char const *s);
+
+# endif
