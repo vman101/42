@@ -1,0 +1,2 @@
+uptime | awk '{ printf %s %s, ,  }' | sed 's/,//g'
+grep 'cpu ' /proc/stat | awk '{printf %.1f%%,  (+)*100/(++)}'
