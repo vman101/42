@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/28 14:30:22 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/28 15:59:20 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int main(int argc, char **argv)
 		exit (-1);
 	input_size = 0;
 	head = input_parse(argv[1], &input_size);
-	input_sort(head);
+	//input_sort(head);
+	r_a_b(&head);
 	db_lst_menu(head, PRINT_FULL, 2, 4, "Node value", offsetof(node_t, value), "Node index", offsetof(node_t, index));
 	lst_clear_full(&head);
 }
