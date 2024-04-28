@@ -6,50 +6,60 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/26 22:30:48 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/28 14:30:22 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-void	ft_swap(int *a, int *b)
+void	lst_node_swap(node_t *n1, node_t *n2)
 {
-	int	tmp;
+	node_t tmp;
 
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
+    tmp.value = n1->value;
+    n1->value = n2->value;
+    n2->value = tmp.value;
 }
 
-void	input_sort(int *tab, int size)
+int	lst_check_sort(node_t *head)
 {
-	int	i;
-	int	j;
-
-	size -= 1;
-	i = 0;
-	while (i < size)
+	while (head && head->next)
 	{
-		j = 0;
-		while (j < size)
+		if (head->value > head->next->value)
+			return (0);
+		head = head->next;
+	}
+	return (1);
+}
+
+void	input_sort(node_t *input)
+{
+	node_t	*tmp;
+	node_t	*current;
+
+	tmp = input;
+	while (!lst_check_sort(tmp))
+	{
+		current = tmp;
+		while (current && current->next)
 		{
-			if (tab[j] > tab[j + 1])
-				ft_swap(&tab[j], &tab[j + 1]);
-			j++;
+			if (current->value > current->next->value)
+				lst_node_swap(current, current->next);
+			current = current->next;
 		}
-		i++;
 	}
 }
 
 int main(int argc, char **argv)
 {
-	int *input_raw;
-	int *input_sorted;
-	int count;
+	node_t	*head;
+	size_t	input_size;
 
 	if (argc != 2)
 		exit (-1);
-	input_raw = input_parse(argv[1], &count);
-	input_sorted = input_parse(argv[1], &count);
-	input_sort(input_sorted, count);
+	input_size = 0;
+	head = input_parse(argv[1], &input_size);
+	input_sort(head);
+	db_lst_menu(head, PRINT_FULL, 2, 4, "Node value", offsetof(node_t, value), "Node index", offsetof(node_t, index));
+	lst_clear_full(&head);
 }

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/26 22:25:34 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/28 14:43:39 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,24 @@ static char	**free_all(char **back)
 	return (NULL);
 }
 
-int	*input_parse(char const *argv, int *input_len)
+node_t	*input_parse(char const *argv, size_t *input_size)
 {
-	char **split;
+	char	**split;
 	char	**split_free;
-	int *tmp;
-	int *back;
+	node_t	*tmp;
+	size_t	i;
 
-	*input_len = count(argv, 32);
+	i = 0;
+	*input_size = count(argv, 32);
 	split = ft_split(argv, 32);
+	tmp = NULL;
 	if (!split)
 		return (NULL);
 	split_free = split;
-	tmp = malloc(sizeof(*tmp) * *input_len);
-	if (!tmp)
-		return (NULL);
-	back = tmp;
 	while (*split)
-		*tmp++ = ft_atoi(*split++);
+		lst_node_add_back(&tmp, lst_node_new(ft_atoi(*split++), i++));
+	while (tmp->prev)
+		tmp = tmp->prev;
 	free_all(split_free);
-	return (back);
+	return (tmp);
 }
