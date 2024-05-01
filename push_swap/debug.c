@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 13:11:14 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/28 14:42:07 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/01 10:51:04 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ void	db_lst_menu(void *node, enum_mem action, int print_amount, int arg_count, .
 	void **args_free;
 	int i;
 
+	if (!node)
+	{
+		ft_printf("Node is NULL\n");
+		return ;
+	}
 	i = 0;
 	args_extract = malloc(sizeof(*args_extract) * (arg_count + 1));
 	if (!args_extract)
@@ -54,23 +59,22 @@ void	db_lst_menu(void *node, enum_mem action, int print_amount, int arg_count, .
 			db_exit_with_message(node, print_amount, arg_count, args_extract);
 			break ;
 		case PRINT_NODE:
-			db_lst_node_print(node, print_amount, arg_count, args_extract);
+			db_lst_node_print(node, print_amount, args_extract);
 			break ;
 		case PRINT_TO_END:
-			db_lst_print_to_end(node, print_amount, arg_count, args_extract);
+			db_lst_print_to_end(node, print_amount, args_extract);
 			break ;
 		case PRINT_FULL:
-			db_lst_print_full(node, print_amount, arg_count, args_extract);
+			db_lst_print_full(node, print_amount, args_extract);
 			break;
 	}
 	free_all((char **)args_free, i + 1);
 	va_end(args);
 }
 
-void	db_lst_node_print(void *node, int print_amount, int arg_count, void **args)
+void	db_lst_node_print(void *node, int print_amount, void **args)
 {
-	arg_count = 0;
-	ft_printf("\n----------------------------------------------------------\n");
+	ft_printf("\n----------------\n");
 		while (print_amount--)
 		{
 			ft_printf("%s: ", *(char **)args);
@@ -79,29 +83,29 @@ void	db_lst_node_print(void *node, int print_amount, int arg_count, void **args)
 			args++;
 			ft_printf("\n");
 		}
-	ft_printf("----------------------------------------------------------\n");
+	ft_printf("----------------\n");
 }
 
-void	db_lst_print_to_end(void *node, int print_amount, int arg_count, void **args)
+void	db_lst_print_to_end(void *node, int print_amount, void **args)
 {
 	while (node)
 	{
-		db_lst_node_print(node, print_amount, arg_count, args);
+		db_lst_node_print(node, print_amount, args);
 		node = ((LIST *)node)->next;
 	}
 }
 
-void	db_lst_print_full(void *node, int print_amount, int arg_count, void **args)
+void	db_lst_print_full(void *node, int print_amount, void **args)
 {
 	while (((LIST *)node)->prev)
 		node = ((LIST *)node)->prev;
-	db_lst_print_to_end(node, print_amount, arg_count, args);
+	db_lst_print_to_end(node, print_amount, args);
 }
 
 void	db_exit_with_message(void *node, int print_amount, int arg_count, void **args)
 {
 	ft_printf("Failed at: ");
-	db_lst_node_print(node, print_amount, arg_count, args);
+	db_lst_node_print(node, print_amount, args);
 	lst_clear_full((LIST **)&node);
 	ft_printf("Error Message: %s", (char *)args[arg_count - 1]);
 	free_all((char **)args, arg_count + 1);

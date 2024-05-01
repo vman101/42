@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 15:28:10 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/27 19:37:10 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/30 14:33:35 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ enum db_enum_lst_print
 typedef int enum_mem ;
 
 void	db_lst_menu(void *node, int print_amount, enum_mem action, int arg_count, ...);
-void	db_lst_node_print(void *node, int print_amount, int arg_count, void **args);
-void	db_lst_print_to_end(void *node, int print_amount, int arg_count, void **args);
-void	db_lst_print_full(void *node, int print_amount, int arg_count, void **args);
+void	db_lst_node_print(void *node, int print_amount, void **args);
+void	db_lst_print_to_end(void *node, int print_amount, void **args);
+void	db_lst_print_full(void *node, int print_amount, void **args);
 void	db_exit_with_message(void *node, int print_amount, int arg_count, void **args);
 
 #endif

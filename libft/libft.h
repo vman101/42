@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                          :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:06:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 18:08:32 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/30 14:29:11 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
-
-/* DEBUG */
-void	ft_putchar(char c);
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

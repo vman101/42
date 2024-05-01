@@ -6,28 +6,28 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/28 14:43:39 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/01 12:07:13 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-static int	count(char const *s, char const c)
-{
-	int	n;
-
-	n = 0;
-	if (*s != c && *s)
-		n = 1;
-	while (*s)
-	{
-		if (*s == c && *(s + 1) != c && *(s + 1))
-			n++;
-		s++;
-	}
-	return (n);
-}
-
+//static int	count(char const *s, char const c)
+//{
+//	int	n;
+//
+//	n = 0;
+//	if (*s != c && *s)
+//		n = 1;
+//	while (*s)
+//	{
+//		if (*s == c && *(s + 1) != c && *(s + 1))
+//			n++;
+//		s++;
+//	}
+//	return (n);
+//}
+//
 static char	**free_all(char **back)
 {
 	char	**tmp;
@@ -42,22 +42,19 @@ static char	**free_all(char **back)
 	return (NULL);
 }
 
-node_t	*input_parse(char const *argv, size_t *input_size)
+node_t	*input_parse(char const *argv)
 {
 	char	**split;
 	char	**split_free;
 	node_t	*tmp;
-	size_t	i;
 
-	i = 0;
-	*input_size = count(argv, 32);
 	split = ft_split(argv, 32);
-	tmp = NULL;
 	if (!split)
 		return (NULL);
+	tmp = NULL;
 	split_free = split;
 	while (*split)
-		lst_node_add_back(&tmp, lst_node_new(ft_atoi(*split++), i++));
+		lst_node_add_back(&tmp, lst_node_new(ft_atoi(*split++), 0));
 	while (tmp->prev)
 		tmp = tmp->prev;
 	free_all(split_free);
