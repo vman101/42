@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/02 16:33:23 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/02 21:36:38 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,26 @@
 void move_cursor(unsigned int rows, unsigned int cols)
 {
 	printf("\033[%d;%dH", rows, cols);	
+}
+
+int	input_valid_check(char **argv)
+{
+	unsigned int i;
+	unsigned int j;
+
+	j = 0;
+	while (argv[j])
+	{
+		i = 0;
+		while (argv[j][i])
+		{
+			if (!ft_isdigit(argv[j][i]) && argv[j][i] != 32)
+				return (0);
+			i++;
+		}
+		j++;
+	}
+	return (1);
 }
 
 void	lst_node_swap(node_t *n1, node_t *n2)
@@ -92,7 +112,7 @@ void	debug_print(node_t *head_a, node_t *head_b)
 	ft_printf("\033[2J\033[H");
 	ft_printf("\nStack A\n");
 	db_lst_menu(head_a, PRINT_TO_END, 3, 6, "Node value", offsetof(node_t, value), "Node index", offsetof(node_t, index), "List Size", offsetof(node_t, size));
-	ft_printf("\nStack B\n\n");
+	ft_printf("\nStack B\n");
 	db_lst_menu(head_b, PRINT_TO_END, 3, 6, "Node value", offsetof(node_t, value), "Node index", offsetof(node_t, index), "List Size", offsetof(node_t, size));
 }
 
@@ -141,6 +161,7 @@ void	visual(node_t **head_a, node_t **head_b)
 			default:
 				break ;
 		}
+		debug_print(*head_a, *head_b);
 		if (c == '1')
 			break ;
 	}
@@ -167,13 +188,14 @@ int	main(int argc, char **argv)
 	node_t	*head_b;
 	unsigned int	count;
 
-	if (argc != 2)
-		exit (-1);
+	if (argc < 2 || !input_valid_check(argv + 1))
+		exit(-1);
 	head_a = input_parse((char const **)argv + 1, argc);
-	input_sort_by_value(head_a);
+//	input_sort_by_value(head_a);
 	head_b = NULL;
 	count = 0;
-	problem_solve(head_a, head_b, &count);
+//	problem_solve(head_a, head_b, &count);
+	visual(&head_a, &head_b);
 	lst_clear_full(&head_a);
 	lst_clear_full(&head_b);
 }

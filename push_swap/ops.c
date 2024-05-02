@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 14:44:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/02 13:13:24 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/02 21:39:04 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,25 +83,29 @@ void	rb(node_t **head)
 
 void	rr(node_t **head_a, node_t **head_b)
 {
-	if (!*head_a || !*head_b)
-		return ;
-	ft_printf("rr\n");
 	ra(head_a);
 	rb(head_b);
+	ft_printf("rr\n");
 }
 
 void	rra(node_t **head)
 {
 	node_t	*last;
+	node_t	*tmp;
 
 	if (!*head)
 		return ;
 	last = lst_node_last(*head);
-	last->prev->next = NULL;
+	if (!last->prev)
+		return ;
+	tmp = last->prev;
+	tmp->next = NULL;
+	if (last->prev)
+		last->prev->next = NULL;
+	last->prev = NULL;
 	last->next = *head;
 	(*head)->prev = last;
-	last->prev = NULL;
-	*head = (*head)->prev;
+	*head = last;
 	ft_printf("rra\n");
 }
 
@@ -113,17 +117,16 @@ void	rrb(node_t **head)
 		return ;
 	last = lst_node_last(*head);
 	last->prev->next = NULL;
-	last->next = *head;
-	(*head)->prev = last;
 	last->prev = NULL;
-	*head = (*head)->prev;
+	(*head)->prev = last;
+	last->next = *head;
+	*head = last;
+	(*head)->prev = NULL;
 	ft_printf("rrb\n");
 }
 
 void	rrr(node_t **head_a, node_t **head_b)
 {
-	if (!*head_a || !*head_b)
-		return ;
 	rra(head_a);
 	rrb(head_b);
 	ft_printf("rrr\n");
@@ -139,10 +142,7 @@ void	pb(node_t **head_a, node_t **head_b)
 	tmp = *head_a;
 	*head_a = (*head_a)->next;
 	if (*head_a)
-	{
 		(*head_a)->prev = NULL;
-		(*head_a)->size -= 1;
-	}
 	if (!*head_b)
 	{
 		tmp->next = NULL;
@@ -153,7 +153,7 @@ void	pb(node_t **head_a, node_t **head_b)
 	tmp->next = *head_b;
 	(*head_b)->prev = tmp;
 	*head_b = tmp;
-	(*head_b)->size += 1;
+
 }
 
 void	pa(node_t **head_a, node_t **head_b)

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/02 16:35:52 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/02 20:44:55 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	lst_list_information_sync(node_t *lst, unsigned int offset)
 	node_t *tmp;
 
 	tmp = lst;
-	while (lst->next)
+	while (tmp->next)
 	{
-		if ((int)*(char *)lst + offset != (int)*(char *)(lst->next) + offset) 
-			*(unsigned int *)((char *)(lst->next + offset)) = (int)*(char *)lst + offset;
-		lst = lst->next;
+		if ((int)*(char *)tmp + offset != (int)*(char *)(tmp->next) + offset) 
+			*(int *)((char *)(tmp->next) + offset) = (int)*((char *)tmp + offset);
+		tmp = tmp->next;
 	}
 }
 
@@ -79,8 +79,9 @@ void	lst_node_add_back(node_t **node, node_t *new)
 
 node_t	*lst_node_last(node_t *head)
 {
-	while (head->next)
-		head = head->next;
+	if (head)
+		while (head->next)
+			head = head->next;
 	return (head);
 }
 

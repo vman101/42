@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/02 16:32:39 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/02 21:22:15 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,26 @@
 //
 char	**free_all(char ***back)
 {
-	char	***tmp;
+	char	***free_back;
+	char	**tmp;
 
-	tmp = back;
+	if (!back)
+		return (NULL);
+	free_back = back;
 	while (*back)
 	{
-		while (**back)
+		tmp = *back;
+		while (*tmp)
 		{
-			free(**back);
-			(*back)++;
+			free(*tmp);
+			*tmp = NULL;
+			tmp++;
 		}
 		free(*back);
+		*back = NULL;
 		back++;
 	}
-	free(tmp);
+	free(free_back);
 	return (NULL);
 }
 
@@ -67,45 +73,46 @@ unsigned int	lst_list_size(node_t *lst)
 char ***super_split(char const **argv, int argc)
 {
 	char ***split;
-	char ***split_back;
+	unsigned int i;
 
 	split = ft_calloc(argc, sizeof(*split));
-	split_back = split;
+	i = 0;
 	while (*argv)
 	{
-		*split = ft_split(*argv, 32);
-		split++;
-		argv++;
+		split[i++] = ft_split(*argv++, 32);
+		if (!split[i - 1])
+			return (NULL);
 	}
-	split = NULL;
-	return (split_back);
+	split[i] = NULL;
+	return (split);
 }
 
 node_t	*input_parse(char const **argv, int argc)
 {
 	char	***split;
-	char	***split_free;
 	node_t	*tmp;
+	unsigned int	index;
 	unsigned int	i;
+	unsigned int	j;
 
 	split = super_split(argv, argc);
 	if (!split)
 		return (NULL);
 	tmp = NULL;
-	split_free = split;
-	i = 1;
-	while (*split)
+	j = 0;
+	index = 1;
+	while (split[j])
 	{
-		while (**split)
+		i = 0;
+		while (split[j][i])
 		{
-			lst_node_add_back(&tmp, lst_node_new(ft_atoi(**split), i++));
-			(*split)++;
+			lst_node_add_back(&tmp, lst_node_new(ft_atoi(split[j][i]), index++));
+			i++;
 		}
-		split++;
+		j++;
 	}
 	tmp->size = lst_list_size(tmp);
 	lst_list_information_sync(tmp, offsetof(node_t, size));
-	db_lst_menu(tmp, PRINT_FULL, 1, 2, "Node Value", offsetof(node_t, value));
-	free_all(split_free);
+	free_all(split);
 	return (tmp);
 }
