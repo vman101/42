@@ -6,34 +6,67 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 14:44:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/01 11:50:30 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/02 13:13:24 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-void	s_a_b(node_t **head)
+void	sa(node_t **head)
 {
 	if (!*head)
 		return ;
 	lst_node_swap((*head)->next, *head);
+	ft_printf("sa\n");
+}
+
+void	sb(node_t **head)
+{
+	if (!*head)
+		return ;
+	lst_node_swap((*head)->next, *head);
+	ft_printf("sb\n");
 }
 
 void	ss(node_t **head_a, node_t **head_b)
 {
 	if (!*head_a || !*head_b)
 		return ;
-	s_a_b(head_a);
-	s_a_b(head_b);
+	sa(head_a);
+	sb(head_b);
+	ft_printf("ss\n");
 }
 
-void	r_a_b(node_t **head)
+void	ra(node_t **head)
 {
-	node_t *last;
+	node_t	*last;
 	node_t	*tmp;
 
 	if (!*head)
 		return ;
+	ft_printf("ra\n");
+	if ((*head)->next || (*head)->prev)
+	{
+		tmp = (*head)->next;
+		(*head)->next->prev = NULL;
+		last = lst_node_last(*head);
+		(*head)->prev = last;
+		last->next = *head;
+		(*head)->next = NULL;
+		*head = tmp;
+	}
+	else
+		return ;
+}
+
+void	rb(node_t **head)
+{
+	node_t	*last;
+	node_t	*tmp;
+
+	if (!*head)
+		return ;
+	ft_printf("rb\n");
 	if ((*head)->next || (*head)->prev)
 	{
 		tmp = (*head)->next;
@@ -52,13 +85,14 @@ void	rr(node_t **head_a, node_t **head_b)
 {
 	if (!*head_a || !*head_b)
 		return ;
-	r_a_b(head_a);
-	r_a_b(head_b);
+	ft_printf("rr\n");
+	ra(head_a);
+	rb(head_b);
 }
 
-void	rr_a_b(node_t **head)
+void	rra(node_t **head)
 {
-	node_t *last;
+	node_t	*last;
 
 	if (!*head)
 		return ;
@@ -68,40 +102,83 @@ void	rr_a_b(node_t **head)
 	(*head)->prev = last;
 	last->prev = NULL;
 	*head = (*head)->prev;
+	ft_printf("rra\n");
+}
+
+void	rrb(node_t **head)
+{
+	node_t	*last;
+
+	if (!*head)
+		return ;
+	last = lst_node_last(*head);
+	last->prev->next = NULL;
+	last->next = *head;
+	(*head)->prev = last;
+	last->prev = NULL;
+	*head = (*head)->prev;
+	ft_printf("rrb\n");
 }
 
 void	rrr(node_t **head_a, node_t **head_b)
 {
 	if (!*head_a || !*head_b)
 		return ;
-	rr_a_b(head_a);
-	rr_a_b(head_b);
-}
-
-void	pa(node_t **head_a, node_t **head_b)
-{
-	if (!*head_b)
-		return ;
-	lst_node_add_front(head_a, lst_node_new((*head_b)->value, (*head_b)->index));
-	if ((*head_b)->next)
-	{
-		*head_b = (*head_b)->next;
-		lst_node_del(&(*head_b)->prev);
-	}
-	else
-		lst_node_del(head_b);
+	rra(head_a);
+	rrb(head_b);
+	ft_printf("rrr\n");
 }
 
 void	pb(node_t **head_a, node_t **head_b)
 {
+	node_t	*tmp;
+
 	if (!*head_a)
 		return ;
-	lst_node_add_front(head_b, lst_node_new((*head_a)->value, (*head_a)->index));
-	if ((*head_a)->next)
+	ft_printf("pb\n");
+	tmp = *head_a;
+	*head_a = (*head_a)->next;
+	if (*head_a)
 	{
-		*head_a = (*head_a)->next;
-		lst_node_del(&(*head_a)->prev);
+		(*head_a)->prev = NULL;
+		(*head_a)->size -= 1;
 	}
-	else
-		lst_node_del(head_a);
+	if (!*head_b)
+	{
+		tmp->next = NULL;
+		tmp->prev = NULL;
+		*head_b = tmp;
+		return ;
+	}
+	tmp->next = *head_b;
+	(*head_b)->prev = tmp;
+	*head_b = tmp;
+	(*head_b)->size += 1;
+}
+
+void	pa(node_t **head_a, node_t **head_b)
+{
+	node_t	*tmp;
+
+	if (!*head_b)
+		return ;
+	ft_printf("pa\n");
+	tmp = *head_b;
+	*head_b = (*head_b)->next;
+	if (*head_b)
+	{
+		(*head_b)->prev = NULL;
+		(*head_b)->size -= 1;
+	}
+	if (!*head_a)
+	{
+		tmp->next = NULL;
+		tmp->prev = NULL;
+		*head_a = tmp;
+		return ;
+	}
+	tmp->next = *head_a;
+	(*head_a)->prev = tmp;
+	*head_a = tmp;
+	(*head_a)->size += 1;
 }

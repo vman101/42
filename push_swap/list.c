@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/01 11:50:12 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/02 16:35:52 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,19 @@ node_t	*lst_node_new(int value, int index)
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
+}
+
+void	lst_list_information_sync(node_t *lst, unsigned int offset)
+{
+	node_t *tmp;
+
+	tmp = lst;
+	while (lst->next)
+	{
+		if ((int)*(char *)lst + offset != (int)*(char *)(lst->next) + offset) 
+			*(unsigned int *)((char *)(lst->next + offset)) = (int)*(char *)lst + offset;
+		lst = lst->next;
+	}
 }
 
 void	lst_node_add_front(node_t **node, node_t *new)

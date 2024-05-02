@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:17:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/01 09:38:40 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/02 16:29:20 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,15 @@
 
 typedef struct	s_node
 {
-	int		value;
-	int		index;
-	struct	s_node	*prev;
-	struct	s_node	*next;
+	int				value;
+	int				index;
+	unsigned int	size;
+	struct s_node	*prev;
+	struct s_node	*next;
 }	node_t;
 
 /* INPUT HANDLING */
-node_t	*input_parse(char const *argv);
+node_t	*input_parse(char const **argv, int argc);
 
 /* NODE MANIP */
 node_t	*lst_node_new(int value, int index);
@@ -40,15 +41,19 @@ void	lst_clear_full(node_t **head);
 void	lst_clear_to_end(node_t **head);
 void	lst_node_swap(node_t *n1, node_t *n2);
 node_t	*lst_node_last(node_t *head);
+void	lst_list_information_sync(node_t *lst, unsigned int offset);
 
 /* OPERATIONS */
-void	s_a_b(node_t **head);
+void	sa(node_t **head);
+void	sb(node_t **head);
 void	ss(node_t **head_a, node_t **head_b);
-void	r_a_b(node_t **head);
+void	ra(node_t **head);
+void	rb(node_t **head);
 void	rr(node_t **head_a, node_t **head_b);
 void	pa(node_t **head_a, node_t **head_b);
 void	pb(node_t **head_a, node_t **head_b);
-void	rr_a_b(node_t **head);
+void	rra(node_t **head);
+void	rrb(node_t **head);
 void	rrr(node_t **head_a, node_t **head_b);
 
 /* DEBUG */

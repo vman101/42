@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/01 12:08:01 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/02 16:33:23 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,43 @@ void	lst_node_swap(node_t *n1, node_t *n2)
 
 }
 
-int	lst_check_sort(node_t *head)
+int	lst_check_sort(node_t *head, unsigned int offset)
 {
 	while (head && head->next)
 	{
-		if (head->value > head->next->value)
+		if ((int)*(char *)head + offset > (int)*(char *)(head->next) + offset)
 			return (0);
 		head = head->next;
 	}
 	return (1);
 }
 
-void	input_sort_and_index(node_t *input)
+void	input_sort_by_index(node_t **input)
+{
+	node_t	*tmp;
+	node_t	*current;
+
+	tmp = *input;
+	while (!lst_check_sort(tmp, 4))
+	{
+		current = tmp;
+		while (current && current->next)
+		{
+			if (current->index > current->next->index)
+				lst_node_swap(current, current->next);
+			current = current->next;
+		}
+	}
+}
+
+void	input_sort_by_value(node_t *input)
 {
 	node_t	*tmp;
 	node_t	*current;
 	unsigned int	i;
 
 	tmp = input;
-	while (!lst_check_sort(tmp))
+	while (!lst_check_sort(tmp, 0))
 	{
 		current = tmp;
 		while (current && current->next)
@@ -63,37 +81,19 @@ void	input_sort_and_index(node_t *input)
 	i = 1;
 	while (tmp)
 	{
-		tmp->index = i++;
+		tmp->value = i++;
 		tmp = tmp->next;
 	}
-}
-
-void	input_copy_indexes(node_t *a, node_t *a_sorted)
-{
-	node_t *tmp;
-
-	tmp = a_sorted;
-	while (a && a_sorted)
-	{
-		if (a->value == a_sorted->value)
-		{
-			a->index = a_sorted->index;
-			a = a->next;
-		}
-		if (!a_sorted->next)
-			a_sorted = tmp;
-		else
-			a_sorted = a_sorted->next;
-	}
+	input_sort_by_index(&input);
 }
 
 void	debug_print(node_t *head_a, node_t *head_b)
 {
 	ft_printf("\033[2J\033[H");
 	ft_printf("\nStack A\n");
-	db_lst_menu(head_a, PRINT_TO_END, 2, 4, "Node value", offsetof(node_t, value), "Node index", offsetof(node_t, index));
+	db_lst_menu(head_a, PRINT_TO_END, 3, 6, "Node value", offsetof(node_t, value), "Node index", offsetof(node_t, index), "List Size", offsetof(node_t, size));
 	ft_printf("\nStack B\n\n");
-	db_lst_menu(head_b, PRINT_TO_END, 2, 4, "Node value", offsetof(node_t, value), "Node index", offsetof(node_t, index));
+	db_lst_menu(head_b, PRINT_TO_END, 3, 6, "Node value", offsetof(node_t, value), "Node index", offsetof(node_t, index), "List Size", offsetof(node_t, size));
 }
 
 void	visual(node_t **head_a, node_t **head_b)
@@ -101,14 +101,15 @@ void	visual(node_t **head_a, node_t **head_b)
 	while (1)
 	{
 		char c = 0;
+		debug_print(*head_a, *head_b);
 		read(STDIN_FILENO, &c, 1);
 		switch (c)
 		{
 			case 'a':
-				r_a_b(head_a);
+				ra(head_a);
 				break ;
 			case 'b':
-				r_a_b(head_b);
+				rb(head_b);
 				break ;
 			case 'r':
 				rr(head_a, head_b);
@@ -120,19 +121,19 @@ void	visual(node_t **head_a, node_t **head_b)
 				pb(head_a, head_b);
 				break ;
 			case 'g':
-				rr_a_b(head_a);
+				rra(head_a);
 				break ;
 			case 'd':
-				rr_a_b(head_b);
+				rrb(head_b);
 				break ;
 			case 'o':
 				rrr(head_a, head_b);
 				break ;
 			case 't':
-				s_a_b(head_a);
+				sa(head_a);
 				break ;
 			case 'z':
-				s_a_b(head_b);
+				sb(head_b);
 				break ;
 			case 'l':
 				ss(head_a, head_b);
@@ -145,19 +146,34 @@ void	visual(node_t **head_a, node_t **head_b)
 	}
 }
 
-int main(int argc, char **argv)
+void	problem_solve(node_t *head_a, node_t *head_b, unsigned int *count)
+{
+	if (head_a->size < 3 && !lst_check_sort(head_a, 0))
+	{
+//		sa(&head_a);
+		(*count)++;
+		return ;
+	}
+	while (head_a->size > 3)
+	{
+		pb(&head_a, &head_b);
+		(*count)++;
+	}
+}
+
+int	main(int argc, char **argv)
 {
 	node_t	*head_a;
 	node_t	*head_b;
-	node_t	*head_a_sorted;
+	unsigned int	count;
 
 	if (argc != 2)
 		exit (-1);
-	head_a = input_parse(argv[1]);
-	head_a_sorted = input_parse(argv[1]);
-	input_sort_and_index(head_a_sorted);
-	input_copy_indexes(head_a, head_a_sorted);
+	head_a = input_parse((char const **)argv + 1, argc);
+	input_sort_by_value(head_a);
 	head_b = NULL;
+	count = 0;
+	problem_solve(head_a, head_b, &count);
 	lst_clear_full(&head_a);
 	lst_clear_full(&head_b);
 }
