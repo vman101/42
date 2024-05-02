@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/02 21:36:38 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/02 23:56:34 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,20 @@ void	lst_node_swap(node_t *n1, node_t *n2)
 	n1->index = n2->index;
     n2->value = value;
 	n2->index = index;
-
 }
 
 int	lst_check_sort(node_t *head, unsigned int offset)
 {
 	while (head && head->next)
 	{
-		if ((int)*(char *)head + offset > (int)*(char *)(head->next) + offset)
+		if (*(int *)((char *)head + offset) > *(int *)((char *)head->next + offset))
 			return (0);
 		head = head->next;
 	}
 	return (1);
 }
 
-void	input_sort_by_index(node_t **input)
+void	lst_list_sort_by_offset(node_t **input, unsigned int offset)
 {
 	node_t	*tmp;
 	node_t	*current;
@@ -74,37 +73,29 @@ void	input_sort_by_index(node_t **input)
 		current = tmp;
 		while (current && current->next)
 		{
-			if (current->index > current->next->index)
+			if (*(int *)((char *)current + offset) > *(int *)((char *)current->next + offset))
 				lst_node_swap(current, current->next);
 			current = current->next;
 		}
 	}
 }
 
-void	input_sort_by_value(node_t *input)
+void	lst_memset(node_t **lst, unsigned int offset, int value)
 {
-	node_t	*tmp;
-	node_t	*current;
-	unsigned int	i;
+	node_t *tmp;
 
-	tmp = input;
-	while (!lst_check_sort(tmp, 0))
-	{
-		current = tmp;
-		while (current && current->next)
-		{
-			if (current->value > current->next->value)
-				lst_node_swap(current, current->next);
-			current = current->next;
-		}
-	}
-	i = 1;
+	tmp = *lst;
 	while (tmp)
 	{
-		tmp->value = i++;
+		*(int *)((char *)tmp + offset) = value;
 		tmp = tmp->next;
 	}
-	input_sort_by_index(&input);
+}
+
+void	input_normalize(node_t **input)
+{
+	lst_list_sort_by_offset(input, 0);
+	lst_list_sort_by_offset(input, 4);
 }
 
 void	debug_print(node_t *head_a, node_t *head_b)
@@ -191,11 +182,11 @@ int	main(int argc, char **argv)
 	if (argc < 2 || !input_valid_check(argv + 1))
 		exit(-1);
 	head_a = input_parse((char const **)argv + 1, argc);
-//	input_sort_by_value(head_a);
+	lst_list_sort_by_offset(&head_a, 0);
 	head_b = NULL;
 	count = 0;
 //	problem_solve(head_a, head_b, &count);
-	visual(&head_a, &head_b);
+	debug_print(head_a, head_b);
 	lst_clear_full(&head_a);
 	lst_clear_full(&head_b);
 }

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 13:11:14 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/01 10:51:04 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/02 22:16:57 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	db_lst_node_print(void *node, int print_amount, void **args)
 		{
 			ft_printf("%s: ", *(char **)args);
 			args++;
-			ft_printf("%d", (int)*((char *)node + ft_atoi(*(char **)args)));
+			ft_printf("%d", *(int *)(node + ft_atoi(*(char **)args)));
 			args++;
 			ft_printf("\n");
 		}
