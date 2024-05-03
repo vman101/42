@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/03 17:57:24 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/03 19:06:10 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int	lst_node_get_absolute_position(LIST *node, unsigned int offset, int value)
 		node = node->next;
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
 void	(**operations_initialize(void))(LIST **, LIST **)
@@ -184,52 +184,86 @@ void	(**operations_initialize(void))(LIST **, LIST **)
 
 void	problem_solve(LIST **stack_a, LIST **stack_b, unsigned int *count)
 {
-	int				current_value;
-	unsigned int	next_pos;
-	void			(**operation)(LIST **, LIST **);
-	LIST			*tmp;
-	int				min;
-	int				max;
+	int		current_value;
+	int		next_pos;
+	void	(**operation)(LIST **, LIST **);
+	LIST	*tmp;
+	int		min;
+	int		max;
 
 	max = lst_get_extreme_information(*stack_a, MAXIMUM, 0);
 	min = lst_get_extreme_information(*stack_a, MINIMUM, 0);
 	*count = 0;
 	operation = operations_initialize();
 	while ((*stack_a)->size > 3)
+	{
+		(*count)++;
 		operation[PB](stack_a, stack_b);
+	}
 	tmp = *stack_a;
 	while (*stack_b)
 	{
 		current_value = (*stack_a)->value;
 		next_pos = lst_node_get_absolute_position(*stack_b, 0, current_value - 1);
-		if (!next_pos)
+		if (next_pos == -1)
 		{
-			current_value = (*stack_b)->value;
-			if (current_value == max)
+			next_pos = lst_node_get_absolute_position(*stack_b, 0, current_value + 1);
+			if (next_pos == -1)
 			{
-				operation[RB](stack_b, NULL);
+				(*count)++;
+				operation[RA](stack_a, NULL);
 				continue ;
 			}
-			next_pos = lst_node_get_absolute_position(*stack_a, 0, current_value + 1);
-			if (next_pos < ((*stack_a)->size / 2))
-				while ((*stack_a)->value != current_value + 1)
-					operation[RA](stack_a, NULL);
 			else
-				while ((*stack_a)->value != current_value + 1)
-					operation[RRA](stack_a, NULL);
+			{
+				(*count)++;
+				operation[RA](stack_a, NULL);
+				if (next_pos < (int)((*stack_b)->size / 2))
+					while ((*stack_b)->value != current_value + 1 && ((*stack_b)->value != min || (*stack_b)->value != max))
+					{
+						(*count)++;
+						operation[RB](stack_b, NULL);
+					}
+				else
+					while ((*stack_b)->value != current_value + 1 && ((*stack_b)->value != min || (*stack_b)->value != max))
+					{
+						(*count)++;
+						operation[RRB](stack_b, NULL);
+					}
+			}
 		}
 		else
 		{
-			if (next_pos < ((*stack_b)->size / 2))
-				while ((*stack_b)->value != current_value - 1)
+			if (next_pos < (int)((*stack_b)->size / 2))
+				while ((*stack_b)->value != current_value - 1 && ((*stack_b)->value != min || (*stack_b)->value != max))
+				{
+					(*count)++;
 					operation[RB](stack_b, NULL);
+				}
 			else
-				while ((*stack_b)->value != current_value - 1)
+				while ((*stack_b)->value != current_value - 1 && ((*stack_b)->value != min || (*stack_b)->value != max))
+				{
+					(*count)++;
 					operation[RRB](stack_b, NULL);
+				}
 		}
+		(*count)++;
 		operation[PA](stack_a, stack_b);
-		read(0, NULL, 1);
 	}
+	next_pos = lst_node_get_absolute_position(*stack_a, 0, min);
+	if (next_pos < (int)((*stack_a)->size / 2))
+		while ((*stack_a)->value != 1)
+		{
+			(*count)++;
+			operation[RA](stack_a, NULL);
+		}
+	else
+		while ((*stack_a)->value != min)
+		{
+			(*count)++;
+			operation[RRA](stack_a, NULL);
+		}
+	free(operation);
 }
 
 int	main(int argc, char **argv)
@@ -246,9 +280,10 @@ int	main(int argc, char **argv)
 	input_normalize(&head_a);
 	problem_solve(&head_a, &head_b, &count);
 //	visual(&head_a, &head_b);
-	debug_print(head_a, head_b);
+	//debug_print(head_a, head_b);
 	//ft_printf("%d\n", count);
+	ft_printf("%d\n", count);
 	lst_clear_full(&head_a);
 	lst_clear_full(&head_b);
-	return (count);
+	return (0);
 }
