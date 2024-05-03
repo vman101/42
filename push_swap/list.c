@@ -6,15 +6,15 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/02 20:44:55 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/03 12:17:46 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-node_t	*lst_node_new(int value, int index)
+LIST	*lst_node_new(int value, int index)
 {
-	node_t	*new;
+	LIST	*new;
 	
 	new = malloc(sizeof(*new));
 	if (!new)
@@ -26,9 +26,9 @@ node_t	*lst_node_new(int value, int index)
 	return (new);
 }
 
-void	lst_list_information_sync(node_t *lst, unsigned int offset)
+void	lst_list_information_sync(LIST *lst, unsigned int offset)
 {
-	node_t *tmp;
+	LIST *tmp;
 
 	tmp = lst;
 	while (tmp->next)
@@ -39,9 +39,9 @@ void	lst_list_information_sync(node_t *lst, unsigned int offset)
 	}
 }
 
-void	lst_node_add_front(node_t **node, node_t *new)
+void	lst_node_add_front(LIST **node, LIST *new)
 {
-	node_t *tmp;
+	LIST *tmp;
 
 	if (!new)
 		return ;
@@ -59,9 +59,9 @@ void	lst_node_add_front(node_t **node, node_t *new)
 		*node = new;
 }
 
-void	lst_node_add_back(node_t **node, node_t *new)
+void	lst_node_add_back(LIST **node, LIST *new)
 {
-	node_t	*tmp;
+	LIST	*tmp;
 
 	if (!new)
 		return ;
@@ -77,7 +77,7 @@ void	lst_node_add_back(node_t **node, node_t *new)
 		*node = new;
 }
 
-node_t	*lst_node_last(node_t *head)
+LIST	*lst_node_last(LIST *head)
 {
 	if (head)
 		while (head->next)
@@ -85,7 +85,7 @@ node_t	*lst_node_last(node_t *head)
 	return (head);
 }
 
-void	lst_node_del(node_t **lst)
+void	lst_node_del(LIST **lst)
 {
 	if (*lst && (*lst)->prev && (*lst)->next)
 	{
@@ -96,9 +96,9 @@ void	lst_node_del(node_t **lst)
 	*lst = NULL;
 }
 
-void	lst_clear_to_end(node_t **head)
+void	lst_clear_to_end(LIST **head)
 {
-	node_t *tmp;
+	LIST *tmp;
 
 	while (*head)
 	{
@@ -108,7 +108,7 @@ void	lst_clear_to_end(node_t **head)
 	}
 }
 
-void	lst_clear_full(node_t **head)
+void	lst_clear_full(LIST **head)
 {
 	if (!*head)
 		return ;

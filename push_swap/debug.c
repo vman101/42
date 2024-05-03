@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 13:11:14 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/02 22:16:57 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/03 13:35:49 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	**free_all(char **back, int i)
 	return (NULL);
 }
 
-void	db_lst_menu(void *node, enum_mem action, int print_amount, int arg_count, ...)
+void	db_lst_menu(void *node, enum_memb action, int print_amount, int arg_count, ...)
 {
 	va_list args;
 	void **args_extract;

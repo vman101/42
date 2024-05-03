@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/02 21:22:15 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/03 12:16:37 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 //	return (n);
 //}
 //
-char	**free_all(char ***back)
+static char	**free_all(char ***back)
 {
 	char	***free_back;
 	char	**tmp;
@@ -50,10 +50,11 @@ char	**free_all(char ***back)
 		back++;
 	}
 	free(free_back);
+	free_back = NULL;
 	return (NULL);
 }
 
-unsigned int	lst_list_size(node_t *lst)
+size_t	lst_list_size(LIST *lst)
 {
 	unsigned int	len;
 
@@ -87,10 +88,10 @@ char ***super_split(char const **argv, int argc)
 	return (split);
 }
 
-node_t	*input_parse(char const **argv, int argc)
+LIST	*input_parse(char const **argv, int argc)
 {
 	char	***split;
-	node_t	*tmp;
+	LIST	*tmp;
 	unsigned int	index;
 	unsigned int	i;
 	unsigned int	j;
@@ -112,7 +113,7 @@ node_t	*input_parse(char const **argv, int argc)
 		j++;
 	}
 	tmp->size = lst_list_size(tmp);
-	lst_list_information_sync(tmp, offsetof(node_t, size));
+	lst_list_information_sync(tmp, offsetof(LIST, size));
 	free_all(split);
 	return (tmp);
 }
