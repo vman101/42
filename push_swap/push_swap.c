@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/03 16:32:12 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/03 17:57:24 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,37 +182,53 @@ void	(**operations_initialize(void))(LIST **, LIST **)
 	return (tmp);
 }
 
-void	problem_solve(LIST **head_a, LIST **head_b, unsigned int *count)
+void	problem_solve(LIST **stack_a, LIST **stack_b, unsigned int *count)
 {
 	int				current_value;
 	unsigned int	next_pos;
 	void			(**operation)(LIST **, LIST **);
-	LIST			*stack_current;
+	LIST			*tmp;
+	int				min;
+	int				max;
 
+	max = lst_get_extreme_information(*stack_a, MAXIMUM, 0);
+	min = lst_get_extreme_information(*stack_a, MINIMUM, 0);
+	*count = 0;
 	operation = operations_initialize();
-	while ((*head_a)->size > 3)
-		operation[PB](head_a, head_b);
-	while (*head_b)
+	while ((*stack_a)->size > 3)
+		operation[PB](stack_a, stack_b);
+	tmp = *stack_a;
+	while (*stack_b)
 	{
-		stack_current = *head_a;
-		current_value = stack_current->value;
-		next_pos = lst_node_get_absolute_position(stack_current, 0, current_value - 1);
+		current_value = (*stack_a)->value;
+		next_pos = lst_node_get_absolute_position(*stack_b, 0, current_value - 1);
 		if (!next_pos)
 		{
-			current_value = stack_current->value;
-			stack_current = *head_a;
-			next_pos = lst_node_get_absolute_position(stack_current, 0, current_value + 1);
-			if (!next_pos)
-				operation[RR](head_a, head_b);
+			current_value = (*stack_b)->value;
+			if (current_value == max)
+			{
+				operation[RB](stack_b, NULL);
+				continue ;
+			}
+			next_pos = lst_node_get_absolute_position(*stack_a, 0, current_value + 1);
+			if (next_pos < ((*stack_a)->size / 2))
+				while ((*stack_a)->value != current_value + 1)
+					operation[RA](stack_a, NULL);
+			else
+				while ((*stack_a)->value != current_value + 1)
+					operation[RRA](stack_a, NULL);
 		}
-		if (next_pos < (stack_current->size / 2) + 1)
-			while (stack_current->value != current_value)
-				operation[RB](&stack_current, NULL);
 		else
-			while (stack_current->value != current_value)
-				operation[RRB](&stack_current, NULL);
-		current_value++;
-		(*count)++;
+		{
+			if (next_pos < ((*stack_b)->size / 2))
+				while ((*stack_b)->value != current_value - 1)
+					operation[RB](stack_b, NULL);
+			else
+				while ((*stack_b)->value != current_value - 1)
+					operation[RRB](stack_b, NULL);
+		}
+		operation[PA](stack_a, stack_b);
+		read(0, NULL, 1);
 	}
 }
 
@@ -234,4 +250,5 @@ int	main(int argc, char **argv)
 	//ft_printf("%d\n", count);
 	lst_clear_full(&head_a);
 	lst_clear_full(&head_b);
+	return (count);
 }

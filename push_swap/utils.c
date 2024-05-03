@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/03 12:16:37 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/03 17:19:11 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ LIST	*input_parse(char const **argv, int argc)
 		return (NULL);
 	tmp = NULL;
 	j = 0;
-	index = 1;
+	index = 0;
 	while (split[j])
 	{
 		i = 0;
