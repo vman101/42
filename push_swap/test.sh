@@ -4,4 +4,17 @@ make
 
 ARG=$(cat input)
 
-./push_swap $ARG
+if [ -z "$1" ]; then
+	./push_swap $ARG
+	exit 0
+fi
+
+case "$1" in
+	"check")
+		./push_swap $ARG | ./checker_linux $ARG
+		;;
+	"gdb")
+		gdb --args ./push_swap $ARG
+		;;
+esac
+

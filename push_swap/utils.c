@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/03 17:19:11 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/04 19:44:34 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ LIST	*input_parse(char const **argv, int argc)
 		}
 		j++;
 	}
+	while (tmp->prev)
+		tmp = tmp->prev;
 	tmp->size = lst_list_size(tmp);
 	lst_list_information_sync(tmp, offsetof(LIST, size));
 	free_all(split);

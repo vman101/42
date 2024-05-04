@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/03 12:17:46 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/04 19:49:18 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	lst_list_information_sync(LIST *lst, unsigned int offset)
 	tmp = lst;
 	while (tmp->next)
 	{
-		if ((int)*(char *)tmp + offset != (int)*(char *)(tmp->next) + offset) 
-			*(int *)((char *)(tmp->next) + offset) = (int)*((char *)tmp + offset);
+		if (*(int *)((char *)tmp + offset) != *(int *)((char *)(tmp->next) + offset)) 
+			*(int *)((char *)(tmp->next) + offset) = *(int *)((char *)tmp + offset);
 		tmp = tmp->next;
 	}
 }
