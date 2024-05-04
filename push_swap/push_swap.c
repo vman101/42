@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/04 22:28:45 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/04 23:33:02 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ int	lst_get_extreme_information(LIST *node, enum_memb extreme, unsigned int offs
 	int i;
 
 	i = 0;
+	if (!node)
+		return (-1);
 	while (node->prev)
 		node = node->prev;
 	if (extreme == MAXIMUM)
@@ -156,6 +158,8 @@ int	lst_node_get_absolute_position(LIST *node, unsigned int offset, int value)
 	int i;
 
 	i = 0;
+	if (!node)
+		return (-1);
 	while (node->prev)
 		node = node->prev;
 	while (node)
@@ -252,6 +256,16 @@ int		next_number_in_chunk_position(LIST *stack, int chunk_range[3], int *current
 	return (-1);
 }
 
+int		find_rotation(LIST *stack, int current_value)
+{
+	int rotation;
+
+	rotation = lst_node_get_absolute_position(stack, 0, current_value);
+	if (rotation > (int)stack->size / 2)
+		return (0);
+	return (1);
+}
+
 void	problem_solve(LIST **stack_a, LIST **stack_b, ssize_t *count)
 {
 	int		next_pos;
@@ -280,6 +294,35 @@ void	problem_solve(LIST **stack_a, LIST **stack_b, ssize_t *count)
 		else
 			while ((*stack_a)->value != current_value)
 				operation[RA](stack_a, NULL);
+		current_value = lst_get_extreme_information(*stack_b, MAXIMUM, 0);
+		if (*stack_b && current_value != -1)
+		{
+			if (current_value < (*stack_a)->value)
+			{
+				current_value = lst_get_extreme_information(*stack_b, MINIMUM, 0);
+				next_pos = lst_node_get_absolute_position(*stack_b, 0, current_value);
+				if (next_pos > (int)(*stack_b)->size / 2)
+					while ((*stack_b)->value != current_value)
+						operation[RRB](stack_b, NULL);
+				else
+					while ((*stack_b)->value != current_value)
+						operation[RB](stack_b, NULL);
+			}
+			else
+			{
+				current_value = lst_get_extreme_information(*stack_b, MAXIMUM, 0);
+				if (current_value > (*stack_a)->value)
+				{
+					next_pos = lst_node_get_absolute_position(*stack_b, 0, current_value);
+					if (next_pos > (int)(*stack_b)->size / 2)
+						while ((*stack_b)->value != current_value)
+							operation[RRB](stack_b, NULL);
+					else
+						while ((*stack_b)->value != current_value)
+							operation[RB](stack_b, NULL);
+				}
+			}
+		}
 		operation[PB](stack_a, stack_b);
 		if ((*stack_a)->size == 1)
 		{
@@ -287,8 +330,19 @@ void	problem_solve(LIST **stack_a, LIST **stack_b, ssize_t *count)
 			break ;
 		}
 	}
+	return ;
+	current_value = (*stack_b)->size - 1;
 	while (*stack_b)
+	{
+		if (find_rotation(*stack_b, current_value))
+			while ((*stack_b)->value != current_value)
+				operation[RB](stack_b, NULL);
+		else
+			while ((*stack_b)->value != current_value)
+				operation[RRB](stack_b, NULL);
 		operation[PA](stack_a, stack_b);
+		current_value--;
+	}
 	free(operation);
 }
 
@@ -303,11 +357,10 @@ int	main(int argc, char **argv)
 	stack_a = input_parse((char const **)argv + 1, argc);
 	stack_b = NULL;
 	count = 1;
-//	debug_print(stack_a, NULL);
 	input_normalize(&stack_a);
 	problem_solve(&stack_a, &stack_b, &count);
-	//ft_printf("%d\n", count);
 	debug_print(stack_a, stack_b);
+	//ft_printf("%d\n", count);
 	lst_clear_full(&stack_a);
 	lst_clear_full(&stack_b);
 	return (0);
