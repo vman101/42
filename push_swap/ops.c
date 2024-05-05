@@ -6,31 +6,30 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 14:44:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/04 21:11:36 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/05 16:43:57 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-void	sa(LIST **head, LIST **null)
+void	sa(list **head, list **null)
 {
 	null = NULL;
-	if (!*head)
+	if (!*head || null)
 		return ;
 	lst_node_swap((*head)->next, *head);
 	ft_printf("sa\n");
 }
 
-void	sb(LIST **head, LIST **null)
+void	sb(list **head, list **null)
 {
-	null = NULL;
-	if (!*head)
+	if (!*head || null)
 		return ;
 	lst_node_swap((*head)->next, *head);
 	ft_printf("sb\n");
 }
 
-void	ss(LIST **head_a, LIST **head_b)
+void	ss(list **head_a, list **head_b)
 {
 	if (!*head_a || !*head_b)
 		return ;
@@ -39,17 +38,16 @@ void	ss(LIST **head_a, LIST **head_b)
 	ft_printf("ss\n");
 }
 
-void	ra(LIST **head, LIST **null)
+void	ra(list **head, list **null)
 {
-	LIST	*last;
-	LIST	*tmp;
+	list	*last;
+	list	*tmp;
 
-	null = NULL;
-	if (!*head)
+	if (!*head || null)
 		return ;
-	ft_printf("ra\n");
 	if ((*head)->next || (*head)->prev)
 	{
+		ft_printf("ra\n");
 		tmp = (*head)->next;
 		(*head)->next->prev = NULL;
 		last = lst_node_last(*head);
@@ -62,13 +60,12 @@ void	ra(LIST **head, LIST **null)
 		return ;
 }
 
-void	rb(LIST **head, LIST **null)
+void	rb(list **head, list **null)
 {
-	LIST	*last;
-	LIST	*tmp;
+	list	*last;
+	list	*tmp;
 
-	null = NULL;
-	if (!*head)
+	if (!*head || null)
 		return ;
 	ft_printf("rb\n");
 	if ((*head)->next || (*head)->prev)
@@ -85,20 +82,51 @@ void	rb(LIST **head, LIST **null)
 		return ;
 }
 
-void	rr(LIST **head_a, LIST **head_b)
+void	rr(list **head_a, list **head_b)
 {
-	ra(head_a, NULL);
-	rb(head_b, NULL);
+	list	*last;
+	list	*tmp;
+
+	if (!*head_a)
+		return ;
+	ft_printf("rb\n");
+	if ((*head_a)->next || (*head_a)->prev)
+	{
+		tmp = (*head_a)->next;
+		(*head_a)->next->prev = NULL;
+		last = lst_node_last(*head_a);
+		(*head_a)->prev = last;
+		last->next = *head_a;
+		(*head_a)->next = NULL;
+		*head_a = tmp;
+	}
+	else
+		return ;
+
+	if (!*head_b)
+		return ;
+	ft_printf("rb\n");
+	if ((*head_b)->next || (*head_b)->prev)
+	{
+		tmp = (*head_b)->next;
+		(*head_b)->next->prev = NULL;
+		last = lst_node_last(*head_b);
+		(*head_b)->prev = last;
+		last->next = *head_b;
+		(*head_b)->next = NULL;
+		*head_b = tmp;
+	}
+	else
+		return ;
 	ft_printf("rr\n");
 }
 
-void	rra(LIST **head, LIST **null)
+void	rra(list **head, list **null)
 {
-	LIST	*last;
-	LIST	*tmp;
+	list	*last;
+	list	*tmp;
 
-	null = NULL;
-	if (!*head)
+	if (!*head || null)
 		return ;
 	last = lst_node_last(*head);
 	if (!last->prev)
@@ -114,12 +142,11 @@ void	rra(LIST **head, LIST **null)
 	ft_printf("rra\n");
 }
 
-void	rrb(LIST **head, LIST **null)
+void	rrb(list **head, list **null)
 {
-	LIST	*last;
+	list	*last;
 
-	null = NULL;
-	if (!*head)
+	if (!*head || null)
 		return ;
 	last = lst_node_last(*head);
 	last->prev->next = NULL;
@@ -131,16 +158,39 @@ void	rrb(LIST **head, LIST **null)
 	ft_printf("rrb\n");
 }
 
-void	rrr(LIST **head_a, LIST **head_b)
+void	rrr(list **head_a, list **head_b)
 {
-	rra(head_a, NULL);
-	rrb(head_b, NULL);
+	list	*last;
+	list	*tmp;
+
+	if (!*head_a)
+		return ;
+	last = lst_node_last(*head_a);
+	if (!last->prev)
+		return ;
+	tmp = last->prev;
+	tmp->next = NULL;
+	if (last->prev)
+		last->prev->next = NULL;
+	last->prev = NULL;
+	last->next = *head_a;
+	(*head_a)->prev = last;
+	*head_a = last;
+	if (!*head_b)
+		return ;
+	last = lst_node_last(*head_b);
+	last->prev->next = NULL;
+	last->prev = NULL;
+	(*head_b)->prev = last;
+	last->next = *head_b;
+	*head_b = last;
+	(*head_b)->prev = NULL;
 	ft_printf("rrr\n");
 }
 
-void	pb(LIST **head_a, LIST **head_b)
+void	pb(list **head_a, list **head_b)
 {
-	LIST	*tmp;
+	list	*tmp;
 
 	if (!*head_a)
 		return ;
@@ -155,17 +205,23 @@ void	pb(LIST **head_a, LIST **head_b)
 		tmp->prev = NULL;
 		*head_b = tmp;
 		return ;
+		lst_list_memset(head_a, NONE, offsetof(list, size), lst_list_size(*head_a));
+		lst_list_memset(head_a, INCREASE, offsetof(list, index), 0);
+		lst_list_memset(head_b, NONE, offsetof(list, size), lst_list_size(*head_b));
+		lst_list_memset(head_b, INCREASE, offsetof(list, index), 0);
 	}
 	tmp->next = *head_b;
 	(*head_b)->prev = tmp;
 	*head_b = tmp;
-	lst_list_memset(head_a, NONE, offsetof(LIST, size), lst_list_size(*head_a));
-	lst_list_memset(head_b, NONE, offsetof(LIST, size), lst_list_size(*head_b));
+	lst_list_memset(head_a, NONE, offsetof(list, size), lst_list_size(*head_a));
+	lst_list_memset(head_a, INCREASE, offsetof(list, index), 0);
+	lst_list_memset(head_b, NONE, offsetof(list, size), lst_list_size(*head_b));
+	lst_list_memset(head_b, INCREASE, offsetof(list, index), 0);
 }
 
-void	pa(LIST **head_a, LIST **head_b)
+void	pa(list **head_a, list **head_b)
 {
-	LIST	*tmp;
+	list	*tmp;
 
 	if (!*head_b)
 		return ;
@@ -179,11 +235,17 @@ void	pa(LIST **head_a, LIST **head_b)
 		tmp->next = NULL;
 		tmp->prev = NULL;
 		*head_a = tmp;
+		lst_list_memset(head_a, NONE, offsetof(list, size), lst_list_size(*head_a));
+		lst_list_memset(head_a, INCREASE, offsetof(list, index), 0);
+		lst_list_memset(head_b, NONE, offsetof(list, size), lst_list_size(*head_b));
+		lst_list_memset(head_b, INCREASE, offsetof(list, index), 0);
 		return ;
 	}
 	tmp->next = *head_a;
 	(*head_a)->prev = tmp;
 	*head_a = tmp;
-	lst_list_memset(head_a, NONE, offsetof(LIST, size), lst_list_size(*head_a));
-	lst_list_memset(head_b, NONE, offsetof(LIST, size), lst_list_size(*head_b));
+	lst_list_memset(head_a, NONE, offsetof(list, size), lst_list_size(*head_a));
+	lst_list_memset(head_a, INCREASE, offsetof(list, index), 0);
+	lst_list_memset(head_b, NONE, offsetof(list, size), lst_list_size(*head_b));
+	lst_list_memset(head_b, INCREASE, offsetof(list, index), 0);
 }

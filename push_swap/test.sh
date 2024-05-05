@@ -16,5 +16,7 @@ case "$1" in
 	"gdb")
 		gdb --args ./push_swap $ARG
 		;;
+	"val")
+		valgrind --leak-check=full ./push_swap $ARG
 esac
 

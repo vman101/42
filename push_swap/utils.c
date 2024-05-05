@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/04 19:44:34 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/05 17:20:49 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	**free_all(char ***back)
 	return (NULL);
 }
 
-size_t	lst_list_size(LIST *lst)
+size_t	lst_list_size(list *lst)
 {
 	unsigned int	len;
 
@@ -62,7 +62,7 @@ size_t	lst_list_size(LIST *lst)
 		return (0);
 	while (lst->prev)
 		lst = lst->prev;
-	len = 1;
+	len = 0;
 	while(lst->next)
 	{
 		lst = lst->next;
@@ -80,19 +80,20 @@ char ***super_split(char const **argv, int argc)
 	i = 0;
 	while (*argv)
 	{
-		split[i++] = ft_split(*argv++, 32);
-		if (!split[i - 1])
+		split[i] = ft_split(*argv, 32);
+		if (!split[i])
 			return (NULL);
+		i++;
+		argv++;
 	}
 	split[i] = NULL;
 	return (split);
 }
 
-LIST	*input_parse(char const **argv, int argc)
+list	*input_parse(char const **argv, int argc)
 {
 	char	***split;
-	LIST	*tmp;
-	unsigned int	index;
+	list	*tmp;
 	unsigned int	i;
 	unsigned int	j;
 
@@ -100,22 +101,15 @@ LIST	*input_parse(char const **argv, int argc)
 	if (!split)
 		return (NULL);
 	tmp = NULL;
-	j = 0;
-	index = 0;
-	while (split[j])
+	j = -1;
+	while (split[++j])
 	{
 		i = 0;
 		while (split[j][i])
-		{
-			lst_node_add_back(&tmp, lst_node_new(ft_atoi(split[j][i]), index++));
-			i++;
-		}
-		j++;
+			lst_node_add_back(&tmp, lst_node_new(ft_atoi(split[j][i++]), 0));
 	}
-	while (tmp->prev)
-		tmp = tmp->prev;
-	tmp->size = lst_list_size(tmp);
-	lst_list_information_sync(tmp, offsetof(LIST, size));
+	lst_list_memset(&tmp, INCREASE, offsetof(list, index), 0);
+	lst_list_memset(&tmp, NONE, offsetof(list, size), lst_list_size(tmp));
 	free_all(split);
 	return (tmp);
 }

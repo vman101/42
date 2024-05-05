@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 15:28:10 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/03 13:35:32 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/05 10:09:09 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ enum	lst_list_manipulations
 	MAXIMUM,
 	MINIMUM,
 	INCREASE,
+	FRONT,
+	BACK,
 };
 
 enum	db_enum_lst_print 

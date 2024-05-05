@@ -6,28 +6,16 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/04 23:33:02 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/05 21:35:00 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 #include <stdio.h>
 
-void move_cursor(unsigned int rows, unsigned int cols)
-{
-	printf("\033[%d;%dH", rows, cols);	
-}
-
 void	screen_clear()
 {
 	ft_printf("\033[2J\033[H");
-}
-
-int	ft_abs(int n)
-{
-	if (n < 0)
-		return (-n);
-	return (n);
 }
 
 int	input_valid_check(char **argv)
@@ -47,11 +35,10 @@ int	input_valid_check(char **argv)
 		}
 		j++;
 	}
-
 	return (1);
 }
 
-void	lst_node_swap(LIST *n1, LIST *n2)
+void	lst_node_swap(list *n1, list *n2)
 {
 	int value;
 	int index;
@@ -64,7 +51,7 @@ void	lst_node_swap(LIST *n1, LIST *n2)
 	n2->index = index;
 }
 
-int	lst_check_sort(LIST *stack, unsigned int off)
+int	lst_check_sort(list *stack, unsigned int off)
 {
 	while (stack && stack->next)
 	{
@@ -75,10 +62,10 @@ int	lst_check_sort(LIST *stack, unsigned int off)
 	return (1);
 }
 
-void	lst_list_sort_by_offset(LIST **input, unsigned int offset)
+void	lst_list_sort_by_offset(list **input, unsigned int offset)
 {
-	LIST	*tmp;
-	LIST	*current;
+	list	*tmp;
+	list	*current;
 
 	tmp = *input;
 	while (!lst_check_sort(tmp, offset))
@@ -94,9 +81,9 @@ void	lst_list_sort_by_offset(LIST **input, unsigned int offset)
 	}
 }
 
-void	lst_list_memset(LIST **lst, enum_memb option, unsigned int offset, int value)
+void	lst_list_memset(list **lst, enum_memb option, unsigned int offset, int value)
 {
-	LIST *tmp;
+	list *tmp;
 
 	tmp = *lst;
 	while (tmp)
@@ -108,75 +95,78 @@ void	lst_list_memset(LIST **lst, enum_memb option, unsigned int offset, int valu
 	}
 }
 
-void	input_normalize(LIST **input)
+void	input_normalize(list **input)
 {
 	lst_list_sort_by_offset(input, 0);
 	lst_list_memset(input, INCREASE, 0, 0);
 	lst_list_sort_by_offset(input, 4);
 }
 
-void	debug_print(LIST *stack_a, LIST *stack_b)
+void	debug_print(list *stack_a, list *stack_b)
 {
 	ft_printf("\nStack A\n");
-	db_lst_menu(stack_a, PRINT_TO_END, 1, 2, "Node value", 0);
+	db_lst_menu(stack_a, PRINT_TO_END, 2, 4, "Node value", 0, "Node index", offsetof(list, index));
 	ft_printf("\nStack B\n");
-	db_lst_menu(stack_b, PRINT_TO_END, 1, 2, "Node value", 0);
+	db_lst_menu(stack_b, PRINT_TO_END, 2, 4, "Node value", 0, "Node index", offsetof(list, index));
 }
 
-int	lst_get_extreme_information(LIST *node, enum_memb extreme, unsigned int offset)
+int	lst_get_extreme_information(list *node, enum_memb extreme, unsigned int offset)
 {
 	int i;
-
-	i = 0;
 	if (!node)
 		return (-1);
-	while (node->prev)
-		node = node->prev;
+	if (node->size == 0)
+		return (0);
 	if (extreme == MAXIMUM)
-	{
-		while (node->next)
-		{
-			if (i < *(int *)((char *)node + offset))
-				i = *(int *)((char *)node + offset);
-			node = node->next;
-		}
-	}
-	else if (extreme == MINIMUM)
-	{
-		while (node->next)
-		{
-			if (i > *(int *)((char *)node + offset))
-				i = *(int *)((char *)node + offset);
-			node = node->next;
-		}
-	}
-	return (i);
-}
-
-int	lst_node_get_absolute_position(LIST *node, unsigned int offset, int value)
-{
-	int i;
-
-	i = 0;
-	if (!node)
-		return (-1);
+		i = 0;
+	else
+		i = 2147483647;
 	while (node->prev)
 		node = node->prev;
 	while (node)
 	{
-		if (*(int *)((char *)node + offset) == value)
-			return (i);
+		if (extreme == MAXIMUM)
+		{
+			if (i < *(int *)((char *)node + offset))
+				i = *(int *)((char *)node + offset);
+		}
+		else if (extreme == MINIMUM)
+		{
+			if (i > *(int *)((char *)node + offset))
+				i = *(int *)((char *)node + offset);
+		}
 		node = node->next;
+	}
+	return (i);
+}
+
+int	lst_node_get_absolute_position(list *node, enum_memb orientation, int offset_value, int offset_direction, int value)
+{
+	int i;
+
+	i = 0;
+	if (!node)
+		return (-1);
+	if (orientation == FRONT)
+		while (node->prev)
+			node = node->prev;
+	else
+		node = lst_node_last(node);
+	while (node)
+	{
+		if (*(int *)((char *)node + offset_value) == value)
+			return (i);
+		 node = *(list **)((char *)node + offset_direction);
 		i++;
 	}
 	return (-1);
 }
 
-void	(**operations_initialize(void))(LIST **, LIST **)
+void	(**operations_initialize(void))(list **a, list **b)
 {
-	void (**tmp)(LIST **, LIST **);
+	void (**tmp)(list **a, list **b);
 
-	tmp = malloc(sizeof(void (*)(LIST **, LIST **)) * 11);
+	tmp = malloc(sizeof(void (*)(list **, list **)) * 11);
 	if (!tmp)
 		return (NULL);
     tmp[0] = ra;
@@ -193,7 +183,7 @@ void	(**operations_initialize(void))(LIST **, LIST **)
 	return (tmp);
 }
 
-int	input_sort_three(LIST **stack_a, void (**op)(LIST **, LIST **))
+int	input_sort_three(list **stack_a, void (**op)(list **, list **))
 {
 	int	a;
 	int b;
@@ -216,140 +206,190 @@ int	input_sort_three(LIST **stack_a, void (**op)(LIST **, LIST **))
 	return (1);
 }
 
-int		next_number_in_chunk_position(LIST *stack, int chunk_range[3], int *current_value)
+int		find_rotation(list *stack, int current_value)
+{
+	int front;
+	int back;
+
+	if (!stack)
+		return (0);
+	front = lst_node_get_absolute_position(stack, FRONT, 0, offsetof(list, next), current_value);
+	back = lst_node_get_absolute_position(stack, BACK, 0, offsetof(list, prev), current_value);
+	if (front <= back)
+		return (front);
+	return ((int)stack->size - back);
+}
+
+void	stacks_update(list **stack_a, list **stack_b)
+{
+	lst_list_memset(stack_a, NONE, offsetof(list, size), lst_list_size(*stack_a));
+	lst_list_memset(stack_a, INCREASE, offsetof(list, index), 0);
+	lst_list_memset(stack_b, NONE, offsetof(list, size), lst_list_size(*stack_b));
+	lst_list_memset(stack_b, INCREASE, offsetof(list, index), 0);
+}
+int		next_number_in_chunk_position(list *stack, int chunk_range[3])
 {
 	int value_counter;
-	int	number_found;
-	int	next_pos;
-	int	return_pos[2];
+	int	test_pos;
+	int	upper_pos;
+	int lower_pos;
 
-	number_found = -1;
 	value_counter = chunk_range[0];
-	return_pos[0] = stack->size / 2;
-	return_pos[1] = stack->size / 2;
+	lower_pos = 0;
+	upper_pos = stack->size;
 	while (value_counter <= chunk_range[1])
 	{
-		next_pos = lst_node_get_absolute_position(stack, 0, value_counter);
-		if (next_pos != -1)
-		{
-			if (next_pos < return_pos[0])
-				number_found = 0;
-			else if (next_pos > return_pos[1])
-				number_found = 1;
-			else
-			{
-				value_counter++;
-				continue ;
-			}
-			*current_value = value_counter;
-			return_pos[number_found] = next_pos;
-		}
+		test_pos = find_rotation(stack, value_counter);
+		if (test_pos == -1 && lower_pos == 0 && upper_pos == (int)stack->size && value_counter == chunk_range[1])
+			return (-1);
+		if (test_pos >= 0 && test_pos < upper_pos)
+			upper_pos = test_pos;
+		else if (test_pos >= 0 && test_pos > lower_pos)
+			lower_pos = test_pos;
 		value_counter++;
 	}
-	if (number_found != -1)
+	if (upper_pos < ((int)stack->size - lower_pos))
+		return (upper_pos);
+	return (lower_pos);
+}
+
+int	find_best_spot(list *stack, int value)
+{
+	int	max;
+	int min;
+	int ex_plus;
+	int ex_minus;
+	int i;
+
+	if (!stack)
+		return (-1);
+	max = lst_get_extreme_information(stack, MAXIMUM, 0);
+	min = lst_get_extreme_information(stack, MINIMUM, 0);
+	i = 0;
+	if (max < value)
+		return (find_rotation(stack, min));
+	else if (min > value)
+		return (find_rotation(stack, max));
+	while (value + i < max && value - i > min)
 	{
-		if (return_pos[0] > (int)stack->size - return_pos[1])
-			return (return_pos[1]);
-		else
-			return (return_pos[0]);
+		ex_minus = find_rotation(stack, value + i);
+		ex_plus = find_rotation(stack, value - i);
+		if (ex_minus != -1)
+			return (ex_minus + 1);
+		else if (ex_plus != -1)
+			return (ex_plus + 1);
+		i++;
 	}
 	return (-1);
 }
 
-int		find_rotation(LIST *stack, int current_value)
-{
-	int rotation;
-
-	rotation = lst_node_get_absolute_position(stack, 0, current_value);
-	if (rotation > (int)stack->size / 2)
-		return (0);
-	return (1);
-}
-
-void	problem_solve(LIST **stack_a, LIST **stack_b, ssize_t *count)
+void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
 {
 	int		next_pos;
+	void	(**operation)(list **, list **);
 	int		current_value;
-	void	(**operation)(LIST **, LIST **);
 	int		chunker[3];
+	list	*tmp;
 
 	*count = 0;
 	chunker[0] = 0;
-	chunker[1] = (*stack_a)->size / 5;
+	chunker[1] = (*stack_a)->size / 11;
 	chunker[2] = chunker[1];
 	operation = operations_initialize();
 	while (*stack_a)
 	{
+		stacks_update(stack_a, stack_b);
 		current_value = 0;
-		next_pos = next_number_in_chunk_position(*stack_a, chunker, &current_value);
+		next_pos = next_number_in_chunk_position(*stack_a, chunker);
 		if (next_pos == -1)
 		{
 			chunker[0] = chunker[1];
 			chunker[1] += chunker[2];
 			continue ;
 		}
-		if (next_pos > ((int)(*stack_a)->size / 2))
-			while ((*stack_a)->value != current_value)
-				operation[RRA](stack_a, NULL);
-		else
-			while ((*stack_a)->value != current_value)
-				operation[RA](stack_a, NULL);
-		current_value = lst_get_extreme_information(*stack_b, MAXIMUM, 0);
-		if (*stack_b && current_value != -1)
+		tmp = *stack_a;
+		while (tmp->index != next_pos)
+			tmp = tmp->next;
+		current_value = tmp->value;
+		next_pos = find_best_spot(*stack_b, current_value);
+		while ((*stack_a)->value != current_value)
 		{
-			if (current_value < (*stack_a)->value)
+			if (*stack_b && tmp->index < (int)(*stack_a)->size / 2 && next_pos < (int)(*stack_b)->size / 2 && next_pos > 0)
 			{
-				current_value = lst_get_extreme_information(*stack_b, MINIMUM, 0);
-				next_pos = lst_node_get_absolute_position(*stack_b, 0, current_value);
-				if (next_pos > (int)(*stack_b)->size / 2)
-					while ((*stack_b)->value != current_value)
-						operation[RRB](stack_b, NULL);
-				else
-					while ((*stack_b)->value != current_value)
-						operation[RB](stack_b, NULL);
+				next_pos--;
+				operation[RR](stack_a, stack_b);
+			}
+			else if (*stack_b && tmp->index > (int)(*stack_a)->size / 2 && next_pos > (int)(*stack_b)->size / 2 && next_pos < (int)(*stack_b)->size)
+			{
+				next_pos++;
+				operation[RRR](stack_a, stack_b);
+			}
+			else if (tmp->index < (int)(*stack_a)->size / 2)
+				operation[RA](stack_a, NULL);
+			else
+				operation[RRA](stack_a, NULL);
+			(*count)++;
+		}
+		while (next_pos > 0 && next_pos <= (int)(*stack_b)->size)
+		{
+			if (next_pos < (int)(*stack_b)->size / 2)
+			{
+				next_pos--;
+				operation[RB](stack_b, NULL);
 			}
 			else
 			{
-				current_value = lst_get_extreme_information(*stack_b, MAXIMUM, 0);
-				if (current_value > (*stack_a)->value)
-				{
-					next_pos = lst_node_get_absolute_position(*stack_b, 0, current_value);
-					if (next_pos > (int)(*stack_b)->size / 2)
-						while ((*stack_b)->value != current_value)
-							operation[RRB](stack_b, NULL);
-					else
-						while ((*stack_b)->value != current_value)
-							operation[RB](stack_b, NULL);
-				}
+				next_pos++;
+				operation[RRB](stack_b, NULL);
 			}
+			(*count)++;
 		}
+		(*count)++;
 		operation[PB](stack_a, stack_b);
-		if ((*stack_a)->size == 1)
+		if ((*stack_a)->size == 0)
 		{
 			operation[PB](stack_a, stack_b);
-			break ;
+			break;
 		}
 	}
-	return ;
-	current_value = (*stack_b)->size - 1;
-	while (*stack_b)
+	while ((*stack_b)->size)
 	{
-		if (find_rotation(*stack_b, current_value))
-			while ((*stack_b)->value != current_value)
+		stacks_update(stack_a, stack_b);
+		next_pos = next_number_in_chunk_position(*stack_b, chunker);
+		if (next_pos == -1)
+		{
+			chunker[1] = chunker[0];
+			chunker[0] -= chunker[2];
+			continue ;
+		}
+		tmp = *stack_b;
+		while (tmp->index != next_pos)
+			tmp = tmp->next;
+		current_value = tmp->value;
+		next_pos = find_best_spot(*stack_a, current_value);
+		while ((*stack_b)->value != current_value)
+		{
+			if (*stack_a && tmp->index < (int)(*stack_b)->size / 2 && next_pos < (int)(*stack_a)->size / 2 && next_pos > 0)
+				operation[RR](stack_a, stack_b);
+			else if (*stack_a && tmp->index > (int)(*stack_b)->size / 2 && next_pos > (int)(*stack_a)->size / 2 && next_pos < (int)(*stack_a)->size)
+				operation[RRR](stack_a, stack_b);
+			else if (tmp->index < (int)(*stack_b)->size / 2)
 				operation[RB](stack_b, NULL);
-		else
-			while ((*stack_b)->value != current_value)
+			else
 				operation[RRB](stack_b, NULL);
+			(*count)++;
+		}
+		(*count)++;
 		operation[PA](stack_a, stack_b);
-		current_value--;
 	}
+	operation[PA](stack_a, stack_b);
 	free(operation);
 }
 
 int	main(int argc, char **argv)
 {
-	LIST	*stack_a;
-	LIST	*stack_b;
+	list	*stack_a;
+	list	*stack_b;
 	ssize_t	count;
 
 	if (argc < 2 || !input_valid_check(argv + 1))
@@ -360,7 +400,7 @@ int	main(int argc, char **argv)
 	input_normalize(&stack_a);
 	problem_solve(&stack_a, &stack_b, &count);
 	debug_print(stack_a, stack_b);
-	//ft_printf("%d\n", count);
+	ft_printf("%d\n", count);
 	lst_clear_full(&stack_a);
 	lst_clear_full(&stack_b);
 	return (0);
