@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 12:26:56 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/06 18:07:42 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,32 +335,8 @@ void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
 	return ;
 	while ((*stack_b)->size)
 	{
-		stacks_update(stack_a, stack_b);
-		next_pos = next_number_in_chunk_position(*stack_b, chunker);
-		if (next_pos == -1)
-		{
-			chunker[1] = chunker[0];
-			chunker[0] -= chunker[2];
-			continue ;
-		}
-		tmp = *stack_b;
-		while (tmp->index != next_pos)
-			tmp = tmp->next;
-		current_value = tmp->value;
-		next_pos = find_best_spot(*stack_a, current_value);
-		while ((*stack_b)->value != current_value)
-		{
-			if (*stack_a && tmp->index < (int)(*stack_b)->size / 2 && next_pos < (int)(*stack_a)->size / 2 && next_pos > 0)
-				operation[RR](stack_a, stack_b);
-			else if (*stack_a && tmp->index > (int)(*stack_b)->size / 2 && next_pos > (int)(*stack_a)->size / 2 && next_pos < (int)(*stack_a)->size)
-				operation[RRR](stack_a, stack_b);
-			else if (tmp->index < (int)(*stack_b)->size / 2)
-				operation[RB](stack_b, NULL);
-			else
-				operation[RRB](stack_b, NULL);
-			(*count)++;
-		}
-		(*count)++;
+		current_value = (*stack_b)->size;
+
 		operation[PA](stack_a, stack_b);
 	}
 	operation[PA](stack_a, stack_b);
