@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 06:49:15 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/06 12:26:56 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,33 +315,13 @@ void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
 		while ((*stack_a)->value != current_value)
 		{
 			if (*stack_b && tmp->index < (int)(*stack_a)->size / 2 && next_pos < (int)(*stack_b)->size / 2 && next_pos > 0)
-			{
-				next_pos--;
 				operation[RR](stack_a, stack_b);
-			}
 			else if (*stack_b && tmp->index > (int)(*stack_a)->size / 2 && next_pos > (int)(*stack_b)->size / 2 && next_pos < (int)(*stack_b)->size)
-			{
-				next_pos++;
 				operation[RRR](stack_a, stack_b);
-			}
 			else if (tmp->index < (int)(*stack_a)->size / 2)
 				operation[RA](stack_a, NULL);
 			else
 				operation[RRA](stack_a, NULL);
-			(*count)++;
-		}
-		while (next_pos > 0 && next_pos <= (int)(*stack_b)->size)
-		{
-			if (next_pos < (int)(*stack_b)->size / 2)
-			{
-				next_pos--;
-				operation[RB](stack_b, NULL);
-			}
-			else
-			{
-				next_pos++;
-				operation[RRB](stack_b, NULL);
-			}
 			(*count)++;
 		}
 		(*count)++;
@@ -352,6 +332,7 @@ void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
 			break;
 		}
 	}
+	return ;
 	while ((*stack_b)->size)
 	{
 		stacks_update(stack_a, stack_b);
@@ -399,7 +380,7 @@ int	main(int argc, char **argv)
 	count = 1;
 	input_normalize(&stack_a);
 	problem_solve(&stack_a, &stack_b, &count);
-	//debug_print(stack_a, stack_b);
+	debug_print(stack_a, stack_b);
 	ft_printf("%d\n", count);
 	lst_clear_full(&stack_a);
 	lst_clear_full(&stack_b);
