@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 18:07:42 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/06 18:08:36 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ void	stacks_update(list **stack_a, list **stack_b)
 	lst_list_memset(stack_b, NONE, offsetof(list, size), lst_list_size(*stack_b));
 	lst_list_memset(stack_b, INCREASE, offsetof(list, index), 0);
 }
+
 int		next_number_in_chunk_position(list *stack, int chunk_range[3])
 {
 	int value_counter;
