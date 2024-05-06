@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 18:08:36 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:04:31 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,21 @@ void	lst_node_swap(list *n1, list *n2)
 	n1->index = n2->index;
     n2->value = value;
 	n2->index = index;
+}
+
+list	*lst_node_extract(list *node, int offset_value, int value)
+{
+	if (!node)
+		return (NULL);
+	while (node->prev)
+		node = node->prev;
+	while (node)
+	{
+		if (*(int *)((char *)node + offset_value) == value)
+			return (node);
+		 node = node->next;
+	}
+	return (NULL);
 }
 
 int	lst_check_sort(list *stack, unsigned int off)
@@ -116,7 +131,7 @@ int	lst_get_extreme_information(list *node, enum_memb extreme, unsigned int offs
 	if (!node)
 		return (-1);
 	if (node->size == 0)
-		return (0);
+		return (-1);
 	if (extreme == MAXIMUM)
 		i = 0;
 	else
@@ -258,8 +273,6 @@ int	find_best_spot(list *stack, int value)
 {
 	int	max;
 	int min;
-	int ex_plus;
-	int ex_minus;
 	int i;
 
 	if (!stack)
@@ -271,20 +284,10 @@ int	find_best_spot(list *stack, int value)
 		return (find_rotation(stack, min));
 	else if (min > value)
 		return (find_rotation(stack, max));
-	while (value + i < max && value - i > min)
-	{
-		ex_minus = find_rotation(stack, min + i);
-		ex_plus = find_rotation(stack, max - i);
-		if (ex_minus != -1)
-			return (ex_minus + 2);
-		else if (ex_plus != -1)
-			return (ex_plus);
-		i++;
-	}
 	return (-1);
 }
 
-void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
+void	problem_solve(list **stack_a, list **stack_b)
 {
 	int		next_pos;
 	void	(**operation)(list **, list **);
@@ -292,9 +295,8 @@ void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
 	int		chunker[3];
 	list	*tmp;
 
-	*count = 0;
 	chunker[0] = 0;
-	chunker[1] = (*stack_a)->size / 11;
+	chunker[1] = (*stack_a)->size / 5;
 	chunker[2] = chunker[1];
 	operation = operations_initialize();
 	while (*stack_a)
@@ -323,9 +325,7 @@ void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
 				operation[RA](stack_a, NULL);
 			else
 				operation[RRA](stack_a, NULL);
-			(*count)++;
 		}
-		(*count)++;
 		operation[PB](stack_a, stack_b);
 		if ((*stack_a)->size == 0)
 		{
@@ -337,7 +337,14 @@ void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
 	while ((*stack_b)->size)
 	{
 		current_value = (*stack_b)->size;
-
+		next_pos = find_rotation(*stack_b, current_value);
+		while ((*stack_b)->value != current_value)
+		{
+			if (next_pos <= (int)(*stack_b)->size / 2)
+				operation[RB](stack_b, NULL);
+			else
+				operation[RRB](stack_b, NULL);
+		}
 		operation[PA](stack_a, stack_b);
 	}
 	operation[PA](stack_a, stack_b);
@@ -348,17 +355,14 @@ int	main(int argc, char **argv)
 {
 	list	*stack_a;
 	list	*stack_b;
-	ssize_t	count;
 
 	if (argc < 2 || !input_valid_check(argv + 1))
 		exit(-1);
 	stack_a = input_parse((char const **)argv + 1, argc);
 	stack_b = NULL;
-	count = 1;
 	input_normalize(&stack_a);
-	problem_solve(&stack_a, &stack_b, &count);
-	debug_print(stack_a, stack_b);
-	ft_printf("%d\n", count);
+	problem_solve(&stack_a, &stack_b);
+//	debug_print(stack_a, stack_b);
 	lst_clear_full(&stack_a);
 	lst_clear_full(&stack_b);
 	return (0);

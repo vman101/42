@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 14:44:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/05 16:43:57 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/06 18:25:12 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	rr(list **head_a, list **head_b)
 
 	if (!*head_a)
 		return ;
-	ft_printf("rb\n");
 	if ((*head_a)->next || (*head_a)->prev)
 	{
 		tmp = (*head_a)->next;
@@ -105,7 +104,6 @@ void	rr(list **head_a, list **head_b)
 
 	if (!*head_b)
 		return ;
-	ft_printf("rb\n");
 	if ((*head_b)->next || (*head_b)->prev)
 	{
 		tmp = (*head_b)->next;
