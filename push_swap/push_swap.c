@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/05 21:35:00 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/06 06:49:15 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,12 +272,12 @@ int	find_best_spot(list *stack, int value)
 		return (find_rotation(stack, max));
 	while (value + i < max && value - i > min)
 	{
-		ex_minus = find_rotation(stack, value + i);
-		ex_plus = find_rotation(stack, value - i);
+		ex_minus = find_rotation(stack, min + i);
+		ex_plus = find_rotation(stack, max - i);
 		if (ex_minus != -1)
-			return (ex_minus + 1);
+			return (ex_minus + 2);
 		else if (ex_plus != -1)
-			return (ex_plus + 1);
+			return (ex_plus);
 		i++;
 	}
 	return (-1);
@@ -399,7 +399,7 @@ int	main(int argc, char **argv)
 	count = 1;
 	input_normalize(&stack_a);
 	problem_solve(&stack_a, &stack_b, &count);
-	debug_print(stack_a, stack_b);
+	//debug_print(stack_a, stack_b);
 	ft_printf("%d\n", count);
 	lst_clear_full(&stack_a);
 	lst_clear_full(&stack_b);
