@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 09:11:45 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/06 17:44:56 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,6 @@
 void	screen_clear()
 {
 	ft_printf("\033[2J\033[H");
-}
-
-int	input_valid_check(char **argv)
-{
-	unsigned int i;
-	unsigned int j;
-
-	j = 0;
-	while (argv[j])
-	{
-		i = 0;
-		while (argv[j][i])
-		{
-			if (!ft_isdigit(argv[j][i]) && argv[j][i] != 32)
-				return (0);
-			i++;
-		}
-		j++;
-	}
-	return (1);
 }
 
 void	lst_node_swap(list *n1, list *n2)
@@ -95,19 +75,27 @@ void	lst_list_memset(list **lst, enum_memb option, unsigned int offset, int valu
 	}
 }
 
-void	input_normalize(list **input)
-{
-	lst_list_sort_by_offset(input, 0);
-	lst_list_memset(input, INCREASE, 0, 0);
-	lst_list_sort_by_offset(input, 4);
-}
-
 void	debug_print(list *stack_a, list *stack_b)
 {
 	ft_printf("\nStack A\n");
-	db_lst_menu(stack_a, PRINT_FULL, 1, 2, "Node value", 0);
+	db_lst_menu(stack_a, PRINT_FULL, 2, 4, "Node value", 0, "Node index", 4);
 	ft_printf("\nStack B\n");
-	db_lst_menu(stack_b, PRINT_FULL, 1, 2, "Node value", 0); 
+	db_lst_menu(stack_b, PRINT_FULL, 2, 4, "Node value", 0, "Node index", 4); 
+}
+
+list	*lst_node_extract(list *node, int offset_value, int value)
+{
+	if (!node)
+		return (NULL);
+	while (node->prev)
+		node = node->prev;
+	while (node)
+	{
+		if (*(int *)((char *)node + offset_value) == value)
+			return (node);
+		 node = node->next;
+	}
+	return (NULL);
 }
 
 int	lst_get_extreme_information(list *node, enum_memb extreme, unsigned int offset)
@@ -162,50 +150,6 @@ int	lst_node_get_absolute_position(list *node, enum_memb orientation, int offset
 	return (-1);
 }
 
-void	(**operations_initialize(void))(list **a, list **b)
-{
-	void (**tmp)(list **a, list **b);
-
-	tmp = malloc(sizeof(void (*)(list **, list **)) * 11);
-	if (!tmp)
-		return (NULL);
-    tmp[0] = ra;
-    tmp[1] = rb;
-    tmp[2] = rr;
-    tmp[3] = sa;
-    tmp[4] = sb;
-    tmp[5] = ss;
-    tmp[6] = rra;
-    tmp[7] = rrb;
-    tmp[8] = rrr;
-    tmp[9] = pa;
-    tmp[10] = pb;
-	return (tmp);
-}
-
-int	input_sort_three(list **stack_a, void (**op)(list **, list **))
-{
-	int	a;
-	int b;
-	int c;
-
-	a = *(int *)(*stack_a);
-	b = *(int *)((*stack_a)->next);
-	c = *(int *)((*stack_a)->next->next);
-
-	if (a > b && b < c && a > c)
-		return (op[RA](stack_a, NULL), lst_check_sort(*stack_a, 0));
-	if (a > b && b < c && c > a)
-		return (op[SA](stack_a, NULL), lst_check_sort(*stack_a, 0));
-	if (a > b && b > c)
-		return (op[SA](stack_a, NULL), op[RRA](stack_a, NULL), lst_check_sort(*stack_a, 0));
-	if (a < b && b > c && c > a)
-		return (op[SA](stack_a, NULL), op[RA](stack_a, NULL), lst_check_sort(*stack_a, 0));
-	if (a < b && c < a)
-		return (op[RRA](stack_a, NULL), lst_check_sort(*stack_a, 0));
-	return (1);
-}
-
 int		find_rotation(list *stack, int current_value)
 {
 	int front;
@@ -227,91 +171,65 @@ void	stacks_update(list **stack_a, list **stack_b)
 	lst_list_memset(stack_b, NONE, offsetof(list, size), lst_list_size(*stack_b));
 	lst_list_memset(stack_b, INCREASE, offsetof(list, index), 0);
 }
-int		next_number_in_chunk_position(list *stack, int chunk_range[3])
-{
-	int value_counter;
-	int	test_pos;
-	int	upper_pos;
-	int lower_pos;
 
-	value_counter = chunk_range[0];
-	lower_pos = 0;
-	upper_pos = stack->size;
-	while (value_counter <= chunk_range[1])
-	{
-		test_pos = find_rotation(stack, value_counter);
-		if (test_pos == -1 && lower_pos == 0 && upper_pos == (int)stack->size && value_counter == chunk_range[1])
-			return (-1);
-		if (test_pos >= 0 && test_pos < upper_pos)
-			upper_pos = test_pos;
-		else if (test_pos >= 0 && test_pos > lower_pos)
-			lower_pos = test_pos;
-		value_counter++;
-	}
-	if (upper_pos < ((int)stack->size - lower_pos))
-		return (upper_pos);
-	return (lower_pos);
-}
-
-int	find_best_spot(list *stack, int value)
+int	find_best_spot(list *stack, int value, int *desc)
 {
-	int	max;
-	int min;
+	list	*upper;
+	list	*lower;
 
 	if (!stack)
 		return (-1);
-	max = lst_get_extreme_information(stack, MAXIMUM, 0);
-	min = lst_get_extreme_information(stack, MINIMUM, 0);
-	if (value < min)
-		return (find_rotation(stack, min));
-	else if (value > max)
-		return (find_rotation(stack, max));
+	upper = lst_node_extract(stack, 0, value + 1);
+	lower = lst_node_extract(stack, 0, value - 1);
+	if (upper && lower)
+	{
+		if (upper->index > stack->size / 2 && lower->index > stack->size / 2)
+			if (upper->index > lower->index)
+				return (*desc = HIGH, upper->index);
+			else
+				return (*desc = LOW, lower->index);
+		else if (upper->index < lower->index)
+			return (*desc = HIGH, upper->index);
+		return (*desc = LOW, lower->index);
+	}
+	if (!upper)
+		return (*desc = LOW, lower->index);
+	else if (!lower)
+		return (*desc = HIGH, upper->index);
 	return (-1);
 }
 
-list	*lst_node_extract(list *node, int offset_value, int value)
+int	compare_value(list *stack, int value1, int value2)
 {
-	if (!node)
-		return (NULL);
-	while (node->prev)
-		node = node->prev;
-	while (node)
-	{
-		if (*(int *)((char *)node + offset_value) == value)
-			return (node);
-		 node = node->next;
-	}
-	return (NULL);
+	if (value1 < value2 && value2 < stack->size / 2 && value1 < stack->size / 2)
+		return (value1);
+	if (value1 > value2 && value2 > stack->size / 2 && value1 > stack->size / 2)
+		return (value1);
+	return (value2);
 }
 
 void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
 {
 	void	(**operation)(list **, list **);
-	int		next_index[2];
-	list	*candidate[2];
+	int		descriptor;
+	list	*a_move;
+	int		b_index;
 
 	*count = 0;
 	operation = operations_initialize();
 	while ((*stack_a)->size >= 3)
 		operation[PB](stack_a, stack_b);
 	input_sort_three(stack_a, operation);
-	candidate[0] = NULL;
-	candidate[1] = NULL;
-	while ((*stack_a)->next && !candidate[0] && !candidate[1])
+	a_move = *stack_a;
+	b_index = -1;
+	while (a_move)
 	{
-		candidate[0] = *stack_a;
-		candidate[1] = *stack_a;
-		candidate[0] = lst_node_extract(*stack_b, 0, candidate[0]->value + 1);
-		candidate[1] = lst_node_extract(*stack_b, 0, candidate[1]->value - 1);
-		if ((candidate[0]->index > (*stack_b)->size / 2 && candidate[0]->index > next_index[0]) || candidate[0]->index < (*stack_b)->size / 2 && candidate[0]->index < next_index[0])
-			next_index = candidate[0]->index;
-		*stack_a = (*stack_a)->next;
+		if (compare_value(*stack_b, b_index, find_best_spot(*stack_b, a_move->value, &descriptor)))
+			b_index = find_best_spot(*stack_b, a_move->value, &descriptor);
+		a_move = a_move->next;
 	}
-	*stack_a = lst_node_extract(*stack_a, 4, 0);
-	ft_printf("Candidate high: ");
-	db_lst_menu(candidate[0], PRINT_NODE, 2, 4, "Node Value", 0, "Node Index", 4);
-	ft_printf("Candidate low: ");
-	db_lst_menu(candidate[1], PRINT_NODE, 2, 4, "Node Value", 0, "Node Index", 4);
+	debug_print(*stack_a, *stack_b);
+	ft_printf("%d\n", b_index);
 	free(operation);
 }
 
