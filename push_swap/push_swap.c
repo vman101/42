@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 06:49:15 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/06 09:11:45 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,9 @@ void	input_normalize(list **input)
 void	debug_print(list *stack_a, list *stack_b)
 {
 	ft_printf("\nStack A\n");
-	db_lst_menu(stack_a, PRINT_TO_END, 2, 4, "Node value", 0, "Node index", offsetof(list, index));
+	db_lst_menu(stack_a, PRINT_FULL, 1, 2, "Node value", 0);
 	ft_printf("\nStack B\n");
-	db_lst_menu(stack_b, PRINT_TO_END, 2, 4, "Node value", 0, "Node index", offsetof(list, index));
+	db_lst_menu(stack_b, PRINT_FULL, 1, 2, "Node value", 0); 
 }
 
 int	lst_get_extreme_information(list *node, enum_memb extreme, unsigned int offset)
@@ -257,132 +257,61 @@ int	find_best_spot(list *stack, int value)
 {
 	int	max;
 	int min;
-	int ex_plus;
-	int ex_minus;
-	int i;
 
 	if (!stack)
 		return (-1);
 	max = lst_get_extreme_information(stack, MAXIMUM, 0);
 	min = lst_get_extreme_information(stack, MINIMUM, 0);
-	i = 0;
-	if (max < value)
+	if (value < min)
 		return (find_rotation(stack, min));
-	else if (min > value)
+	else if (value > max)
 		return (find_rotation(stack, max));
-	while (value + i < max && value - i > min)
-	{
-		ex_minus = find_rotation(stack, min + i);
-		ex_plus = find_rotation(stack, max - i);
-		if (ex_minus != -1)
-			return (ex_minus + 2);
-		else if (ex_plus != -1)
-			return (ex_plus);
-		i++;
-	}
 	return (-1);
+}
+
+list	*lst_node_extract(list *node, int offset_value, int value)
+{
+	if (!node)
+		return (NULL);
+	while (node->prev)
+		node = node->prev;
+	while (node)
+	{
+		if (*(int *)((char *)node + offset_value) == value)
+			return (node);
+		 node = node->next;
+	}
+	return (NULL);
 }
 
 void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
 {
-	int		next_pos;
 	void	(**operation)(list **, list **);
-	int		current_value;
-	int		chunker[3];
-	list	*tmp;
+	int		next_index[2];
+	list	*candidate[2];
 
 	*count = 0;
-	chunker[0] = 0;
-	chunker[1] = (*stack_a)->size / 11;
-	chunker[2] = chunker[1];
 	operation = operations_initialize();
-	while (*stack_a)
-	{
-		stacks_update(stack_a, stack_b);
-		current_value = 0;
-		next_pos = next_number_in_chunk_position(*stack_a, chunker);
-		if (next_pos == -1)
-		{
-			chunker[0] = chunker[1];
-			chunker[1] += chunker[2];
-			continue ;
-		}
-		tmp = *stack_a;
-		while (tmp->index != next_pos)
-			tmp = tmp->next;
-		current_value = tmp->value;
-		next_pos = find_best_spot(*stack_b, current_value);
-		while ((*stack_a)->value != current_value)
-		{
-			if (*stack_b && tmp->index < (int)(*stack_a)->size / 2 && next_pos < (int)(*stack_b)->size / 2 && next_pos > 0)
-			{
-				next_pos--;
-				operation[RR](stack_a, stack_b);
-			}
-			else if (*stack_b && tmp->index > (int)(*stack_a)->size / 2 && next_pos > (int)(*stack_b)->size / 2 && next_pos < (int)(*stack_b)->size)
-			{
-				next_pos++;
-				operation[RRR](stack_a, stack_b);
-			}
-			else if (tmp->index < (int)(*stack_a)->size / 2)
-				operation[RA](stack_a, NULL);
-			else
-				operation[RRA](stack_a, NULL);
-			(*count)++;
-		}
-		while (next_pos > 0 && next_pos <= (int)(*stack_b)->size)
-		{
-			if (next_pos < (int)(*stack_b)->size / 2)
-			{
-				next_pos--;
-				operation[RB](stack_b, NULL);
-			}
-			else
-			{
-				next_pos++;
-				operation[RRB](stack_b, NULL);
-			}
-			(*count)++;
-		}
-		(*count)++;
+	while ((*stack_a)->size >= 3)
 		operation[PB](stack_a, stack_b);
-		if ((*stack_a)->size == 0)
-		{
-			operation[PB](stack_a, stack_b);
-			break;
-		}
-	}
-	while ((*stack_b)->size)
+	input_sort_three(stack_a, operation);
+	candidate[0] = NULL;
+	candidate[1] = NULL;
+	while ((*stack_a)->next && !candidate[0] && !candidate[1])
 	{
-		stacks_update(stack_a, stack_b);
-		next_pos = next_number_in_chunk_position(*stack_b, chunker);
-		if (next_pos == -1)
-		{
-			chunker[1] = chunker[0];
-			chunker[0] -= chunker[2];
-			continue ;
-		}
-		tmp = *stack_b;
-		while (tmp->index != next_pos)
-			tmp = tmp->next;
-		current_value = tmp->value;
-		next_pos = find_best_spot(*stack_a, current_value);
-		while ((*stack_b)->value != current_value)
-		{
-			if (*stack_a && tmp->index < (int)(*stack_b)->size / 2 && next_pos < (int)(*stack_a)->size / 2 && next_pos > 0)
-				operation[RR](stack_a, stack_b);
-			else if (*stack_a && tmp->index > (int)(*stack_b)->size / 2 && next_pos > (int)(*stack_a)->size / 2 && next_pos < (int)(*stack_a)->size)
-				operation[RRR](stack_a, stack_b);
-			else if (tmp->index < (int)(*stack_b)->size / 2)
-				operation[RB](stack_b, NULL);
-			else
-				operation[RRB](stack_b, NULL);
-			(*count)++;
-		}
-		(*count)++;
-		operation[PA](stack_a, stack_b);
+		candidate[0] = *stack_a;
+		candidate[1] = *stack_a;
+		candidate[0] = lst_node_extract(*stack_b, 0, candidate[0]->value + 1);
+		candidate[1] = lst_node_extract(*stack_b, 0, candidate[1]->value - 1);
+		if ((candidate[0]->index > (*stack_b)->size / 2 && candidate[0]->index > next_index[0]) || candidate[0]->index < (*stack_b)->size / 2 && candidate[0]->index < next_index[0])
+			next_index = candidate[0]->index;
+		*stack_a = (*stack_a)->next;
 	}
-	operation[PA](stack_a, stack_b);
+	*stack_a = lst_node_extract(*stack_a, 4, 0);
+	ft_printf("Candidate high: ");
+	db_lst_menu(candidate[0], PRINT_NODE, 2, 4, "Node Value", 0, "Node Index", 4);
+	ft_printf("Candidate low: ");
+	db_lst_menu(candidate[1], PRINT_NODE, 2, 4, "Node Value", 0, "Node Index", 4);
 	free(operation);
 }
 
@@ -399,7 +328,7 @@ int	main(int argc, char **argv)
 	count = 1;
 	input_normalize(&stack_a);
 	problem_solve(&stack_a, &stack_b, &count);
-	//debug_print(stack_a, stack_b);
+//	debug_print(stack_a, stack_b);
 	ft_printf("%d\n", count);
 	lst_clear_full(&stack_a);
 	lst_clear_full(&stack_b);
