@@ -1,35 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   logic_handling.c                                   :+:      :+:    :+:   */
+/*   input_setup.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 16:57:34 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 16:59:44 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/07 15:12:13 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-void	(**operations_initialize(void))(list **a, list **b)
+void	(***operations_initialize(void))(list **a, list **b)
 {
-	void (**tmp)(list **a, list **b);
+	void (***tmp)(list **a, list **b);
 
-	tmp = malloc(sizeof(void (*)(list **, list **)) * 11);
+	tmp = malloc(sizeof(void (**)(list **, list **)) * 2);
+	tmp[0] = malloc(sizeof(void (*)(list **, list **)) * 7);
+	tmp[1] = malloc(sizeof(void (*)(list **, list **)) * 7);
 	if (!tmp)
 		return (NULL);
-    tmp[0] = ra;
-    tmp[1] = rb;
-    tmp[2] = rr;
-    tmp[3] = sa;
-    tmp[4] = sb;
-    tmp[5] = ss;
-    tmp[6] = rra;
-    tmp[7] = rrb;
-    tmp[8] = rrr;
-    tmp[9] = pa;
-    tmp[10] = pb;
+    tmp[0][0] = ra;
+    tmp[0][1] = rr;
+    tmp[0][2] = sa;
+    tmp[0][3] = ss;
+    tmp[0][4] = rra;
+    tmp[0][5] = rrr;
+    tmp[0][6] = pb;
+    tmp[1][0] = rb;
+    tmp[1][1] = rr;
+    tmp[1][2] = sb;
+    tmp[1][3] = ss;
+    tmp[1][4] = rrb;
+    tmp[1][5] = rrr;
+    tmp[1][6] = pa;
 	return (tmp);
 }
 
@@ -71,15 +76,15 @@ int	input_sort_three(list **stack_a, void (**op)(list **, list **))
 	c = *(int *)((*stack_a)->next->next);
 
 	if (a > b && b < c && a > c)
-		return (op[RA](stack_a, NULL), lst_check_sort(*stack_a, 0));
+		return (op[R](stack_a, NULL), lst_check_sort(*stack_a, 0));
 	if (a > b && b < c && c > a)
-		return (op[SA](stack_a, NULL), lst_check_sort(*stack_a, 0));
+		return (op[S](stack_a, NULL), lst_check_sort(*stack_a, 0));
 	if (a > b && b > c)
-		return (op[SA](stack_a, NULL), op[RRA](stack_a, NULL), lst_check_sort(*stack_a, 0));
+		return (op[S](stack_a, NULL), op[RR](stack_a, NULL), lst_check_sort(*stack_a, 0));
 	if (a < b && b > c && c > a)
-		return (op[SA](stack_a, NULL), op[RA](stack_a, NULL), lst_check_sort(*stack_a, 0));
+		return (op[S](stack_a, NULL), op[R](stack_a, NULL), lst_check_sort(*stack_a, 0));
 	if (a < b && c < a)
-		return (op[RRA](stack_a, NULL), lst_check_sort(*stack_a, 0));
+		return (op[RR](stack_a, NULL), lst_check_sort(*stack_a, 0));
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:17:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 17:36:11 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/07 15:12:35 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,13 @@ typedef struct s_node
 
 enum e_operations
 {
-	RA,
-	RB,
-	RR,
-	SA,
-	SB,
-	SS,
-	RRA,
-	RRB,
+	R,
 	RRR,
-	PA,
-	PB,
+	S,
+	SS,
+	RR,
+	RRRR,
+	P,
 };
 
 /* PROBLEM LOGIC */
@@ -57,7 +53,7 @@ char	***super_split(char const **argv, int argc);
 void	input_normalize(list **input);
 list	*input_parse(char const **argv, int argc);
 int		input_sort_three(list **stack_a, void (**op)(list **, list **));
-void	(**operations_initialize(void))(list **a, list **b);
+void	(***operations_initialize(void))(list **a, list **b);
 
 /* BASIC list MANIP */
 

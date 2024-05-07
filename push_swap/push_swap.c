@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 21:48:27 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/07 16:32:07 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,12 @@ int	lst_check_sort(list *stack, unsigned int off)
 	while (stack && stack->next)
 	{
 		if (*(int *)((char *)stack + off) > *(int *)((char *)stack->next + off))
-			return (0);
+			while (stack && stack->next)
+			{
+				stack = stack->next;
+				if (*(int *)((char *)stack + off) > *(int *)((char *)stack->next + off))
+					return (0);
+			}
 		stack = stack->next;
 	}
 	return (1);
@@ -172,7 +177,7 @@ void	stacks_update(list **stack_a, list **stack_b)
 	lst_list_memset(stack_b, INCREASE, offsetof(list, index), 0);
 }
 
-list	*find_best_spot(list *stack, int value, int *desc)
+list	*find_best_spot(list *stack, int value)
 {
 	list	*upper;
 	list	*lower;
@@ -184,100 +189,147 @@ list	*find_best_spot(list *stack, int value, int *desc)
 	if (upper && lower)
 	{
 		if (upper->index > stack->size / 2 && lower->index > stack->size / 2)
+		{
 			if (upper->index > lower->index)
-				return (*desc = HIGH, upper);
+				return (upper);
 			else
-				return (*desc = LOW, lower);
-		else if (upper->index < lower->index)
-			return (*desc = HIGH, upper);
-		return (*desc = LOW, lower);
+				return (lower);
+		}
+		else if (upper->index < stack->size / 2 && lower->index < stack->size / 2)
+		{
+			if (upper->index < lower->index)
+				return (upper);
+			else
+				return (lower);
+		}
+		else if (upper->index >= stack->size / 2  && lower->index <= stack->size / 2)
+		{
+			if (stack->size - upper->index < lower->index)
+				return (upper);
+			else
+				return (lower);
+		}
+		else if (upper->index <= stack->size / 2 && lower->index >= stack->size / 2)
+		{
+			if (stack->size - lower->index > upper->index)
+				return (upper);	
+			else
+				return (lower);
+		}
 	}
 	if (!upper && lower)
-		return (*desc = LOW, lower);
+		return (lower);
 	else if (!lower && upper)
-		return (*desc = HIGH, upper);
+		return (upper);
 	return (NULL);
 }
 
 int	compare_value(int size, int value1, int value2)
 {
-	if (value1 < value2 && value2 < size / 2 && value1 < size / 2)
+	if (value1 < value2 && value2 <= size / 2 && value1 <= size / 2)
 		return (0);
-	if (value1 > value2 && value2 > size / 2 && value1 > size / 2)
+	if (value1 > value2 && value2 >= size / 2 && value1 >= size / 2)
+		return (0);
+	if (value1 > value2 && value2 <= size / 2 && size - value1 <= value2)
+		return (0);
+	if (value1 < value2 && value2 >= size / 2 && size - value2 >= value1)
 		return (0);
 	return (1);
 }
 
-void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
-{
-	void	(**operation)(list **, list **);
-	int		descriptor[2];
-	int		to_move;
-	list	*a_move;
-	list	*b_move;
-	list	*a_index;
-	list	*b_index;
-	list	*test_index;
+#define A 0
+#define B 1
 
-	*count = 0;
-	operation = operations_initialize();
-	while ((*stack_a)->size >= 3)
-		operation[PB](stack_a, stack_b);
-	input_sort_three(stack_a, operation);
-	while (!lst_check_sort(*stack_a, 0))
+list	**find_pair(list *stack_1, list *stack_2, int desc)
+{
+	list	**lst_pair; list	*tmp;
+
+	lst_pair = malloc(sizeof(*lst_pair) * 2);
+	lst_pair[0] = NULL;
+	lst_pair[1] = NULL;
+	while (stack_1)
 	{
-		a_index = NULL;
-		b_index = NULL;
-		a_move = *stack_a;
-		while (a_move)
+		tmp = find_best_spot(stack_2, stack_1->value);
+		if (tmp)
 		{
-			stacks_update(stack_a, stack_b);
-			b_move = *stack_b;
-			test_index = find_best_spot(*stack_b, a_move->value, &descriptor[0]);
-			if (test_index)
+			if (!lst_pair[(desc > 0)] || compare_value(stack_2->size, lst_pair[(desc > 0)]->index, tmp->index))
 			{
-				if(!a_index || compare_value((*stack_b)->size, a_index->index, test_index->index))
-					a_index = test_index;
-			} 
-			while (b_move)
-			{
-				test_index = find_best_spot(*stack_a, b_move->value, &descriptor[1]);
-				if (test_index)
-				{
-					if(!b_index || compare_value((*stack_a)->size, b_index->index, test_index->index))
-						b_index = test_index;
-				} 
-				b_move = b_move->next;
+				lst_pair[(desc > 0)] = find_best_spot(stack_1, tmp->value);
+				lst_pair[(desc < 1)] = tmp;
 			}
-			a_move = a_move->next;
 		}
-		if (compare)
-		test_index = a_index;
-		a_index = find_best_spot(*stack_a, a_index->value, &descriptor[0]);
-		to_move = test_index->index + (a_index->value < test_index->value);
-		while (to_move > 0 && to_move < (*stack_b)->size)
-		{
-			if (to_move < (*stack_b)->size / 2)
-			{
-				to_move--;
-				operation[RB](stack_b, NULL);
-			}
-			else
-			{
-				to_move++;
-				operation[RRB](stack_b, NULL);
-			}
-			stacks_update(stack_a, stack_b);
-		}
-		operation[PB](stack_a, stack_b);
+		stack_1 = stack_1->next;
 	}
-	debug_print(*stack_a, *stack_b);
-	ft_printf("A: %d", descriptor[0]);
-	db_lst_menu(a_index, PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
-	ft_printf("B: %d", descriptor[1]);
-	db_lst_menu(b_index, PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
-	ft_printf("TEST: ");
-	db_lst_menu(test_index, PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
+	if (lst_pair[A])
+		return (lst_pair);
+	free(lst_pair);
+	return (NULL);
+}
+
+void	free_pair(list ***pair)
+{
+	free(pair[0]);
+	pair[0] = NULL;
+	free(pair[1]);
+	pair[1] = NULL;
+	free(pair);
+	pair = NULL;
+}
+
+void	connect_pair(list **stack_0, list **stack_1, void (***operation)(list **stack1, list **stack2), list **pair)
+{
+	while ((pair[0]->index || pair[1]->index) && (pair[0]->index != (*stack_0)->size || pair[1]->index != (*stack_1)->size))
+	{
+		if (pair[0]->index && pair[1]->index && pair[0]->index < (*stack_0)->size && pair[1]->index < (*stack_1a)->size)
+			operation[RR](stack_0, stack_1);
+		else if (pair->index && pair[1]->index && pair[0]->index > (*stack_0)->size && pair[1]->index > (*stack_1)->size) 
+			operation[RRR](stack_0, stack_1);
+		else if (pair->index && pair[0]->index <= (*stack_0)->size / 2)
+			operation[R](stack_0, NULL);
+		else if (pair->index && pair[1]->index <= (*stack_1)->size / 2)
+			operation[R](stack_1, NULL);
+		else if (pair->index && pair[0]->index > (*stack_0)->size / 2)
+			operation[RR](stack_0, NULL);
+		else if (pair->index && pair[1]->index > (*stack_1)->size / 2)
+			operation[RR](stack_1, NULL);
+		stacks_update(stack_0, stack_1);
+	}
+	if (pair[A]->value < pair[B]->value)
+		operation[B][R](stack_1, NULL);
+}
+
+void	problem_solve(list **stack_a, list **stack_b)
+{
+	void	(***operation)(list **, list **);
+	list	***pair;
+	int		descriptor[2];
+
+	pair = malloc(sizeof(*pair) * 2);
+	operation = operations_initialize();
+	while ((*stack_a)->size > 3)
+		operation[A][P](stack_a, stack_b);
+	input_sort_three(stack_a, operation[A]);
+	while (*stack_b)
+	{
+		pair[A] = find_pair(*stack_a, *stack_b, A);
+		pair[B] = find_pair(*stack_b, *stack_a, B);
+		descriptor[A] = (pair[A][A]->value < pair[A][B]->value);
+		descriptor[B] = (pair[B][A]->value < pair[B][B]->value);
+		if (pair[A][A]->index + pair[A][B]->index + descriptor[A] < pair[B][A]->index + pair[B][B]->index + descriptor[B])
+		{
+			//db_lst_menu(pair[A][A], PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
+			//db_lst_menu(pair[A][B], PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
+			connect_pair(stack_a, stack_b, operation, pair[A]);
+			operation[A][P](stack_a, stack_b);
+		}
+		else
+		{
+			//db_lst_menu(pair[B][A], PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
+			//db_lst_menu(pair[B][B], PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
+			connect_pair(stack_a, stack_b, operation, pair[B]);
+			operation[B][P](stack_a, stack_b);
+		}
+	}
 	free(operation);
 }
 
@@ -285,17 +337,14 @@ int	main(int argc, char **argv)
 {
 	list	*stack_a;
 	list	*stack_b;
-	ssize_t	count;
 
 	if (argc < 2 || !input_valid_check(argv + 1))
 		exit(-1);
 	stack_a = input_parse((char const **)argv + 1, argc);
 	stack_b = NULL;
-	count = 1;
 	input_normalize(&stack_a);
-	problem_solve(&stack_a, &stack_b, &count);
-//	debug_print(stack_a, stack_b);
-	ft_printf("%d\n", count);
+	problem_solve(&stack_a, &stack_b);
+	debug_print(stack_a, stack_b);
 	lst_clear_full(&stack_a);
 	lst_clear_full(&stack_b);
 	return (0);

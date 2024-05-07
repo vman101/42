@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 08:37:57 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/07 11:25:07 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ size_t	lst_list_size(list *lst)
 		return (0);
 	while (lst->prev)
 		lst = lst->prev;
-	len = 0;
+	len = 1;
 	while(lst->next)
 	{
 		lst = lst->next;
