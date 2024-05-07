@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/05 13:45:40 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/07 21:37:09 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 list	*lst_node_new(int value, int index)
 {
 	list	*new;
-	
+
 	new = malloc(sizeof(*new));
 	if (!new)
 		return (NULL);
@@ -28,20 +28,22 @@ list	*lst_node_new(int value, int index)
 
 void	lst_list_information_sync(list *lst, unsigned int offset)
 {
-	list *tmp;
+	list	*tmp;
 
 	tmp = lst;
 	while (tmp->next)
 	{
-		if (*(int *)((char *)tmp + offset) != *(int *)((char *)(tmp->next) + offset)) 
-			*(int *)((char *)(tmp->next) + offset) = *(int *)((char *)tmp + offset);
+		if (*(int *)((char *)tmp + offset) != \
+				*(int *)((char *)(tmp->next) + offset))
+			*(int *)((char *)(tmp->next) + offset) = \
+				*(int *)((char *)tmp + offset);
 		tmp = tmp->next;
 	}
 }
 
 void	lst_node_add_front(list **node, list *new)
 {
-	list *tmp;
+	list	*tmp;
 
 	if (!new)
 		return ;
@@ -98,7 +100,7 @@ void	lst_node_del(list **lst)
 
 void	lst_clear_to_end(list **head)
 {
-	list *tmp;
+	list	*tmp;
 
 	while (*head)
 	{

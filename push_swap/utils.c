@@ -6,28 +6,12 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/05 17:20:49 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/07 22:22:59 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-//static int	count(char const *s, char const c)
-//{
-//	int	n;
-//
-//	n = 0;
-//	if (*s != c && *s)
-//		n = 1;
-//	while (*s)
-//	{
-//		if (*s == c && *(s + 1) != c && *(s + 1))
-//			n++;
-//		s++;
-//	}
-//	return (n);
-//}
-//
 static char	**free_all(char ***back)
 {
 	char	***free_back;
@@ -54,6 +38,13 @@ static char	**free_all(char ***back)
 	return (NULL);
 }
 
+int	ft_isdigit(char c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
+}
+
 size_t	lst_list_size(list *lst)
 {
 	unsigned int	len;
@@ -63,7 +54,7 @@ size_t	lst_list_size(list *lst)
 	while (lst->prev)
 		lst = lst->prev;
 	len = 0;
-	while(lst->next)
+	while (lst->next)
 	{
 		lst = lst->next;
 		len++;
@@ -71,10 +62,10 @@ size_t	lst_list_size(list *lst)
 	return (len);
 }
 
-char ***super_split(char const **argv, int argc)
+char	***super_split(char const **argv, int argc)
 {
-	char ***split;
-	unsigned int i;
+	char			***split;
+	unsigned int	i;
 
 	split = ft_calloc(argc, sizeof(*split));
 	i = 0;
@@ -92,12 +83,12 @@ char ***super_split(char const **argv, int argc)
 
 list	*input_parse(char const **argv, int argc)
 {
-	char	***split;
-	list	*tmp;
+	char			***split;
+	list			*tmp;
 	unsigned int	i;
 	unsigned int	j;
 
-	split = super_split(argv, argc);
+	split = super_split((char const **)argv, argc);
 	if (!split)
 		return (NULL);
 	tmp = NULL;
@@ -108,8 +99,8 @@ list	*input_parse(char const **argv, int argc)
 		while (split[j][i])
 			lst_node_add_back(&tmp, lst_node_new(ft_atoi(split[j][i++]), 0));
 	}
-	lst_list_memset(&tmp, INCREASE, offsetof(list, index), 0);
-	lst_list_memset(&tmp, NONE, offsetof(list, size), lst_list_size(tmp));
+	lst_list_memset(&tmp, INCREASE, 4, 0);
+	lst_list_memset(&tmp, NONE, offsetof(t_node, size), lst_list_size(tmp));
 	free_all(split);
 	return (tmp);
 }

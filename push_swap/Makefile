@@ -2,8 +2,8 @@ NAME := push_swap
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -g
 
-SRC := utils.c push_swap.c debug.c list.c ops.c
-LIBS := libft/libft.a printf/libftprintf.a
+SRC := utils.c push_swap.c list.c list2.c ops.c ops2.c ops3.c ft_split.c ft_substr.c ft_calloc.c ft_atoi.c input_setup.c
+LIBS := printf/libftprintf.a
 OBJ := $(SRC:.c=.o)
 
 all: $(NAME)
