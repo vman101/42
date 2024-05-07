@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/06 21:48:27 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/07 18:39:09 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,112 +172,57 @@ void	stacks_update(list **stack_a, list **stack_b)
 	lst_list_memset(stack_b, INCREASE, offsetof(list, index), 0);
 }
 
-list	*find_best_spot(list *stack, int value, int *desc)
+list	*lst_node_first(list *node)
 {
-	list	*upper;
-	list	*lower;
-
-	if (!stack)
+	if (!node)
 		return (NULL);
-	upper = lst_node_extract(stack, 0, value + 1);
-	lower = lst_node_extract(stack, 0, value - 1);
-	if (upper && lower)
-	{
-		if (upper->index > stack->size / 2 && lower->index > stack->size / 2)
-			if (upper->index > lower->index)
-				return (*desc = HIGH, upper);
-			else
-				return (*desc = LOW, lower);
-		else if (upper->index < lower->index)
-			return (*desc = HIGH, upper);
-		return (*desc = LOW, lower);
-	}
-	if (!upper && lower)
-		return (*desc = LOW, lower);
-	else if (!lower && upper)
-		return (*desc = HIGH, upper);
-	return (NULL);
+	while (node->prev)
+		node = node->prev;
+	return (node);
 }
 
-int	compare_value(int size, int value1, int value2)
+void	compare_stacks(list *stack, list *candidate, list ***store)
 {
-	if (value1 < value2 && value2 < size / 2 && value1 < size / 2)
-		return (0);
-	if (value1 > value2 && value2 > size / 2 && value1 > size / 2)
-		return (0);
-	return (1);
+
 }
 
-void	problem_solve(list **stack_a, list **stack_b, ssize_t *count)
+list	*find_best_spot(list *stack, list *candidate, list **pair)
+{
+	list	*tmp;
+
+	{
+		while (stack->next)
+		{
+			if (stack->value < candidate->value && stack->next->value > candidate->value)
+				return (candidate);
+			stack = stack->next;
+		}
+	}
+}
+
+#define A 0
+#define B 1
+
+
+
+void	problem_solve(list **stack_a, list **stack_b)
 {
 	void	(**operation)(list **, list **);
-	int		descriptor[2];
-	int		to_move;
-	list	*a_move;
-	list	*b_move;
-	list	*a_index;
-	list	*b_index;
-	list	*test_index;
+	list	**pair;
 
-	*count = 0;
 	operation = operations_initialize();
+
+	pair = malloc(sizeof(*pair) * 2);
+	if (!pair)
+		exit (-1);
 	while ((*stack_a)->size >= 3)
 		operation[PB](stack_a, stack_b);
 	input_sort_three(stack_a, operation);
-	while (!lst_check_sort(*stack_a, 0))
+	while (*stack_b)
 	{
-		a_index = NULL;
-		b_index = NULL;
-		a_move = *stack_a;
-		while (a_move)
-		{
-			stacks_update(stack_a, stack_b);
-			b_move = *stack_b;
-			test_index = find_best_spot(*stack_b, a_move->value, &descriptor[0]);
-			if (test_index)
-			{
-				if(!a_index || compare_value((*stack_b)->size, a_index->index, test_index->index))
-					a_index = test_index;
-			} 
-			while (b_move)
-			{
-				test_index = find_best_spot(*stack_a, b_move->value, &descriptor[1]);
-				if (test_index)
-				{
-					if(!b_index || compare_value((*stack_a)->size, b_index->index, test_index->index))
-						b_index = test_index;
-				} 
-				b_move = b_move->next;
-			}
-			a_move = a_move->next;
-		}
-		if (compare)
-		test_index = a_index;
-		a_index = find_best_spot(*stack_a, a_index->value, &descriptor[0]);
-		to_move = test_index->index + (a_index->value < test_index->value);
-		while (to_move > 0 && to_move < (*stack_b)->size)
-		{
-			if (to_move < (*stack_b)->size / 2)
-			{
-				to_move--;
-				operation[RB](stack_b, NULL);
-			}
-			else
-			{
-				to_move++;
-				operation[RRB](stack_b, NULL);
-			}
-			stacks_update(stack_a, stack_b);
-		}
-		operation[PB](stack_a, stack_b);
+		stacks_update(stack_a, stack_b);
 	}
-	debug_print(*stack_a, *stack_b);
-	ft_printf("A: %d", descriptor[0]);
-	db_lst_menu(a_index, PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
-	ft_printf("B: %d", descriptor[1]);
-	db_lst_menu(b_index, PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
-	ft_printf("TEST: ");
-	db_lst_menu(test_index, PRINT_NODE, 2, 4, "Node value", 0, "Node index", 4);
+	free(pair);
 	free(operation);
 }
 
@@ -293,8 +238,8 @@ int	main(int argc, char **argv)
 	stack_b = NULL;
 	count = 1;
 	input_normalize(&stack_a);
-	problem_solve(&stack_a, &stack_b, &count);
-//	debug_print(stack_a, stack_b);
+	problem_solve(&stack_a, &stack_b);
+	debug_print(stack_a, stack_b);
 	ft_printf("%d\n", count);
 	lst_clear_full(&stack_a);
 	lst_clear_full(&stack_b);
