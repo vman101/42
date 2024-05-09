@@ -6,13 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:37:56 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/07 22:38:07 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/09 17:13:53 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-int	input_sort_three(list **stack_a, void (**op)(list **, list **))
+int	input_sort_three(t_node **stack_a, void (**op)(t_node **, t_node **))
 {
 	int	a;
 	int	b;
@@ -36,11 +36,11 @@ int	input_sort_three(list **stack_a, void (**op)(list **, list **))
 	return (1);
 }
 
-void	(**operations_initialize(void))(list **a, list **b)
+void	(**operations_initialize(void))(t_node **a, t_node **b)
 {
-	void	(**tmp)(list **a, list **b);
+	void	(**tmp)(t_node **a, t_node **b);
 
-	tmp = malloc(sizeof(void (*)(list **, list **)) * 11);
+	tmp = malloc(sizeof(void (*)(t_node **, t_node **)) * 11);
 	if (!tmp)
 		return (NULL);
 	tmp[0] = ra;
@@ -57,13 +57,30 @@ void	(**operations_initialize(void))(list **a, list **b)
 	return (tmp);
 }
 
-void	input_normalize(list **input)
+void	input_normalize(t_node **input)
 {
 	lst_list_sort_by_offset(input, 0);
 	lst_list_memset(input, INCREASE, 0, 0);
 	lst_list_sort_by_offset(input, 4);
 }
 
+int	redundancy_check(t_node *stack_a)
+{
+	t_node	*tmp;
+
+	while (stack_a->next)
+	{
+		tmp = stack_a->next;
+		while (tmp)
+		{
+			if (tmp->value == stack_a->value)
+				return (0);
+			tmp = tmp->next;
+		}
+		stack_a = stack_a->next;
+	}
+	return (1);
+}
 
 int	input_valid_check(char **argv)
 {
@@ -84,4 +101,3 @@ int	input_valid_check(char **argv)
 	}
 	return (1);
 }
-

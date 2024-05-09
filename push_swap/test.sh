@@ -10,6 +10,9 @@ if [ -z "$1" ]; then
 fi
 
 case "$1" in
+	"fun")
+		funcheck -a ./push_swap $ARG
+		;;
 	"check")
 		./push_swap $ARG | ./checker_linux $ARG
 		;;
@@ -19,4 +22,3 @@ case "$1" in
 	"val")
 		valgrind --leak-check=full ./push_swap $ARG
 esac
-

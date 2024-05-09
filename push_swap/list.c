@@ -6,44 +6,32 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/07 21:37:09 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/09 17:24:46 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
+#include <limits.h>
 
-list	*lst_node_new(int value, int index)
+t_node	*lst_node_new(long value, int index)
 {
-	list	*new;
+	t_node	*new;
 
+	if (value > INT_MAX || value < INT_MIN)
+		return (NULL);
 	new = malloc(sizeof(*new));
 	if (!new)
 		return (NULL);
-	new->value = value;
-	new->index = index;
+	new->value = (int)value;
+	new->index = (int)index;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
 }
 
-void	lst_list_information_sync(list *lst, unsigned int offset)
+void	lst_node_add_front(t_node **node, t_node *new)
 {
-	list	*tmp;
-
-	tmp = lst;
-	while (tmp->next)
-	{
-		if (*(int *)((char *)tmp + offset) != \
-				*(int *)((char *)(tmp->next) + offset))
-			*(int *)((char *)(tmp->next) + offset) = \
-				*(int *)((char *)tmp + offset);
-		tmp = tmp->next;
-	}
-}
-
-void	lst_node_add_front(list **node, list *new)
-{
-	list	*tmp;
+	t_node	*tmp;
 
 	if (!new)
 		return ;
@@ -61,12 +49,12 @@ void	lst_node_add_front(list **node, list *new)
 		*node = new;
 }
 
-void	lst_node_add_back(list **node, list *new)
+int	lst_add_back(t_node **node, t_node *new)
 {
-	list	*tmp;
+	t_node	*tmp;
 
 	if (!new)
-		return ;
+		return (0);
 	if (*node)
 	{
 		tmp = *node;
@@ -77,44 +65,13 @@ void	lst_node_add_back(list **node, list *new)
 	}
 	else
 		*node = new;
+	return (1);
 }
 
-list	*lst_node_last(list *head)
+t_node	*lst_node_last(t_node *head)
 {
 	if (head)
 		while (head->next)
 			head = head->next;
 	return (head);
-}
-
-void	lst_node_del(list **lst)
-{
-	if (*lst && (*lst)->prev && (*lst)->next)
-	{
-		(*lst)->prev->next = (*lst)->next;
-		(*lst)->next->prev = (*lst)->prev;
-	}
-	free(*lst);
-	*lst = NULL;
-}
-
-void	lst_clear_to_end(list **head)
-{
-	list	*tmp;
-
-	while (*head)
-	{
-		tmp = *head;
-		*head = (*head)->next;
-		free(tmp);
-	}
-}
-
-void	lst_clear_full(list **head)
-{
-	if (!*head)
-		return ;
-	while ((*head)->prev)
-		(*head) = (*head)->prev;
-	lst_clear_to_end(head);
 }

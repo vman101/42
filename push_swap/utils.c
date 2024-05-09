@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/07 22:22:59 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/09 17:18:17 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,7 @@ static char	**free_all(char ***back)
 	return (NULL);
 }
 
-int	ft_isdigit(char c)
-{
-	if (c >= 48 && c <= 57)
-		return (1);
-	return (0);
-}
-
-size_t	lst_list_size(list *lst)
+size_t	lst_list_size(t_node *lst)
 {
 	unsigned int	len;
 
@@ -53,7 +46,7 @@ size_t	lst_list_size(list *lst)
 		return (0);
 	while (lst->prev)
 		lst = lst->prev;
-	len = 0;
+	len = 1;
 	while (lst->next)
 	{
 		lst = lst->next;
@@ -68,39 +61,45 @@ char	***super_split(char const **argv, int argc)
 	unsigned int	i;
 
 	split = ft_calloc(argc, sizeof(*split));
+	if (!split)
+		return (NULL);
 	i = 0;
 	while (*argv)
 	{
 		split[i] = ft_split(*argv, 32);
 		if (!split[i])
+		{
+			free_all(split);
 			return (NULL);
+		}
 		i++;
 		argv++;
 	}
-	split[i] = NULL;
 	return (split);
 }
 
-list	*input_parse(char const **argv, int argc)
+t_node	*input_parse(char const **argv, int argc)
 {
 	char			***split;
-	list			*tmp;
+	t_node			*tmp;
 	unsigned int	i;
 	unsigned int	j;
 
+	if (argc < 2 || !input_valid_check((char **)argv))
+		return (NULL);
 	split = super_split((char const **)argv, argc);
 	if (!split)
 		return (NULL);
 	tmp = NULL;
-	j = -1;
-	while (split[++j])
+	j = 0;
+	while (split[j])
 	{
 		i = 0;
 		while (split[j][i])
-			lst_node_add_back(&tmp, lst_node_new(ft_atoi(split[j][i++]), 0));
+			if (!lst_add_back(&tmp, lst_node_new(ft_atoi(split[j][i++]), 0)))
+				return (free_all(split), lst_clear_full(&tmp), NULL);
+		j++;
 	}
-	lst_list_memset(&tmp, INCREASE, 4, 0);
-	lst_list_memset(&tmp, NONE, offsetof(t_node, size), lst_list_size(tmp));
 	free_all(split);
 	return (tmp);
 }

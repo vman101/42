@@ -6,16 +6,16 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:43:29 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/07 22:43:41 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/09 17:27:56 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-void	rr(list **head_a, list **head_b)
+void	rr(t_node **head_a, t_node **head_b)
 {
-	list	*last;
-	list	*tmp;
+	t_node	*last;
+	t_node	*tmp;
 
 	if (*head_a && *head_b && \
 			((*head_a)->next || (*head_a)->prev))
@@ -40,10 +40,10 @@ void	rr(list **head_a, list **head_b)
 	ft_printf("rr\n");
 }
 
-void	rra(list **head, list **null)
+void	rra(t_node **head, t_node **null)
 {
-	list	*last;
-	list	*tmp;
+	t_node	*last;
+	t_node	*tmp;
 
 	if (!*head || null)
 		return ;
@@ -61,9 +61,9 @@ void	rra(list **head, list **null)
 	ft_printf("rra\n");
 }
 
-void	rrb(list **head, list **null)
+void	rrb(t_node **head, t_node **null)
 {
-	list	*last;
+	t_node	*last;
 
 	if (!*head || null)
 		return ;
@@ -77,10 +77,10 @@ void	rrb(list **head, list **null)
 	ft_printf("rrb\n");
 }
 
-void	rrr(list **head_a, list **head_b)
+void	rrr(t_node **head_a, t_node **head_b)
 {
-	list	*last;
-	list	*tmp;
+	t_node	*last;
+	t_node	*tmp;
 
 	if (!*head_a || !*head_b)
 		return ;
@@ -105,3 +105,18 @@ void	rrr(list **head_a, list **head_b)
 	ft_printf("rrr\n");
 }
 
+void	stacks_update(t_node **stack_a, t_node **stack_b)
+{
+	if (*stack_a)
+	{
+		lst_list_memset(stack_a, NONE, 8, \
+		lst_list_size(*stack_a));
+		lst_list_memset(stack_a, INCREASE, 4, 0);
+	}
+	if (*stack_b)
+	{
+		lst_list_memset(stack_b, NONE, 8, \
+				lst_list_size(*stack_b));
+		lst_list_memset(stack_b, INCREASE, 4, 0);
+	}
+}

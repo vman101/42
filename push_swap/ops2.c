@@ -6,13 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:42:18 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/07 22:44:29 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/09 17:16:02 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
 
-void	sa(list **head, list **null)
+void	sa(t_node **head, t_node **null)
 {
 	null = NULL;
 	if (!*head || null)
@@ -21,7 +21,7 @@ void	sa(list **head, list **null)
 	ft_printf("sa\n");
 }
 
-void	sb(list **head, list **null)
+void	sb(t_node **head, t_node **null)
 {
 	if (!*head || null)
 		return ;
@@ -29,7 +29,7 @@ void	sb(list **head, list **null)
 	ft_printf("sb\n");
 }
 
-void	ss(list **head_a, list **head_b)
+void	ss(t_node **head_a, t_node **head_b)
 {
 	if (!*head_a || !*head_b)
 		return ;
@@ -38,10 +38,10 @@ void	ss(list **head_a, list **head_b)
 	ft_printf("ss\n");
 }
 
-void	ra(list **head, list **null)
+void	ra(t_node **head, t_node **null)
 {
-	list	*last;
-	list	*tmp;
+	t_node	*last;
+	t_node	*tmp;
 
 	if (!*head || null)
 		return ;
@@ -60,10 +60,10 @@ void	ra(list **head, list **null)
 		return ;
 }
 
-void	rb(list **head, list **null)
+void	rb(t_node **head, t_node **null)
 {
-	list	*last;
-	list	*tmp;
+	t_node	*last;
+	t_node	*tmp;
 
 	if (!*head || null)
 		return ;
@@ -81,4 +81,3 @@ void	rb(list **head, list **null)
 	else
 		return ;
 }
-
