@@ -6,32 +6,29 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 20:14:20 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/07 18:11:49 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/09 23:55:49 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	count(char const *s, char const c)
+static int	count(char const *s, char const c)
 {
-	int	i;
 	int	n;
 
-	i = 0;
 	n = 0;
-	if (*s != c)
+	if (*s != c && *s)
 		n = 1;
 	while (*s)
 	{
 		if (*s == c && *(s + 1) != c && *(s + 1))
 			n++;
-		i++;
 		s++;
 	}
 	return (n);
 }
 
-int	count_sub(char const *s, char const c)
+static int	count_sub(char const *s, char const c)
 {
 	int	i;
 
@@ -44,11 +41,17 @@ int	count_sub(char const *s, char const c)
 	return (i);
 }
 
-char	**free_all(char **back)
+static char	**free_all(char **back)
 {
+	char	**tmp;
+
+	tmp = back;
 	while (*back)
-		free(*back++);
-	free(back);
+	{
+		free(*back);
+		back++;
+	}
+	free(tmp);
 	return (NULL);
 }
 
@@ -59,25 +62,23 @@ char	**ft_split(char const *s, char const c)
 
 	if (!s)
 		return (NULL);
-	tmp = malloc(sizeof(*tmp) * count(s, c) + 1);
+	tmp = (char **)ft_calloc(sizeof(*tmp), count(s, c) + 1);
 	if (!tmp)
 		return (NULL);
-	if (!*s)
-		*tmp = NULL;
 	back = tmp;
-	while (*s)
+	while (*s && tmp)
 	{
 		while (*s == c && *s)
 			s++;
-		if (!*s)
-			break ;
-		*tmp = ft_substr(s, 0, count_sub(s, c));
-		if (!*tmp)
-			return (free_all(back));
+		if (*s)
+		{
+			*tmp = ft_substr(s, 0, count_sub(s, c));
+			if (!*tmp)
+				return (free_all(back));
+		}
+		tmp++;
 		while (*s != c && *s)
 			s++;
-		tmp++;
 	}
-	tmp = NULL;
 	return (back);
 }

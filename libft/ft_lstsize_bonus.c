@@ -1,41 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 19:08:03 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/12 10:07:26 by vvobis           ###   ########.fr       */
+/*   Created: 2024/04/09 13:43:08 by vvobis            #+#    #+#             */
+/*   Updated: 2024/04/09 18:21:11 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+int	ft_lstsize(t_list *lst)
 {
-	char			*tmp;
-	unsigned int	i;
-	unsigned int	j;
+	int	i;
 
-	if (!s1 || !s2)
-		return (NULL);
-	tmp = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(*tmp));
-	if (!tmp)
-		return (NULL);
-	i = 0;
-	while (s1[i])
+	if (!lst)
+		return (0);
+	i = 1;
+	while (lst->next)
 	{
-		tmp[i] = s1[i];
+		lst = lst->next;
 		i++;
 	}
-	j = 0;
-	while (s2[j])
-	{
-		tmp[i] = s2[j];
-		i++;
-		j++;
-	}
-	tmp[i] = 0;
-	return (tmp);
+	return (i);
 }

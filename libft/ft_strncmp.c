@@ -6,15 +6,15 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 13:33:22 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 18:14:19 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/12 10:29:59 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(char *s1, char *s2, size_t n)
+int	ft_strncmp(char const *s1, char const *s2, size_t n)
 {
-	unsigned int	i;
+	size_t	i;
 
 	if (n == 0)
 		return (0);

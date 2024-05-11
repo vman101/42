@@ -6,24 +6,24 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:20:50 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/03 14:52:25 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/09 20:54:14 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(char *s, int c)
+char	*ft_strchr(char const *s, int c)
 {
 	int	i;
 
 	i = 0;
-	while (s[i] != 0)
+	while (s[i])
 	{
-		if (s[i] == c)
-			return (&s[i]);
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
 		i++;
 	}
-	if (c == 0)
-		return (&s[i]);
+	if ((char)c == 0)
+		return ((char *)&s[i]);
 	return (NULL);
 }

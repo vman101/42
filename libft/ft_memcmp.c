@@ -6,13 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:27:15 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 17:48:19 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/09 19:21:02 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_memcmp(void *s1, void *s2, size_t n)
+int	ft_memcmp(void *s1, void const *s2, size_t n)
 {
 	unsigned char	*p1;
 	unsigned char	*p2;

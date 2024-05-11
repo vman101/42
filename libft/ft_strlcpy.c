@@ -6,13 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 19:03:18 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/02 19:11:07 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/09 19:28:44 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dest, char *src, size_t size)
+size_t	ft_strlcpy(char *dest, char const *src, size_t size)
 {
 	size_t	i;
 

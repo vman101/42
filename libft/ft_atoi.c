@@ -5,34 +5,38 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/03 16:06:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/04 18:08:32 by vvobis           ###   ########.fr       */
+/*   Created: 2024/04/10 10:49:04 by vvobis            #+#    #+#             */
+/*   Updated: 2024/04/11 11:21:05 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+int	is_space(char const c)
+{
+	if ((c >= 9 && c <= 13) || c == ' ')
+		return (1);
+	return (0);
+}
+
 int	ft_atoi(char const *s)
 {
-	int	sign;
-	int	res;
-	int	mult;
+	int			nb;
+	char const	*tmp;
 
-	mult = 1;
-	sign = 1;
-	res = 0;
-	while (*s == 0x20 || (*s >= 8 && *s <= 13))
+	nb = 0;
+	while (is_space(*s))
 		s++;
-	if (*s == 0x2d)
-		sign = -1;
-	if (*s == 0x2b || *s == 0x2d)
-		s++;
-	while (ft_isdigit(*s))
-		s++;
-	while (ft_isdigit(*--s))
+	tmp = s;
+	if (*tmp == '+' || *tmp == '-')
+		tmp++;
+	while (*tmp >= '0' && *tmp <= '9')
 	{
-		res += (*s - 0x30) * mult;
-		mult *= 0xa;
+		nb *= 10;
+		nb += (*tmp - '0');
+		tmp++;
 	}
-	return (res * sign);
+	if (*s == '-')
+		nb = -nb;
+	return (nb);
 }

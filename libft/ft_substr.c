@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 18:58:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/04/07 12:25:08 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/04/09 21:50:44 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,21 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char			*tmp;
 	unsigned int	i;
 
-	tmp = malloc(sizeof(*tmp) * len + 1);
-	if (!tmp)
-		return (NULL);
 	i = 0;
-	if (s == NULL || (int)start >= ft_strlen(s) || len <= 0)
+	if (!s || start >= ft_strlen(s) || len <= 0)
 	{
+		tmp = malloc(1);
+		if (!tmp)
+			return (NULL);
 		tmp[i] = 0;
 		return (tmp);
 	}
-	while (i < len)
+	if (len + start > ft_strlen(s))
+		len = ft_strlen(s) - start;
+	tmp = malloc(sizeof(*tmp) * len + 1);
+	if (!tmp)
+		return (NULL);
+	while (i < len && s[i])
 	{
 		tmp[i] = s[i + start];
 		i++;
