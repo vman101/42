@@ -3,7 +3,7 @@
 make
 
 if [ -z "$1" ]; then
-	./pipex in "cat" "grep a" out
+	./pipex in "cat -e" "grep a" out
 	exit 0
 fi
 
@@ -15,6 +15,6 @@ case "$1" in
 		gdb --args ./pipex in "cat -e" "grep a" out
 		;;
 	"val")
-		valgrind --leak-check=full ./pipex in "cat -e" "grep a" out
+		valgrind --show-leak-kinds=all --leak-check=full ./pipex in "cat -e" "grep a" out
 		;;
 esac

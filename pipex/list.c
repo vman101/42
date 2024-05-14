@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/11 20:48:59 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/14 17:36:13 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,6 @@ void	lst_list_clean(t_clean **head)
 {
 	t_clean *tmp;
 
-	if (!head)
-	{
-		ft_printf("Failed to do anything...\n");
-		exit(EXIT_FAILURE);
-	}
 	while (*head)
 	{
 		tmp = (*head)->next;
@@ -54,7 +49,6 @@ void	lst_list_clean(t_clean **head)
 		*head = tmp;
 	}
 	free(*head);
-	exit (EXIT_SUCCESS);
 }
 
 int	lst_add_back(t_clean **node, t_clean *new)
