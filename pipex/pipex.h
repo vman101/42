@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:15:17 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/14 19:50:15 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/14 20:11:34 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # define PIPEX_H
 
 # include <stdbool.h>
-# include "list_debug/lst_debug.h"
 # include "libft/libft.h"
 # include "printf/ft_printf.h"
 # include <unistd.h>
@@ -26,14 +25,14 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 
-typedef	struct	s_file
+typedef struct s_file
 {
 	char	*path;
 	int		mode;
 	int		fd;
 }			t_file;
 
-typedef struct	s_cmd
+typedef struct s_cmd
 {
 	t_file	*file;
 	char	*path_absolute;
@@ -45,10 +44,10 @@ typedef struct	s_cmd
 
 typedef struct s_clean
 {
-	void	*content;
-	void	(*clean)(void *del);
-	struct	s_clean *next;
-}			t_clean;
+	void			*content;
+	void			(*clean)(void *del);
+	struct s_clean	*next;
+}					t_clean;
 
 enum e_alloc
 {
@@ -70,6 +69,9 @@ enum e_file
 	PIPE_OUT = 0,
 };
 
+t_clean	*lst_node_new(void *content, void (*del)(void *));
+void	lst_node_del(t_clean **lst);
+int		lst_add_back(t_clean **node, t_clean *node_new);
 void	lst_list_clean(t_clean **head);
 char	*find_absolute_path(char **env, char *input);
 void	free_split(void *back);

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:18:42 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/14 19:59:28 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/14 20:14:58 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,27 @@ void	free_split(void *back)
 
 int	find_longest_path(char *path)
 {
-	int i;
-	int ret;
+	int	i;
+	int	ret;
 
 	i = 0;
 	ret = 0;
 	while (*path++)
 	{
 		if (*path == ':')
+		{
 			if (ret < i)
 			{
 				ret = i;
 				i = 0;
 			}
+		}
 		i++;
 	}
 	return (ret);
 }
 
-char *find_absolute_path(char **env, char *input)
+char	*find_absolute_path(char **env, char *input)
 {
 	char	*path;
 	char	*path_abs;
@@ -62,7 +64,7 @@ char *find_absolute_path(char **env, char *input)
 	while (!path)
 		path = ft_strnstr(env[i++], "PATH=", ft_strlen("PATH="));
 	path = ft_strchr(path, '/');
-	path_abs = malloc(find_longest_path(path) + ft_strlen(input) + 2 * sizeof(*path_abs));
+	path_abs = malloc(find_longest_path(path) + ft_strlen(input) + 2);
 	lst_memory(path_abs, &free, ADD);
 	while (path)
 	{
@@ -82,4 +84,3 @@ char *find_absolute_path(char **env, char *input)
 		ft_printf("pipex: command not found: %s\n", input);
 	return (lst_memory(NULL, NULL, CLEAN), NULL);
 }
-

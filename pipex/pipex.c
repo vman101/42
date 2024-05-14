@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:05:11 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/14 20:02:15 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/14 20:15:08 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	lst_memory(void *mem, void (*del)(void *c), int mode)
 	lst_add_back(&list, new);
 }
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_cmd	**cmd;
 	t_file	*file;

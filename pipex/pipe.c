@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 20:36:24 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/14 20:04:56 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/14 20:13:51 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ bool	pipe_out(t_cmd *cmd_out, int pipefd[2])
 	{
 		if (close(pipefd[PIPE_IN]) == -1)
 			return (perror("close"), 0);
-		if (dup2(pipefd[PIPE_OUT], 0) == -1 || (dup2(cmd_out->file->fd, 1) == -1))
+		if (dup2(pipefd[PIPE_OUT], 0) == -1 || \
+				(dup2(cmd_out->file->fd, 1) == -1))
 			return (perror("dup2"), 0);
 		if (execve(cmd_out->path_absolute, cmd_out->argv, cmd_out->env))
 			return (perror("execve"), 0);

@@ -6,11 +6,10 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/14 17:36:13 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/14 20:14:33 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "list_debug/lst_debug.h"
 #include "pipex.h"
 
 t_clean	*lst_node_new(void *content, void (*del)(void *))
@@ -39,7 +38,7 @@ void	lst_node_del(t_clean **lst)
 
 void	lst_list_clean(t_clean **head)
 {
-	t_clean *tmp;
+	t_clean	*tmp;
 
 	while (*head)
 	{
