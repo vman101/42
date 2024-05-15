@@ -3,7 +3,7 @@
 make
 
 if [ -z "$1" ]; then
-	./pipex in "cat -e" "grep a" out
+	./pipex input "cat -e" "grep a" out
 	exit 0
 fi
 

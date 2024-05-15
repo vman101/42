@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:15:17 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/14 20:11:34 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/15 13:39:43 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,13 @@ char	*find_absolute_path(char **env, char *input);
 void	free_split(void *back);
 void	lst_memory(void *mem, void (*del)(void *c), int mode);
 
+int		p_stderr(int stderr_fd, const char *error, char const *specifier);
+
 bool	pipe_in(t_cmd *cmd_in, int pipefd[2]);
 bool	pipe_out(t_cmd *cmd_out, int pipefd[2]);
 
 t_cmd	*command_create(char **input, char **env, t_file *files);
-t_file	*file_create(char const *path, int mode);
+t_file	*file_create(char const *path, int flag, int mode);
 void	command_destroy(void *cmd_del);
 void	file_destroy(void *file_del);
 
