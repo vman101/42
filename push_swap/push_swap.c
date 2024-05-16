@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 19:22:53 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/09 17:11:21 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/14 11:35:12 by vvobis           ###   ########.fr       */
 /*   Updated: 2024/05/06 09:11:45 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -21,8 +21,8 @@ int	main(int argc, char **argv)
 	void	(**operation)(t_node **, t_node **);
 
 	stack_a = input_parse((char const **)argv + 1, argc);
-	if (!stack_a || lst_check_sort(stack_a, 0))
-		return (lst_clear_full(&stack_a), -1);
+	if (!stack_a || lst_check_sort(stack_a, 0) || !redundancy_check(stack_a))
+		return (lst_clear_full(&stack_a), 1);
 	stack_b = NULL;
 	stacks_update(&stack_a, &stack_b);
 	operation = operations_initialize();

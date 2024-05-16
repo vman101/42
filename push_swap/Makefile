@@ -19,3 +19,5 @@ fclean: clean
 
 clean:
 	rm -f $(OBJ)
+
+re: fclean all

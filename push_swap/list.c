@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/09 17:24:46 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/14 11:36:53 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ t_node	*lst_node_new(long value, int index)
 	t_node	*new;
 
 	if (value > INT_MAX || value < INT_MIN)
-		return (NULL);
+		return (ft_putstr_fd("Error\n", 2), NULL);
 	new = malloc(sizeof(*new));
 	if (!new)
-		return (NULL);
+		return (ft_putstr_fd("Error\n", 2), NULL);
 	new->value = (int)value;
 	new->index = (int)index;
 	new->next = NULL;

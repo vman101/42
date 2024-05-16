@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:37:56 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/09 17:13:53 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/14 11:34:53 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ int	redundancy_check(t_node *stack_a)
 		while (tmp)
 		{
 			if (tmp->value == stack_a->value)
+			{
+				ft_putstr_fd("Error\n", 2);
 				return (0);
+			}
 			tmp = tmp->next;
 		}
 		stack_a = stack_a->next;
@@ -94,7 +97,10 @@ int	input_valid_check(char **argv)
 		while (argv[j][i])
 		{
 			if (!ft_isdigit(argv[j][i]) && argv[j][i] != 32)
+			{
+				ft_putstr_fd("Error\n", 2);
 				return (0);
+			}
 			i++;
 		}
 		j++;
