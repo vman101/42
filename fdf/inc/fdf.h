@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:36 by victor            #+#    #+#             */
-/*   Updated: 2024/05/19 12:51:54 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/20 19:40:25 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,24 @@
 
 typedef int t_color;
 
+typedef struct	s_matrix
+{
+
+}				t_matrix;
+
 typedef struct	s_point
 {
-	int			x;
-	int			y;
-	int			z;
+	float			x;
+	float			y;
+	float			z;
 	t_color		color;
 }				t_point;
 
 typedef struct s_map
 {
-	char		***grid;
 	t_point		*p;
-	size_t		size;
+	size_t		width;
+	size_t		height;
 	int			scale;
 }				t_map;
 

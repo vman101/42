@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:14:13 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/18 09:28:29 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/20 11:38:03 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,26 +71,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		while (s2[j])
 			tmp[i++] = s2[j++];
 	return (tmp);
-}
-
-void	*ft_calloc(size_t n, size_t s)
-{
-	void	*ptr_new;
-	void	*ptr_back;
-	size_t	i;
-
-	if (n == 0)
-		return (malloc(0));
-	if (SIZE_MAX / n < s)
-		return (NULL);
-	ptr_new = malloc(n * s);
-	if (!ptr_new)
-		return (NULL);
-	i = 0;
-	ptr_back = ptr_new;
-	while (i++ < s * n)
-		*(char *)ptr_new++ = 0;
-	return (ptr_back);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 23:43:36 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/19 10:00:04 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/20 12:49:11 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_list
 }	t_list;
 
 /* Input Handeling */
-char	***super_split(char **argv, int argc);
+char	***super_split(char **strs, int size, int delimiter);
 void	*free_super_split(char ***back);
 void	free_split(char **split);
 char	*get_next_line(int fd);
