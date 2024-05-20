@@ -6,12 +6,11 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:21 by victor            #+#    #+#             */
-/*   Updated: 2024/05/18 17:24:07 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/20 10:00:44 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
-#include "minilibx-linux/mlx.h"
+#include "./inc/fdf.h"
 #include <stdlib.h>
 #include <math.h>
 
