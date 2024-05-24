@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:48:39 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/24 10:53:37 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/24 10:53:22 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,14 @@ void	free_split(void *back);
 
 void	lst_memory(void *mem, void (*del)(void *c), int mode);
 int		p_stderr(int stderr_fd, const char *error, char const *specifier);
-int		ft_close(int fd, char const *specifier);
+int		ft_close(int fd);
 int		ft_closeall(int pipe[2][2]);
 
-pid_t	pipe_in(t_cmd *cmd_in, int pipefd[2], int fd);
-pid_t	pipe_out(t_cmd *cmd_out, int fd);
+bool	pipe_in(t_cmd *cmd_in, int pipefd[2], int fd);
+bool	pipe_out(t_cmd *cmd_out, int fd);
 int		wait_pids(pid_t *pids, int pid_count);
+bool	pipe_in2(t_cmd *cmd_in, int pipefd[2]);
+bool	pipe_out2(t_cmd *cmd_out, int pipefd[2]);
 
 t_cmd	*command_create(char **input, char **env);
 t_file	*file_create(char const *path, int flag, int mode);

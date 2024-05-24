@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/14 20:14:33 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/17 22:19:31 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,34 @@ t_clean	*lst_node_new(void *content, void (*del)(void *))
 
 void	lst_node_del(t_clean **lst)
 {
-	if (!lst || !*lst)
-		return ;
 	(*lst)->clean((*lst)->content);
 	free(*lst);
 	*lst = NULL;
+}
+
+void	lst_node_del_clean(t_clean **lst, void *mem)
+{
+	t_clean	*tmp;
+	t_clean	*head;
+
+	if (!lst || !*lst)
+		return ;
+	head = *lst;
+	tmp = *lst;
+	while ((*lst)->next && (*lst)->next->content != mem)
+		(*lst) = (*lst)->next;
+	tmp = *lst;
+	if ((*lst)->next && (*lst)->next->next)
+	{
+		tmp = (*lst)->next->next;
+		lst_node_del(&(*lst)->next);
+		(*lst)->next = tmp;
+	}
+	else if ((*lst)->next)
+		lst_node_del(&(*lst)->next);
+	else
+		lst_node_del(lst);
+	*lst = head;
 }
 
 void	lst_list_clean(t_clean **head)
@@ -44,7 +67,6 @@ void	lst_list_clean(t_clean **head)
 	{
 		tmp = (*head)->next;
 		lst_node_del(head);
-		*head = NULL;
 		*head = tmp;
 	}
 	free(*head);

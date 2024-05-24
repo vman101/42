@@ -1,27 +1,43 @@
 NAME := pipex
 
+BONNAME := pipex_bonus
+
 CC := cc
 
 CFLAGS := -Wall -Werror -Wextra -g
 
-SRC := pipex.c list.c input.c commands.c pipe.c
+LIBS := libft/libft.a libft/libftprintf.a
 
-LIBS := libft/libft.a printf/libftprintf.a
+SRC := pipex.c list.c input.c commands.c pipe.c error.c 
+
+BONSRC := pipex_bonus.c list.c input.c commands.c pipe.c error.c 
 
 OBJ := $(SRC:%.c=%.o)
 
+BONOBJ := $(BONSRC:%.c=%.o)
+
 all: $(NAME)
 
-$(NAME): $(OBJ) pipex.h
+bonus: $(BONNAME)
+
+$(NAME): $(OBJ) $(LIBS) pipex.h
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
 
+$(BONNAME): $(BONOBJ) $(LIBS)
+	$(CC) $(CFLAGS) -o $(BONNAME) $(BONOBJ) $(LIBS)
+
 %.o: %.c
-	$(CC) -o $@ -c $(CFLAGS) $^
+	$(CC) -c $(CFLAGS) $^
+
+$(LIBS):
+	make bonus -C libft
 
 clean:
-	rm -f $(OBJ)
+	make clean -C libft
+	rm -f $(OBJ) $(BONOBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	make fclean -C libft
+	rm -f $(NAME) $(BONNAME)
 
 re: fclean all

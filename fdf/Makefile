@@ -2,11 +2,11 @@ CC := cc
 
 CFLAGS := -Wall -Wextra -Werror -g
 
-LINK := -lXext -lX11
+LINK := -lXext -lX11 -lm
 
 NAME := fdf
 
-SRC := fdf.c utils.c
+SRC := fdf.c utils.c map.c map_create.c drawing.c debug.c rotation.c
 
 OBJ := $(SRC:.c=.o)
 

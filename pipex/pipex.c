@@ -5,74 +5,54 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/10 10:05:11 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/15 14:01:44 by victor           ###   ########.fr       */
+/*   Created: 2024/05/16 15:20:21 by vvobis            #+#    #+#             */
+/*   Updated: 2024/05/23 22:42:31 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "libft/libft.h"
-#include <fcntl.h>
 #include <stdbool.h>
 #include <sys/types.h>
-#include <time.h>
-#include <unistd.h>
 
-void	lst_memory(void *mem, void (*del)(void *c), int mode)
+int	print_help()
 {
-	static t_clean	*list;
-	t_clean			*new;
-
-	if (mode == CLEAN)
-		return (lst_list_clean(&list), exit(EXIT_FAILURE));
-	if (mode == END)
-		return (lst_list_clean(&list), exit(EXIT_SUCCESS));
-	if (!mem)
-		return (lst_list_clean(&list), perror("malloc"), exit(EXIT_FAILURE));
-	new = lst_node_new(mem, del);
-	if (!new)
-		return (del(mem), lst_list_clean(&list), perror("malloc"), \
-				exit(EXIT_FAILURE));
-	lst_add_back(&list, new);
+	ft_printf("Invalid arguments!\n\nUsage: ./pipex file_in cmd1 cmd2 file_out\n");
+	return (-1);
 }
 
-int	p_stderr(int stderr_fd, const char *error, char const *specifier)
+t_file	*input_setup(char ***argv, int argc)
 {
-	int	old_stdout;
-	int	count;
+	t_file	*file;
 
-	old_stdout = dup(STDOUT_FILENO);
-	dup2(stderr_fd, STDOUT_FILENO);
-	count = p_printf(error, specifier);
-	dup2(old_stdout, STDOUT_FILENO);
-	return (count);
+	if (argc != 5)
+		exit(print_help());
+	(*argv)++;
+	file = file_create(*(*argv), O_RDONLY, 0);
+	(*argv)++;
+	return (file);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_cmd	**cmd;
+	t_cmd	*cmd;
 	t_file	*file;
 	int		pipefd[2];
+	pid_t	pids[2];
 
-	if (argc != 5)
-		exit(EXIT_FAILURE);
-	(void)argc;
-	cmd = malloc(sizeof(cmd) * 2);
-	lst_memory(cmd, &free, ADD);
-	file = file_create(argv[FILE_IN], O_RDONLY, 0);
-	cmd[IN] = command_create(ft_split(argv[CMD0], ' '), env, file);
-	file = file_create(argv[FILE_OUT], O_WRONLY | O_CREAT, 0644);
-	cmd[OUT] = command_create(ft_split(argv[CMD1], ' '), env, file);
-	if (!cmd[OUT] || !cmd[IN])
+	file = input_setup(&argv, argc);
+	pipe(pipefd);
+	cmd = command_create((char **)ft_split(*argv++, ' '), env);
+	pids[IN] = pipe_in(cmd, pipefd, file->fd);
+	cmd = command_create((char **)ft_split(*argv++, ' '), env);
+	file = file_create(*argv, O_WRONLY | O_CREAT, 0644);
+	if (dup2(pipefd[PIPE_OUT], 0))
+	{
+		perror("dup2");
 		lst_memory(NULL, NULL, CLEAN);
-	if (pipe(pipefd) == -1)
-		lst_memory(NULL, NULL, CLEAN);
-	if (!pipe_in(cmd[IN], pipefd))
-		lst_memory(NULL, NULL, CLEAN);
-	if (!pipe_out(cmd[OUT], pipefd))
-		lst_memory(NULL, NULL, CLEAN);
-	if (cmd[OUT]->cpid != 0 && cmd[IN]->cpid != 0)
-		waitpid(cmd[IN]->cpid, NULL, 0);
-	lst_memory(NULL, NULL, CLEAN);
-	return (0);
+	}
+	ft_close(&pipefd[PIPE_OUT]);
+	pids[OUT] = pipe_out(cmd, file->fd);
+	wait_pids(pids, 2);
+	lst_memory(NULL, NULL, END);
 }
