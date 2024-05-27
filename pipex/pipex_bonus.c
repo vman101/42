@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:20:21 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 20:13:20 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/27 20:22:25 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,6 @@ t_file	*input_setup(char ***argv, int argc, pid_t **pids)
 	lst_memory(*pids, free, ADD);
 	(*argv)++;
 	return (file);
-}
-
-void	ft_pipe(int pipefd[2])
-{
-	if (pipe(pipefd) == -1)
-	{
-		perror("pipe");
-		lst_memory(NULL, NULL, CLEAN);
-	}
-}
-
-void	ft_fork(pid_t *pid)
-{
-	*pid = fork();
-	if (*pid == -1)
-	{
-		perror("fork");
-		lst_memory(NULL, NULL, CLEAN);
-	}
 }
 
 pid_t	pipe_loop(char **argv, char **env)

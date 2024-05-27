@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 16:17:08 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 20:04:07 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/27 20:22:08 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	lst_memory(void *mem, void (*del)(void *c), int mode)
 		return (lst_list_clean(&list), perror("malloc"), exit(EXIT_FAILURE));
 	new = lst_node_new(mem, del);
 	if (!new)
-		return (del(mem), lst_list_clean(&list), p_stderr(STDERR_FILENO, "pipex: %s", "lst_node_malloc"), perror(""), \
+		return (del(mem), lst_list_clean(&list), p_stderr(STDERR_FILENO, \
+					"pipex: %s", "lst_node_malloc"), perror(""), \
 				exit(EXIT_FAILURE));
 	lst_add_back(&list, new);
 }
@@ -50,12 +51,6 @@ int	p_stderr(int stderr_fd, const char *error, const char *specifier)
 	return (count);
 }
 
-int	print_help()
-{
-	ft_printf("Invalid arguments!\n\nUsage: ./pipex file_in cmd1 cmd2 file_out\n");
-	return (-1);
-}
-
 int	ft_close(int fd, const char *specifier)
 {
 	if (close(fd) == -1)
@@ -65,4 +60,23 @@ int	ft_close(int fd, const char *specifier)
 		return (0);
 	}
 	return (1);
+}
+
+void	ft_pipe(int pipefd[2])
+{
+	if (pipe(pipefd) == -1)
+	{
+		perror("pipe");
+		lst_memory(NULL, NULL, CLEAN);
+	}
+}
+
+void	ft_fork(pid_t *pid)
+{
+	*pid = fork();
+	if (*pid == -1)
+	{
+		perror("fork");
+		lst_memory(NULL, NULL, CLEAN);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:17:14 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 19:10:33 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/27 20:21:47 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,11 @@ t_file	*file_create(char const *path, int flag, int mode)
 	file_new->mode = mode;
 	file_new->path = (char *)path;
 	return (file_new);
+}
+
+int	print_help(void)
+{
+	ft_printf("Invalid arguments!\n");
+	ft_printf("\nUsage: ./pipex file_in cmd1 cmd2 file_out\n");
+	return (-1);
 }
