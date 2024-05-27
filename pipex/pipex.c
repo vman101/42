@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:20:21 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/23 22:42:31 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/27 19:26:07 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include "libft/libft.h"
 #include <stdbool.h>
 #include <sys/types.h>
-
-int	print_help()
-{
-	ft_printf("Invalid arguments!\n\nUsage: ./pipex file_in cmd1 cmd2 file_out\n");
-	return (-1);
-}
 
 t_file	*input_setup(char ***argv, int argc)
 {
@@ -51,8 +45,8 @@ int	main(int argc, char **argv, char **env)
 		perror("dup2");
 		lst_memory(NULL, NULL, CLEAN);
 	}
-	ft_close(&pipefd[PIPE_OUT]);
 	pids[OUT] = pipe_out(cmd, file->fd);
+	ft_close(pipefd[PIPE_OUT], "main_end");
 	wait_pids(pids, 2);
 	lst_memory(NULL, NULL, END);
 }

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 20:36:24 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/24 11:44:43 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/27 18:03:20 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ pid_t	pipe_in(t_cmd *cmd_in, int pipefd[2], int fd)
 	}
 	if (cmd_in->cpid == 0)
 	{
-		ft_close(pipefd[PIPE_OUT], "pipe_in child: ");
+		ft_close(pipefd[PIPE_OUT], "pipe_in child");
 		if (dup2(pipefd[PIPE_IN], 1) == -1 || dup2(fd, 0) == -1)
-			return (p_stderr(STDERR_FILENO, "pipex: %s", "pipe_in_child: "), \
+			return (p_stderr(STDERR_FILENO, "pipex: %s", "pipe_in_child"), \
 					perror("dup2"), 0);
 		execve(cmd_in->path_absolute, cmd_in->argv, cmd_in->env);
 		p_stderr(STDERR_FILENO, "pipex: pipe_in: ", NULL);
@@ -36,9 +36,8 @@ pid_t	pipe_in(t_cmd *cmd_in, int pipefd[2], int fd)
 	{
 		ft_close(pipefd[PIPE_IN], "pipe_in_parent: ");
 		if (dup2(pipefd[PIPE_OUT], 0))
-			return (p_stderr(STDERR_FILENO, "pipex: %s", "pipe_in_parent: "), \
+			return (p_stderr(STDERR_FILENO, "pipex: %s", "pipe_in_parent"), \
 					perror("dup2"), 0);
-		ft_close(pipefd[PIPE_OUT], "pipe_in_parent");
 	}
 	return (cmd_in->cpid);
 }
@@ -72,7 +71,7 @@ int	wait_pids(pid_t *pids, int pid_count)
 	{
 		if (pids[i] != -1)
 		{
-			check_wait = waitpid(pids[i], NULL, WNOHANG);
+			check_wait = waitpid(pids[i], NULL, 0);
 			if (check_wait == -1)
 			{
 				perror("waitpid");
@@ -84,7 +83,7 @@ int	wait_pids(pid_t *pids, int pid_count)
 				pid_count--;
 			}
 		}
-		if (i == pid_count)
+		if (i == pid_count - 1)
 			i = 0;
 		i++;
 	}

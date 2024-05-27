@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 16:17:08 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/24 10:54:58 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/27 20:04:07 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,17 @@ int	p_stderr(int stderr_fd, const char *error, const char *specifier)
 	return (count);
 }
 
+int	print_help()
+{
+	ft_printf("Invalid arguments!\n\nUsage: ./pipex file_in cmd1 cmd2 file_out\n");
+	return (-1);
+}
+
 int	ft_close(int fd, const char *specifier)
 {
 	if (close(fd) == -1)
 	{
-		p_stderr(2, "pipex: %s", specifier);
+		p_stderr(2, "pipex: %s: ", specifier);
 		perror("close");
 		return (0);
 	}

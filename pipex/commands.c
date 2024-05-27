@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:17:14 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/24 10:56:18 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/27 19:10:33 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	file_destroy(void *file_del)
 		return ;
 	if (((t_file *)file_del)->tmp == true)
 		unlink(((t_file *)file_del)->path);
-	ft_close(((t_file *)file_del)->fd, "file_destroy: ");
+	ft_close(((t_file *)file_del)->fd, "file_destroy");
 	free(file_del);
 }
 

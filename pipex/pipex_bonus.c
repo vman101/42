@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:20:21 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/24 11:14:37 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/27 20:13:20 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
-
 
 t_file	*pipe_here_doc(char *delimiter)
 {
@@ -45,8 +44,8 @@ t_file	*input_setup(char ***argv, int argc, pid_t **pids)
 {
 	t_file	*file;
 
-	if (argc < 3)
-		exit(EXIT_FAILURE);
+	if (argc < 5)
+		exit(print_help());
 	(*argv)++;
 	if (ft_strncmp(*(*argv), "here_doc", ft_strlen(*(*argv))) == 0)
 	{
@@ -56,8 +55,7 @@ t_file	*input_setup(char ***argv, int argc, pid_t **pids)
 	else
 		file = file_create(*(*argv), O_RDONLY, 0);
 	*pids = malloc(sizeof(*pids) * (argc - 3));
-	if (!pids)
-		return (lst_memory(NULL, NULL, ADD), NULL);
+	lst_memory(*pids, free, ADD);
 	(*argv)++;
 	return (file);
 }
@@ -87,7 +85,6 @@ pid_t	pipe_loop(char **argv, char **env)
 	int		pipefd[2];
 
 	cmd = command_create((char **)ft_split(*argv, ' '), env);
-	lst_memory(cmd, command_destroy, ADD);
 	ft_pipe(pipefd);
 	ft_fork(&cmd->cpid);
 	if (cmd->cpid == 0)
@@ -101,8 +98,10 @@ pid_t	pipe_loop(char **argv, char **env)
 	}
 	else
 	{
+		ft_close(pipefd[PIPE_IN], "pipe_loop_parent");
 		if (dup2(pipefd[PIPE_OUT], 0) == -1)
 			return (perror("dup2"), lst_memory(NULL, NULL, CLEAN), -1);
+		ft_close(pipefd[PIPE_OUT], "pipe_loop_parent");
 	}
 	return (cmd->cpid);
 }
@@ -121,13 +120,11 @@ int	main(int argc, char **argv, char **env)
 	pipe(pipefd);
 	cmd = command_create((char **)ft_split(*argv++, ' '), env);
 	pids[i++] = pipe_in(cmd, pipefd, file->fd);
-	lst_memory(cmd, NULL, FREE);
 	while (*(argv + 2))
 		pids[i++] = pipe_loop(argv++, env);
 	cmd = command_create((char **)ft_split(*argv++, ' '), env);
 	file = file_create(*argv, O_WRONLY | O_CREAT, 0644);
-	pids[i++] = pipe_out(cmd, file->fd);
+	pids[i] = pipe_out(cmd, file->fd);
 	wait_pids(pids, i);
-	free(pids);
 	lst_memory(NULL, NULL, END);
 }
