@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:35:57 by victor            #+#    #+#             */
-/*   Updated: 2024/05/25 12:36:39 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/27 18:50:17 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void	substract_center(t_point3d *center, t_point3d *p, size_t size)
 	i = 0;
 	while (i < size)
 	{
-		p[i].x -= center->x / 4;
-		p[i].y -= center->y / 4;
-		p[i].z -= center->z / 4;
+		p[i].x -= center->x / 2;
+		p[i].y -= center->y / 2;
+		p[i].z -= center->z / 2;
 		i++;
 	}
 }

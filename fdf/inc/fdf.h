@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:36 by victor            #+#    #+#             */
-/*   Updated: 2024/05/25 13:20:57 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/27 18:50:51 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@
 # include <math.h>
 # include <float.h>
 
+# define MAX_WIDTH 1200
+# define MAX_HEIGHT 900
+
+# define TOLERANCE 0.0001f
+
 enum	e_vertex
 {
 	X,
@@ -31,14 +36,7 @@ enum	e_vertex
 	Z
 };
 
-typedef int t_color;
-
-typedef struct	s_mat
-{
-	float	x[3];
-	float	y[3];
-	float	z[3];
-}				t_mat;
+typedef unsigned int t_color;
 
 typedef struct	s_point3d
 {
@@ -88,9 +86,10 @@ typedef struct s_data
 
 /* Setup */
 
-t_screen	*screen_create(t_map *map);
+t_screen	*screen_create(t_map *map, float scale);
 t_data	*data_create(char **argv);
 void	data_destroy(t_data *data);
+void	destroy_points(char ****points, int i);
 
 /* Map Creation */
 
@@ -106,6 +105,7 @@ t_point3d point3d_create(float x, float y, float z, t_color color);
 
 /* Debug */
 
+int	print_usage();
 void	point_print(t_point3d *p);
 void	map_print(t_point3d *p, size_t size);
 
