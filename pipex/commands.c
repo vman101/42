@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:17:14 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 20:21:47 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/27 20:30:27 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_cmd	*command_create(char **input, char **env)
 	t_cmd	*cmd_new;
 
 	if (!input || !*input)
-		return (NULL);
+		return (lst_memory(NULL, NULL, CLEAN), NULL);
 	lst_memory(input, &free_split, ADD);
 	cmd_new = ft_calloc(1, sizeof(*cmd_new));
 	lst_memory(cmd_new, &command_destroy, ADD);

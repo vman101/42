@@ -6,7 +6,7 @@ CC := cc
 
 CFLAGS := -Wall -Werror -Wextra -g
 
-LIBS := libft/libft.a libft/libftprintf.a
+LIBS := libft/libft.a
 
 SRC := pipex.c list.c input.c commands.c pipe.c error.c 
 
