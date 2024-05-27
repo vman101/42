@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:08:54 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/24 16:51:27 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:38:27 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,7 @@
 
 static void draw_point(t_data *data, t_point3d *point, t_color color)
 {
-	int screen_x;
-	int	screen_y;
-
-	screen_x = (point->x + data->screen->offset_x);
-	screen_y = (point->y + data->screen->offset_y);
-    mlx_pixel_put(data->mlx, data->win, screen_x, screen_y ,color);
+    mlx_pixel_put(data->mlx, data->win, point->x, point->y ,color);
 }
 
 static void	calculate_line(float *err, t_point3d *begin, t_point3d *move, t_point3d *end)
@@ -70,24 +65,25 @@ void draw_line(t_data *data, t_point3d *begin, t_point3d *end)
 	else
 		draw_point(data, &move, begin->color);
 }
-/**/
-/*void	map_draw(t_data *data)*/
-/*{*/
-/*	size_t	i;*/
-/*	size_t	j;*/
-/**/
-/*	i = 0;*/
-/*	while (data->map->height > i)*/
-/*	{*/
-/*		j = 0;*/
-/*		while (data->map->width != j)*/
-/*		{*/
-/*			if (j + 1 < data->map->width)*/
-/*				draw_line(data, &data->map->p[j + data->map->width * i], &data->map->p[j + 1 + data->map->width * i]);*/
-/*			if (i + 1 < data->map->height)*/
-/*				draw_line(data, &data->map->p[j + data->map->width * i], &data->map->p[j + data->map->width * (i + 1)]);*/
-/*			j++;*/
-/*		}*/
-/*		i++;*/
-/*	}*/
-/*}*/
+
+void	draw_projected(t_data *data)
+{
+
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (data->map->height > i)
+	{
+		j = 0;
+		while (data->map->width != j)
+		{
+			if (j + 1 < data->map->width)
+				draw_line(data, &data->map_projected[j + data->map->width * i], &data->map_projected[j + 1 + data->map->width * i]);
+			if (i + 1 < data->map->height)
+				draw_line(data, &data->map_projected[j + data->map->width * i], &data->map_projected[j + data->map->width * (i + 1)]);
+			j++;
+		}
+		i++;
+	}
+}

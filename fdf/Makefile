@@ -6,7 +6,7 @@ LINK := -lXext -lX11 -lm
 
 NAME := fdf
 
-SRC := fdf.c utils.c map.c map_create.c drawing.c debug.c rotation.c
+SRC := fdf.c utils.c map.c map_create.c drawing.c debug.c rotation.c transformation.c setup.c
 
 OBJ := $(SRC:.c=.o)
 

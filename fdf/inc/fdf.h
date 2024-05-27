@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:36 by victor            #+#    #+#             */
-/*   Updated: 2024/05/24 19:45:49 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/25 13:20:57 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,21 @@
 # include <math.h>
 # include <float.h>
 
+enum	e_vertex
+{
+	X,
+	Y,
+	Z
+};
+
 typedef int t_color;
+
+typedef struct	s_mat
+{
+	float	x[3];
+	float	y[3];
+	float	z[3];
+}				t_mat;
 
 typedef struct	s_point3d
 {
@@ -44,7 +58,7 @@ typedef struct s_point2d
 typedef struct s_map
 {
 	t_point3d	*p;
-	t_point2d	center;
+	t_point3d	center;
 	size_t		width;
 	size_t		height;
 }				t_map;
@@ -68,10 +82,15 @@ typedef struct s_data
 	t_map		*map;
 	t_point3d	*map_projected;
 	t_screen	*screen;
+	size_t		size;
 	float		scale;
 } t_data;
 
-void	map_translate(t_map *map);
+/* Setup */
+
+t_screen	*screen_create(t_map *map);
+t_data	*data_create(char **argv);
+void	data_destroy(t_data *data);
 
 /* Map Creation */
 
@@ -88,18 +107,21 @@ t_point3d point3d_create(float x, float y, float z, t_color color);
 /* Debug */
 
 void	point_print(t_point3d *p);
-void	map_print(t_map *map);
+void	map_print(t_point3d *p, size_t size);
 
 /* Rotation */
 
 void	rotate_x(t_map *map, t_point3d *p, float theta);
 void	rotate_z(t_map *map, t_point3d *p, float theta);
 void	rotate_y(t_map *map, t_point3d *p, float theta);
-t_point2d	map_calc_center(t_point3d *p, size_t size);
+t_point3d	map_calc_center(t_point3d *p, size_t size);
+void	substract_center(t_point3d *p, t_point3d *center, size_t size);
+void	map_copy(t_map *map, t_point3d *p);
+void	map_scale(t_point3d *p, t_screen *screen, float scale, size_t size);
 
 /* Drawing */
 
-void	map_draw(t_data *data);
+void	draw_projected(t_data *data);
 void draw_line(t_data *data, t_point3d *begin, t_point3d *end);
 
 #endif

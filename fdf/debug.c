@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:08:43 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/24 16:09:38 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:05:00 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,14 @@ void	point_print(t_point3d *p)
 	printf("(x: %f y: %f z: %f color: 0x%x)\n", p->x, p->y, p->z, p->color);
 }
 
-void	map_print(t_map *map)	
+void	map_print(t_point3d *p, size_t size)	
 {
 	size_t i;
-	size_t j;
 
 	i = 0;
-	j = 0;
-	while (map->height > i)
+	while (i < size)
 	{
-		j = 0;
-		while (map->width > j)
-			point_print(&map->p[j++ + map->width * i]);
+		point_print(&p[i]);
 		i++;
 	}
 }
