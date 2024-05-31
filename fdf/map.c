@@ -6,22 +6,15 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:02:02 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 17:46:35 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/31 12:57:03 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "inc/fdf.h"
-#include <unistd.h>
+#include "./inc/fdf.h"
 
-void	map_destroy(t_map *map)
+int	get_split_len(char **split)
 {
-	free(map->p);
-	free(map);
-}
-
-int	get_split_len(char const **split)
-{
-	int i;
+	int	i;
 
 	i = 0;
 	while (split[i])
@@ -46,20 +39,25 @@ void	destroy_points(char ****points, int i)
 	free(points);
 }
 
-int map_get_rows(char const *path, char ****row)
+void	line_get(char ****row, char *buf)
 {
-	int	fd;
-	int i;
-	char *buf;
-	char **tmp;
+	char	**tmp;
+
+	tmp = ft_split(buf, ' ');
+	*row = super_split(tmp, get_split_len(tmp) + 1, ',');
+	free_split(tmp);
+}
+
+int	map_get_rows(char const *path, char ****row)
+{
+	int		fd;
+	int		i;
+	char	*buf;
 
 	i = 0;
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-	{
-		perror("open");
-		exit(EXIT_FAILURE);
-	}
+		return (perror("open"), 0);
 	while (1)
 	{
 		buf = get_next_line(fd);
@@ -67,11 +65,10 @@ int map_get_rows(char const *path, char ****row)
 			break ;
 		if (row)
 		{
-			tmp = ft_split(buf, ' ');
-			row[i] = super_split(tmp, get_split_len((char const **)tmp) + 1, ',');
-			free_split(tmp);
-			if (i > 0 && get_row_len((char const ***)row[i]) != get_row_len((char const ***)row[i - 1]))
-				return (free(buf), destroy_points(row, i), get_next_line(-1), ft_printf("Invalid Map!\n"), 0);
+			line_get(&row[i], buf);
+			if (!row[i])
+				return (free(buf), get_next_line(-1), \
+						destroy_points(row, i), 0);
 		}
 		free(buf);
 		i++;

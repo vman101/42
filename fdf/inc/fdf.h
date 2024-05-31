@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:36 by victor            #+#    #+#             */
-/*   Updated: 2024/05/27 18:50:51 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/31 13:28:23 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,15 @@
 # include <unistd.h>
 # include "ft_printf.h"
 # include "libft.h"
-# include "mlx.h"
+# include <mlx.h>
 # include <X11/keysym.h>
-# include <X11/X.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <math.h>
-# include <float.h>
 
 # define MAX_WIDTH 1200
 # define MAX_HEIGHT 900
-
+# define NUM_LET 30
 # define TOLERANCE 0.0001f
 
 enum	e_vertex
@@ -36,22 +34,15 @@ enum	e_vertex
 	Z
 };
 
-typedef unsigned int t_color;
+typedef unsigned int	t_color;
 
-typedef struct	s_point3d
-{
-	float			x;
-	float			y;
-	float			z;
-	t_color		color;
-}				t_point3d;
-
-typedef struct s_point2d
+typedef struct s_point3d
 {
 	float		x;
 	float		y;
+	float		z;
 	t_color		color;
-}				t_point2d;
+}				t_point3d;
 
 typedef struct s_map
 {
@@ -70,58 +61,82 @@ typedef struct s_screen
 	float	angle_z;
 	size_t	offset_x;
 	size_t	offset_y;
-}
-t_screen;
+}			t_screen;
+
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}			t_img;
 
 typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
+	t_img		img;
 	t_map		*map;
-	t_point3d	*map_projected;
+	t_point3d	*p;
 	t_screen	*screen;
 	size_t		size;
+	char		***glyph;
 	float		scale;
-} t_data;
+}				t_data;
 
 /* Setup */
 
 t_screen	*screen_create(t_map *map, float scale);
-t_data	*data_create(char **argv);
-void	data_destroy(t_data *data);
-void	destroy_points(char ****points, int i);
+t_data		*data_create(char **argv);
+int			data_destroy(t_data *data);
+void		destroy_points(char ****points, int i);
 
 /* Map Creation */
 
-int	get_split_len(char const **split);
-int	get_row_len(char const ***row);
-int map_get_rows(char const *path, char ****row);
-int	map_atoi(char const *s, int b);
-t_map	*map_create(char const *path);
-void	map_points_create(char ****points, t_map *map);
-void	map_destroy(t_map *map);
-t_point2d point2d_create(float x, float y, t_color color);
-t_point3d point3d_create(float x, float y, float z, t_color color);
+int			get_split_len(char **split);
+int			get_row_len(char const ***row);
+int			map_get_rows(char const *path, char ****row);
+int			map_atoi(char const *s, int b);
+t_map		*map_create(char const *path);
+void		map_points_create(char ****points, t_map *map);
+t_point3d	point3d_create(float x, float y, float z, t_color color);
 
 /* Debug */
 
-int	print_usage();
-void	point_print(t_point3d *p);
-void	map_print(t_point3d *p, size_t size);
+int			print_usage(void);
+void		point_print(t_point3d *p);
+void		map_print(t_point3d *p, size_t size);
+int			handle_close(t_data *data);
 
 /* Rotation */
 
-void	rotate_x(t_map *map, t_point3d *p, float theta);
-void	rotate_z(t_map *map, t_point3d *p, float theta);
-void	rotate_y(t_map *map, t_point3d *p, float theta);
+void		rotate_x(t_point3d *p, float theta, size_t size);
+void		rotate_z(t_point3d *p, float theta, size_t size);
+void		rotate_y(t_point3d *p, float theta, size_t size);
 t_point3d	map_calc_center(t_point3d *p, size_t size);
-void	substract_center(t_point3d *p, t_point3d *center, size_t size);
-void	map_copy(t_map *map, t_point3d *p);
-void	map_scale(t_point3d *p, t_screen *screen, float scale, size_t size);
+void		substract_center(t_point3d *p, t_point3d *center, size_t size);
+void		map_copy(t_map *map, t_point3d *p);
+void		map_scale(t_point3d *p, float scale, size_t size);
 
 /* Drawing */
 
-void	draw_projected(t_data *data);
-void draw_line(t_data *data, t_point3d *begin, t_point3d *end);
+void		draw_projected(t_data *data);
+void		draw_line(t_data *data, t_point3d *begin, t_point3d *end);
+void		draw_point(t_data *data, t_point3d *point, t_color color);
+
+/* Glyphs */
+char		**get_glyph(int fd);
+char		***glyphs_create(char const *path);
+void		glyph_draw(t_data *data, t_point3d *begin, char **glyph);
+void		glyph_print(t_point3d *begin, char const *text, t_data *data);
+void		glyph_destroy(char ***glyph);
+void		draw_menu(t_data *data);
+
+/* Image */
+
+void		img_put_pixel(t_data *data, unsigned int x, \
+							unsigned int y, t_color color);
+void		img_clear_background(t_data *data, t_color color);
 
 #endif

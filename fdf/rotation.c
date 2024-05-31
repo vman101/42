@@ -6,13 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 18:54:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/24 18:54:59 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/31 12:57:15 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/fdf.h"
+#include "./inc/fdf.h"
 
-void rotate_y(t_map *map, t_point3d *p, float theta)
+void	rotate_y(t_point3d *p, float theta, size_t size)
 {
 	size_t	i;
 	float	new_x;
@@ -23,7 +23,7 @@ void rotate_y(t_map *map, t_point3d *p, float theta)
 	sin_theta = sinf(theta);
 	cos_theta = cosf(theta);
 	i = 0;
-	while (i < map->height * map->width)
+	while (i < size)
 	{
 		new_x = roundf(p[i].x * cos_theta + p[i].z * sin_theta);
 		new_z = roundf(p[i].x * sin_theta - p[i].z * cos_theta);
@@ -33,7 +33,7 @@ void rotate_y(t_map *map, t_point3d *p, float theta)
 	}
 }
 
-void rotate_z(t_map *map, t_point3d *p, float theta)
+void	rotate_z(t_point3d *p, float theta, size_t size)
 {
 	size_t	i;
 	float	new_x;
@@ -44,7 +44,7 @@ void rotate_z(t_map *map, t_point3d *p, float theta)
 	sin_theta = sinf(theta);
 	cos_theta = cosf(theta);
 	i = 0;
-	while (i < map->height * map->width)
+	while (i < size)
 	{
 		new_x = roundf(p[i].x * cos_theta - p[i].y * sin_theta);
 		new_y = roundf(p[i].x * sin_theta + p[i].y * cos_theta);
@@ -54,7 +54,7 @@ void rotate_z(t_map *map, t_point3d *p, float theta)
 	}
 }
 
-void	rotate_x(t_map *map, t_point3d *p, float theta)
+void	rotate_x(t_point3d *p, float theta, size_t size)
 {
 	size_t	i;
 	float	new_y;
@@ -65,7 +65,7 @@ void	rotate_x(t_map *map, t_point3d *p, float theta)
 	sin_theta = sinf(theta);
 	cos_theta = cosf(theta);
 	i = 0;
-	while (i < map->height * map->width)
+	while (i < size)
 	{
 		new_y = roundf(p[i].y * cos_theta + p[i].z * sin_theta);
 		new_z = roundf(p[i].y * sin_theta - p[i].z * cos_theta);
@@ -74,4 +74,3 @@ void	rotate_x(t_map *map, t_point3d *p, float theta)
 		i++;
 	}
 }
-
