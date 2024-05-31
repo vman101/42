@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:17:14 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 20:30:27 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/31 14:19:40 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	file_destroy(void *file_del)
 		return ;
 	if (((t_file *)file_del)->tmp == true)
 		unlink(((t_file *)file_del)->path);
-	ft_close(((t_file *)file_del)->fd, "file_destroy");
+	if (((t_file *)file_del)->fd > 0)
+		ft_close(((t_file *)file_del)->fd, "file_destroy");
 	free(file_del);
 }
 
@@ -52,20 +53,23 @@ t_file	*file_create(char const *path, int flag, int mode)
 
 	if (!path)
 		return (NULL);
-	file_new = malloc(sizeof(*file_new));
+	file_new = ft_calloc(1, sizeof(*file_new));
 	lst_memory(file_new, &file_destroy, ADD);
 	if (ft_strncmp(path, "tmp", ft_strlen(path)) == 0)
 		file_new->tmp = true;
 	else
 		file_new->tmp = false;
 	file_new->fd = open(path, flag, mode);
-	if (file_new->fd == -1 && mode == O_RDONLY)
-		return (p_stderr(STDERR_FILENO, \
-				"pipex: %s: No such file or directory\n", path), \
-				lst_memory(NULL, NULL, CLEAN), NULL);
-	else if (file_new->fd == -1)
-		return (p_stderr(STDERR_FILENO, "pipex: %s: ", path), \
-				perror(""), lst_memory(NULL, NULL, CLEAN), NULL);
+	if (file_new->fd == -1)
+	{
+		if (mode == O_RDONLY)
+			return (p_stderr(STDERR_FILENO, \
+						"pipex: %s: no such file or directory\n", path), \
+					lst_memory(NULL, NULL, CLEAN), NULL);
+		else
+			return (p_stderr(STDERR_FILENO, "pipex: %s: ", path), \
+					perror(""), lst_memory(NULL, NULL, CLEAN), NULL);
+	}
 	file_new->mode = mode;
 	file_new->path = (char *)path;
 	return (file_new);
