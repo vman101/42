@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 17:08:43 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/25 12:05:00 by victor           ###   ########.fr       */
+/*   Created: 2024/05/31 14:45:09 by vvobis            #+#    #+#             */
+/*   Updated: 2024/05/31 18:22:56 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/fdf.h"
+#ifndef PHILO_H
+# define PHILO_H
 
-void	point_print(t_point3d *p)
+# include <stdlib.h>
+# include <pthread.h>
+# include "libft/libft.h"
+
+typedef struct	s_mutex
 {
-	printf("(x: %f y: %f z: %f color: 0x%x)\n", p->x, p->y, p->z, p->color);
-}
+	pthread_mutex_t *mutex;
+	int				*c;
+}				t_mutex;
 
-void	map_print(t_point3d *p, size_t size)	
-{
-	size_t i;
-
-	i = 0;
-	while (i < size)
-	{
-		point_print(&p[i]);
-		i++;
-	}
-}
-
+#endif

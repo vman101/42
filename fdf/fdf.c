@@ -6,27 +6,14 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:39:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 18:39:57 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/31 13:25:22 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/fdf.h"
-#include "inc/mlx.h"
 
-void	update_screen(t_screen *screen, t_map *map)
+int	key_press_handle(int keycode, t_data *data)
 {
-	map->center = map_calc_center(map->p, map->height * map->width);
-	screen->offset_x = (screen->width - map->center.x) / 2;
-	screen->offset_y = (screen->height- map->center.y);
-}
-
-int	key_press(int keycode, t_data *data)
-{
-	if (keycode == XK_Escape)
-	{
-		data_destroy(data);
-		exit (EXIT_SUCCESS);
-	}
 	if (keycode == 'a')
 		data->screen->angle_y -= 0.15;
 	else if (keycode == 'd')
@@ -39,38 +26,59 @@ int	key_press(int keycode, t_data *data)
 		data->screen->angle_z -= 0.15;
 	else if (keycode == 'e')
 		data->screen->angle_z += 0.15;
+	else
+		return (0);
+	return (1);
+}
+
+void	key_press_handle2(int keycode, t_data *data)
+{
+	if (keycode == XK_Up)
+		data->screen->offset_y -= 2 * data->scale;
+	else if (keycode == XK_Right)
+		data->screen->offset_x += 2 * data->scale;
+	else if (keycode == XK_Left)
+		data->screen->offset_x -= 2 * data->scale;
+	else if (keycode == XK_Down)
+		data->screen->offset_y += 2 * data->scale;
+	else if (keycode == '=')
+		data->scale += data->scale / 4;
 	else if (keycode == '-')
-		data->scale -= 2.f;
-	else if (keycode == '+')
-		data->scale += 2.f;
+		data->scale -= data->scale / 4;
+}
+
+int	key_press(int keycode, t_data *data)
+{
+	if (keycode == XK_Escape)
+	{
+		data_destroy(data);
+		exit (EXIT_SUCCESS);
+	}
+	if (!key_press_handle(keycode, data))
+		key_press_handle2(keycode, data);
 	draw_projected(data);
+	draw_menu(data);
 	return (1);
 }
 
-int	print_usage()
+int	main(int argc, char **argv)
 {
-	ft_printf("Wrong Usage!\n\tPlease provide a valid map");
-	ft_printf("(consistent row length and valid values)\n");
-	ft_printf("\tSyntax: \"./fdf example_map.fdf\"\n");
-	return (1);
-}
-
-int	handle_close(t_data *data)
-{
-	data_destroy(data);
-	exit (EXIT_SUCCESS);
-}
-
-int main(int argc, char **argv)
-{
-    t_data		*data;
+	t_data	*data;
+	t_img	img;
 
 	if (argc != 2)
 		exit(print_usage());
 	data = data_create(argv);
+	img.img = mlx_new_image(data->mlx, data->screen->width, \
+			data->screen->height);
+	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
+	data->img = img;
+	data->glyph = glyphs_create("alpha.bit");
+	if (!data->glyph)
+		exit(data_destroy(data));
 	mlx_key_hook(data->win, key_press, data);
 	mlx_hook(data->win, 17, 0, handle_close, data);
 	draw_projected(data);
 	mlx_loop(data->mlx);
-    return (0);
+	return (0);
 }

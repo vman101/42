@@ -6,11 +6,11 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:35:57 by victor            #+#    #+#             */
-/*   Updated: 2024/05/27 18:50:17 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/31 19:25:13 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/fdf.h"
+#include "./inc/fdf.h"
 
 t_point3d	map_calc_center(t_point3d *p, size_t size)
 {
@@ -40,10 +40,9 @@ t_point3d	map_calc_center(t_point3d *p, size_t size)
 	return (center);
 }
 
-
 void	substract_center(t_point3d *center, t_point3d *p, size_t size)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < size)
@@ -55,10 +54,9 @@ void	substract_center(t_point3d *center, t_point3d *p, size_t size)
 	}
 }
 
-
 void	map_copy(t_map *map, t_point3d *p)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < map->width * map->height)
@@ -68,26 +66,19 @@ void	map_copy(t_map *map, t_point3d *p)
 	}
 }
 
-void	map_scale(t_point3d *p, t_screen *screen, float scale, size_t size)
+void	map_scale(t_point3d *p, float scale, size_t size)
 {
-	size_t	i;
-	t_point3d center;
+	size_t		i;
+	t_point3d	center;
 
 	i = 0;
 	while (i < size)
 	{
 		p[i].x *= scale;
 		p[i].y *= scale;
-		p[i].z *= scale;
+		p[i].z *= 10.f;
 		i++;
 	}
 	center = map_calc_center(p, size);
-	i = 0;
-	while (i < size)
-	{
-		p[i].x += screen->offset_x;
-		p[i].y += screen->offset_y;
-		i++;
-	}
 	substract_center(&center, p, size);
 }

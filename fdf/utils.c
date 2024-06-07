@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/20 13:13:25 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/31 12:57:33 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*free_super_split(char ***back)
 
 void	free_split(char **split)
 {
-	char **back;
+	char	**back;
 
 	back = split;
 	while (*back)

@@ -6,13 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:06:48 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 17:49:45 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/05/31 12:57:08 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "inc/fdf.h"
+#include "./inc/fdf.h"
 
-t_point3d point3d_create(float x, float y, float z, t_color color)
+t_point3d	point3d_create(float x, float y, float z, t_color color)
 {
 	t_point3d	p;
 
@@ -20,7 +20,7 @@ t_point3d point3d_create(float x, float y, float z, t_color color)
 	return (p);
 }
 
-static int	get_nb(char c,  char *base)
+static int	get_nb(char c, char *base)
 {
 	int	i;
 
@@ -52,8 +52,7 @@ int	map_atoi(char const *s, int b)
 	while (*tmp && *tmp != '\n')
 	{
 		nb *= b;
-		nb += get_nb(*tmp, base);
-		tmp++;
+		nb += get_nb(*tmp++, base);
 	}
 	if (*s == '-')
 		nb = -nb;
@@ -68,6 +67,8 @@ t_map	*map_create(char const *path)
 
 	map = ft_calloc(1, sizeof(*map));
 	map->height = map_get_rows(path, NULL);
+	if (map->height == 0)
+		return (free(map), NULL);
 	input = ft_calloc(map->height + 1, sizeof(*input));
 	if (!input)
 		return (free(map), NULL);
@@ -80,7 +81,7 @@ t_map	*map_create(char const *path)
 		backup = input;
 		while (input)
 			free_super_split(*input++);
-		return(free(backup), free(map), NULL);
+		return (free(backup), free(map), NULL);
 	}
 	map_points_create(input, map);
 	return (map);
@@ -99,7 +100,8 @@ void	map_points_create(char ****points, t_map *map)
 		x = 0;
 		while (points[y][x])
 		{
-			map->p[i++] = point3d_create(x, y, map_atoi(points[y][x][0], 10), map_atoi(points[y][x][1], 16));
+			map->p[i++] = point3d_create(x, y, map_atoi(points[y][x][0], 10), \
+					map_atoi(points[y][x][1], 16));
 			x++;
 		}
 		y++;
