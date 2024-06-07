@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 16:17:08 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 20:22:08 by victor           ###   ########.fr       */
+/*   Updated: 2024/05/28 08:40:43 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	p_stderr(int stderr_fd, const char *error, const char *specifier)
 
 int	ft_close(int fd, const char *specifier)
 {
+	if (fd == -1)
+		return (0);
 	if (close(fd) == -1)
 	{
 		p_stderr(2, "pipex: %s: ", specifier);
