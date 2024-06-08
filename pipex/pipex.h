@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:48:39 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 20:23:18 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/08 12:11:18 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,13 @@ int		p_stderr(int stderr_fd, const char *error, char const *specifier);
 int		ft_close(int fd, char const *specifier);
 int		ft_closeall(int pipe[2][2]);
 int		print_help(void);
-void	ft_pipe(int pipefd[2]);
-void	ft_fork(pid_t *pid);
+void	ft_pipe(int pipefd[2], char const *specifier);
+void	ft_fork(pid_t *pid, char const *specifier);
+void	ft_dup2(int fd_old, int fd_new, const char *specifier);
 
-pid_t	pipe_in(t_cmd *cmd_in, int pipefd[2], int fd);
+void	pipe_in(t_cmd *cmd_in, int pipefd[2], int fd);
 pid_t	pipe_out(t_cmd *cmd_out, int fd);
-int		wait_pids(pid_t *pids, int pid_count);
+int		wait_pids(pid_t pids, int pid_count);
 
 t_cmd	*command_create(char **input, char **env);
 t_file	*file_create(char const *path, int flag, int mode);

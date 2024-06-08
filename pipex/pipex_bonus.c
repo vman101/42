@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:20:21 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 20:22:25 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/08 12:33:52 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <time.h>
 #include <unistd.h>
 
-t_file	*pipe_here_doc(char *delimiter)
+static t_file	*pipe_here_doc(char *delimiter)
 {
 	char	*buf;
 	t_file	*file;
@@ -40,7 +40,7 @@ t_file	*pipe_here_doc(char *delimiter)
 	return (file);
 }
 
-t_file	*input_setup(char ***argv, int argc, pid_t **pids)
+static t_file	*input_setup(char ***argv, int argc)
 {
 	t_file	*file;
 
@@ -50,29 +50,30 @@ t_file	*input_setup(char ***argv, int argc, pid_t **pids)
 	if (ft_strncmp(*(*argv), "here_doc", ft_strlen(*(*argv))) == 0)
 	{
 		(*argv)++;
+		if (argc < 6)
+			return (p_stderr(2, \
+					"pipex: here_doc: Insufficient arguments! (min = 6)\n", \
+					NULL), lst_memory(NULL, NULL, CLEAN), NULL);
 		file = pipe_here_doc(ft_strjoin(**argv, "\n"));
 	}
 	else
 		file = file_create(*(*argv), O_RDONLY, 0);
-	*pids = malloc(sizeof(*pids) * (argc - 3));
-	lst_memory(*pids, free, ADD);
 	(*argv)++;
 	return (file);
 }
 
-pid_t	pipe_loop(char **argv, char **env)
+static pid_t	pipe_loop(char **argv, char **env)
 {
 	t_cmd	*cmd;
 	int		pipefd[2];
 
 	cmd = command_create((char **)ft_split(*argv, ' '), env);
-	ft_pipe(pipefd);
-	ft_fork(&cmd->cpid);
+	ft_pipe(pipefd, "pipe_loop");
+	ft_fork(&cmd->cpid, "pipe_loop");
 	if (cmd->cpid == 0)
 	{
-		ft_close(pipefd[PIPE_OUT], "pipe_loop child");
-		if (dup2(pipefd[PIPE_IN], 1) == -1)
-			return (perror("dup2"), lst_memory(NULL, NULL, CLEAN), -1);
+		ft_close(pipefd[PIPE_OUT], "pipe_loop_child");
+		ft_dup2(pipefd[PIPE_IN], 1, "pipe_loop_child");
 		execve(cmd->path_absolute, cmd->argv, cmd->env);
 		perror("execve");
 		lst_memory(NULL, NULL, CLEAN);
@@ -80,8 +81,7 @@ pid_t	pipe_loop(char **argv, char **env)
 	else
 	{
 		ft_close(pipefd[PIPE_IN], "pipe_loop_parent");
-		if (dup2(pipefd[PIPE_OUT], 0) == -1)
-			return (perror("dup2"), lst_memory(NULL, NULL, CLEAN), -1);
+		ft_dup2(pipefd[PIPE_OUT], 0, "pipe_loop_parent");
 		ft_close(pipefd[PIPE_OUT], "pipe_loop_parent");
 	}
 	return (cmd->cpid);
@@ -91,21 +91,20 @@ int	main(int argc, char **argv, char **env)
 {
 	t_cmd	*cmd;
 	t_file	*file;
-	pid_t	*pids;
+	pid_t	pid_final;
 	int		pipefd[2];
 	int		i;
 
 	i = 0;
-	pids = NULL;
-	file = input_setup(&argv, argc, &pids);
-	pipe(pipefd);
+	file = input_setup(&argv, argc);
+	ft_pipe(pipefd, "in main");
 	cmd = command_create((char **)ft_split(*argv++, ' '), env);
-	pids[i++] = pipe_in(cmd, pipefd, file->fd);
+	pipe_in(cmd, pipefd, file->fd);
 	while (*(argv + 2))
-		pids[i++] = pipe_loop(argv++, env);
+		pipe_loop(argv++, env);
 	cmd = command_create((char **)ft_split(*argv++, ' '), env);
 	file = file_create(*argv, O_WRONLY | O_CREAT, 0644);
-	pids[i] = pipe_out(cmd, file->fd);
-	wait_pids(pids, i);
+	pid_final = pipe_out(cmd, file->fd);
 	lst_memory(NULL, NULL, END);
+	return (wait_pids(pid_final, i));
 }

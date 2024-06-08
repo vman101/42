@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:18:42 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/31 14:07:59 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/08 12:15:42 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	free_split(void *back)
 	return ;
 }
 
-int	find_longest_path(char *path)
+static int	find_longest_path(char *path)
 {
 	int	i;
 	int	ret;
@@ -51,16 +51,17 @@ int	find_longest_path(char *path)
 	return (ret);
 }
 
-char	*print_error(char *input, char *path_err)
+static char	*print_error(char *input)
 {
 	if (input && ft_strchr(input, '/'))
 	{
 		if (access(input, F_OK) == 0)
 		{
 			if (access(input, X_OK) == 0)
-				return (free(path_err), input);
+				return (input);
 			else
-				p_stderr(STDERR_FILENO, "pipex: %s: permission denied\n", input);
+				p_stderr(STDERR_FILENO, "pipex: %s: permission denied\n", \
+						input);
 		}
 		else
 			p_stderr(STDERR_FILENO, "pipex: %s: no such file or directory\n", \
@@ -68,31 +69,26 @@ char	*print_error(char *input, char *path_err)
 	}
 	else
 		p_stderr(STDERR_FILENO, "pipex: %s: command not found\n", input);
-	free(path_err);
-	return (path_err = NULL);
+	return (NULL);
 }
 
-char	*check_paths(char *path, char *path_abs, char *input)
+static char	*check_paths(char *path, char *path_abs, char *input)
 {
-	char	*path_err;
-
-	path_err = NULL;
-	while (path && !ft_strchr(input, '/'))
+	while (path)
 	{
 		ft_strlcpy(path_abs, path, ft_strchr(path, ':') - path + 1);
 		ft_strlcat(path_abs, "/", ft_strlen(path_abs) + 2);
 		ft_strlcat(path_abs, input, ft_strlen(input) + ft_strlen(path_abs) + 1);
 		if (access(path_abs, F_OK) == 0)
 		{
-			path_err = ft_strdup(path_abs);
 			if (access(path_abs, X_OK) == 0)
-				return (free(path_err), path_abs);
+				return (path_abs);
 		}
 		path = ft_strchr(path, ':');
 		if (path)
 			path++;
 	}
-	return (print_error(input, path_err));
+	return (print_error(input));
 }
 
 char	*find_absolute_path(char **env, char *input)
@@ -102,6 +98,8 @@ char	*find_absolute_path(char **env, char *input)
 	int		i;
 
 	i = 0;
+	if (ft_strchr(input, '/'))
+		return (print_error(input));
 	path = NULL;
 	while (!path)
 		path = ft_strnstr(env[i++], "PATH=", ft_strlen("PATH="));

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 16:17:08 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/28 08:40:43 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/08 12:10:16 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	lst_memory(void *mem, void (*del)(void *c), int mode)
 	if (mode == CLEAN)
 		return (lst_list_clean(&list), exit(EXIT_FAILURE));
 	if (mode == END)
-		return (lst_list_clean(&list), exit(EXIT_SUCCESS));
+		return (lst_list_clean(&list));
 	if (mode == FREE)
 		return (lst_node_del_clean(&list, mem));
 	if (!mem)
@@ -46,39 +46,14 @@ int	p_stderr(int stderr_fd, const char *error, const char *specifier)
 		return (perror("dup2"), close(old_stdout), -1);
 	count = ft_printf(error, specifier);
 	if (dup2(old_stdout, STDOUT_FILENO) == -1)
-		return (perror("dup2"), close(old_stdout));
+		return (perror("dup2"), close(old_stdout), -1);
 	close(old_stdout);
 	return (count);
 }
 
-int	ft_close(int fd, const char *specifier)
+int	print_help(void)
 {
-	if (fd == -1)
-		return (0);
-	if (close(fd) == -1)
-	{
-		p_stderr(2, "pipex: %s: ", specifier);
-		perror("close");
-		return (0);
-	}
-	return (1);
-}
-
-void	ft_pipe(int pipefd[2])
-{
-	if (pipe(pipefd) == -1)
-	{
-		perror("pipe");
-		lst_memory(NULL, NULL, CLEAN);
-	}
-}
-
-void	ft_fork(pid_t *pid)
-{
-	*pid = fork();
-	if (*pid == -1)
-	{
-		perror("fork");
-		lst_memory(NULL, NULL, CLEAN);
-	}
+	p_stderr(2, "Invalid arguments!\n", NULL);
+	p_stderr(2, "\nUsage: ./pipex file_in cmd1 cmd2 file_out\n", NULL);
+	return (-1);
 }

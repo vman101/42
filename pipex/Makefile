@@ -8,9 +8,9 @@ CFLAGS := -Wall -Werror -Wextra -g
 
 LIBS := libft/libft.a
 
-SRC := pipex.c list.c input.c commands.c pipe.c error.c 
+SRC := pipex.c list.c input.c commands.c pipe.c error.c fts.c
 
-BONSRC := pipex_bonus.c list.c input.c commands.c pipe.c error.c 
+BONSRC := pipex_bonus.c list.c input.c commands.c pipe.c error.c fts.c
 
 OBJ := $(SRC:%.c=%.o)
 

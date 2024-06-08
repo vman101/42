@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:17:14 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/31 14:19:40 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/08 12:36:04 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ t_cmd	*command_create(char **input, char **env)
 	t_cmd	*cmd_new;
 
 	if (!input || !*input)
-		return (lst_memory(NULL, NULL, CLEAN), NULL);
+		return (p_stderr(2, "pipex: Invalid cmd input\n", NULL), \
+				lst_memory(NULL, NULL, CLEAN), NULL);
 	lst_memory(input, &free_split, ADD);
 	cmd_new = ft_calloc(1, sizeof(*cmd_new));
 	lst_memory(cmd_new, &command_destroy, ADD);
@@ -52,7 +53,8 @@ t_file	*file_create(char const *path, int flag, int mode)
 	t_file	*file_new;
 
 	if (!path)
-		return (NULL);
+		return (p_stderr(2, "pipex: Invalid argv pointer!\n", NULL), \
+				lst_memory(NULL, NULL, CLEAN), NULL);
 	file_new = ft_calloc(1, sizeof(*file_new));
 	lst_memory(file_new, &file_destroy, ADD);
 	if (ft_strncmp(path, "tmp", ft_strlen(path)) == 0)
@@ -64,20 +66,13 @@ t_file	*file_create(char const *path, int flag, int mode)
 	{
 		if (mode == O_RDONLY)
 			return (p_stderr(STDERR_FILENO, \
-						"pipex: %s: no such file or directory\n", path), \
+					"pipex: %s: no such file or directory\n", path), \
 					lst_memory(NULL, NULL, CLEAN), NULL);
 		else
 			return (p_stderr(STDERR_FILENO, "pipex: %s: ", path), \
-					perror(""), lst_memory(NULL, NULL, CLEAN), NULL);
+					perror("open"), lst_memory(NULL, NULL, CLEAN), NULL);
 	}
 	file_new->mode = mode;
 	file_new->path = (char *)path;
 	return (file_new);
-}
-
-int	print_help(void)
-{
-	ft_printf("Invalid arguments!\n");
-	ft_printf("\nUsage: ./pipex file_in cmd1 cmd2 file_out\n");
-	return (-1);
 }
