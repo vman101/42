@@ -6,12 +6,11 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 20:36:24 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/08 12:43:18 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/09 16:53:18 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <stdlib.h>
 
 void	pipe_in(t_cmd *cmd_in, int pipefd[2], int fd)
 {
@@ -66,5 +65,5 @@ int	wait_pids(pid_t pids_final, int pid_count)
 			status = status_test;
 		i++;
 	}
-	return (status);
+	return (WEXITSTATUS(status));
 }

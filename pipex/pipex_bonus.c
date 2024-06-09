@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:20:21 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/08 12:33:52 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/09 16:53:25 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,28 @@ static t_file	*pipe_here_doc(char *delimiter)
 	return (file);
 }
 
-static t_file	*input_setup(char ***argv, int argc)
+static t_file	*input_setup(char ***argv, int *argc)
 {
 	t_file	*file;
 
-	if (argc < 5)
+	if (*argc < 5)
 		exit(print_help());
 	(*argv)++;
 	if (ft_strncmp(*(*argv), "here_doc", ft_strlen(*(*argv))) == 0)
 	{
 		(*argv)++;
-		if (argc < 6)
+		if (*argc < 6)
 			return (p_stderr(2, \
 					"pipex: here_doc: Insufficient arguments! (min = 6)\n", \
 					NULL), lst_memory(NULL, NULL, CLEAN), NULL);
+		*argc -= 4;
 		file = pipe_here_doc(ft_strjoin(**argv, "\n"));
 	}
 	else
+	{
 		file = file_create(*(*argv), O_RDONLY, 0);
+		*argc -= 3;
+	}
 	(*argv)++;
 	return (file);
 }
@@ -93,10 +97,8 @@ int	main(int argc, char **argv, char **env)
 	t_file	*file;
 	pid_t	pid_final;
 	int		pipefd[2];
-	int		i;
 
-	i = 0;
-	file = input_setup(&argv, argc);
+	file = input_setup(&argv, &argc);
 	ft_pipe(pipefd, "in main");
 	cmd = command_create((char **)ft_split(*argv++, ' '), env);
 	pipe_in(cmd, pipefd, file->fd);
@@ -106,5 +108,5 @@ int	main(int argc, char **argv, char **env)
 	file = file_create(*argv, O_WRONLY | O_CREAT, 0644);
 	pid_final = pipe_out(cmd, file->fd);
 	lst_memory(NULL, NULL, END);
-	return (wait_pids(pid_final, i));
+	return (wait_pids(pid_final, argc));
 }
