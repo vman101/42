@@ -6,11 +6,10 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 14:44:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/09 17:15:52 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/11 12:51:35 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "swap.h"
 
 void	pb(t_node **head_a, t_node **head_b)

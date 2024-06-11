@@ -6,12 +6,11 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:44:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/14 11:36:53 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/11 12:51:35 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "swap.h"
-#include <limits.h>
 
 t_node	*lst_node_new(long value, int index)
 {

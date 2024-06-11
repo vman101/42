@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:17:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/09 17:29:41 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/11 12:50:33 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 # define SWAP_H
 
-# include "printf/ft_printf.h"
 # include "libft/libft.h"
 # include <stdbool.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <stddef.h>
+# include <limits.h>
 
 typedef int		t_enum_memb;
 typedef struct s_node
