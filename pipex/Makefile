@@ -4,7 +4,7 @@ BONNAME := pipex_bonus
 
 CC := cc
 
-CFLAGS := -Wall -Werror -Wextra -g
+CFLAGS := -Wall -Werror -Wextra
 
 LIBS := libft/libft.a
 

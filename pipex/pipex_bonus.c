@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:20:21 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/09 16:53:25 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/11 09:47:03 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static t_file	*pipe_here_doc(char *delimiter)
 	}
 	get_next_line(-1);
 	ft_close(file->fd, "here_doc");
-	file->fd = open("tmp", O_RDONLY);
+	ft_open(&file->fd, "tmp", O_RDONLY, -1);
 	free(buf);
 	free(delimiter);
 	return (file);

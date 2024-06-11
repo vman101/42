@@ -6,7 +6,7 @@
 /*   By: victor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 12:07:59 by victor            #+#    #+#             */
-/*   Updated: 2024/06/11 09:45:09 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/11 09:58:26 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_fork(pid_t *pid, const char *specifier)
 	}
 }
 
-void ft_open(int *fd, const char *path, int flag, int mode)
+void	ft_open(int *fd, const char *path, int flag, int mode)
 {
 	if (mode > 0)
 		*fd = open(path, flag, mode);

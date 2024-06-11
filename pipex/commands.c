@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:17:14 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/08 12:36:04 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/11 09:46:12 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_file	*file_create(char const *path, int flag, int mode)
 		file_new->tmp = true;
 	else
 		file_new->tmp = false;
-	file_new->fd = open(path, flag, mode);
+	ft_open(&file_new->fd, path, flag, mode);
 	if (file_new->fd == -1)
 	{
 		if (mode == O_RDONLY)
