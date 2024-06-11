@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:35:57 by victor            #+#    #+#             */
-/*   Updated: 2024/05/31 19:25:13 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/11 23:31:15 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	substract_center(t_point3d *center, t_point3d *p, size_t size)
 	{
 		p[i].x -= center->x / 2;
 		p[i].y -= center->y / 2;
-		p[i].z -= center->z / 2;
 		i++;
 	}
 }
@@ -66,7 +65,7 @@ void	map_copy(t_map *map, t_point3d *p)
 	}
 }
 
-void	map_scale(t_point3d *p, float scale, size_t size)
+void	map_scale(t_point3d *p, t_data *data, size_t size)
 {
 	size_t		i;
 	t_point3d	center;
@@ -74,9 +73,8 @@ void	map_scale(t_point3d *p, float scale, size_t size)
 	i = 0;
 	while (i < size)
 	{
-		p[i].x *= scale;
-		p[i].y *= scale;
-		p[i].z *= 10.f;
+		p[i].x *= data->scale_x;
+		p[i].y *= data->scale_x;
 		i++;
 	}
 	center = map_calc_center(p, size);

@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:36 by victor            #+#    #+#             */
-/*   Updated: 2024/05/31 13:28:23 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/11 23:40:14 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <math.h>
+# include <stdbool.h>
 
 # define MAX_WIDTH 1200
 # define MAX_HEIGHT 900
@@ -82,12 +83,14 @@ typedef struct s_data
 	t_screen	*screen;
 	size_t		size;
 	char		***glyph;
-	float		scale;
+	float		scale_x;
+	float		scale_y;
+	float		scale_z;
 }				t_data;
 
 /* Setup */
 
-t_screen	*screen_create(t_map *map, float scale);
+t_screen	*screen_create(t_map *map, t_data *data);
 t_data		*data_create(char **argv);
 int			data_destroy(t_data *data);
 void		destroy_points(char ****points, int i);
@@ -95,9 +98,8 @@ void		destroy_points(char ****points, int i);
 /* Map Creation */
 
 int			get_split_len(char **split);
-int			get_row_len(char const ***row);
+int			get_row_len(char const ****row);
 int			map_get_rows(char const *path, char ****row);
-int			map_atoi(char const *s, int b);
 t_map		*map_create(char const *path);
 void		map_points_create(char ****points, t_map *map);
 t_point3d	point3d_create(float x, float y, float z, t_color color);
@@ -112,18 +114,19 @@ int			handle_close(t_data *data);
 /* Rotation */
 
 void		rotate_x(t_point3d *p, float theta, size_t size);
-void		rotate_z(t_point3d *p, float theta, size_t size);
 void		rotate_y(t_point3d *p, float theta, size_t size);
+void		rotate_z(t_point3d *p, float theta, size_t size);
 t_point3d	map_calc_center(t_point3d *p, size_t size);
 void		substract_center(t_point3d *p, t_point3d *center, size_t size);
 void		map_copy(t_map *map, t_point3d *p);
-void		map_scale(t_point3d *p, float scale, size_t size);
+void		map_scale(t_point3d *p, t_data *data, size_t size);
 
 /* Drawing */
 
 void		draw_projected(t_data *data);
 void		draw_line(t_data *data, t_point3d *begin, t_point3d *end);
 void		draw_point(t_data *data, t_point3d *point, t_color color);
+t_color		line_color(t_color s, t_color e, float ratio);
 
 /* Glyphs */
 char		**get_glyph(int fd);

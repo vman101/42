@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:08:54 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/31 19:19:42 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/12 00:03:24 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	draw_point(t_data *data, t_point3d *point, t_color color)
 			data->screen->offset_y + point->y, color);
 }
 
-static t_color	line_color(t_color s, t_color e, float ratio)
+t_color	line_color(t_color s, t_color e, float ratio)
 {
 	t_color			c;
 	unsigned char	sc;
 	unsigned char	ec;
-	unsigned char	inter_c;
+	int				inter_c;
 	int				bit_shift;
 
 	bit_shift = 0;

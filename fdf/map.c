@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:02:02 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/31 12:57:03 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/11 23:41:18 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,24 @@ int	get_split_len(char **split)
 	return (i);
 }
 
-int	get_row_len(char const ***row)
+int	get_row_len(char const ****row)
 {
 	int	i;
+	int	j;
+	int	size;
 
-	i = 0;
-	while (row[i])
-		i++;
-	return (i);
+	j = 0;
+	size = 0;
+	while (row[j])
+	{
+		i = 0;
+		while (row[j][i])
+			i++;
+		if (i > size)
+			size = i;
+		j++;
+	}
+	return (size);
 }
 
 void	destroy_points(char ****points, int i)

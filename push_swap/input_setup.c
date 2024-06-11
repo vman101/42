@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:37:56 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/14 11:34:53 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/11 21:48:40 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	input_sort_three(t_node **stack_a, void (**op)(t_node **, t_node **))
 	int	b;
 	int	c;
 
+	if ((*stack_a)->size == 2)
+		return (op[SA](stack_a, NULL), lst_check_sort(*stack_a, 0));
 	a = *(int *)(*stack_a);
 	b = *(int *)((*stack_a)->next);
 	c = *(int *)((*stack_a)->next->next);
@@ -73,7 +75,7 @@ int	redundancy_check(t_node *stack_a)
 		tmp = stack_a->next;
 		while (tmp)
 		{
-			if (tmp->value == stack_a->value)
+			if (tmp->value == stack_a->value || tmp->value == -1)
 			{
 				ft_putstr_fd("Error\n", 2);
 				return (0);

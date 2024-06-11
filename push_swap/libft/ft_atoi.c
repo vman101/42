@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 10:49:04 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/20 12:59:47 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/11 21:52:20 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_space(char const c)
 
 int	ft_atoi(char const *s)
 {
-	int			nb;
+	long		nb;
 	char const	*tmp;
 
 	nb = 0;
@@ -34,9 +34,13 @@ int	ft_atoi(char const *s)
 	{
 		nb *= 10;
 		nb += (*tmp - '0');
+		if (nb > INT_MAX)
+			return (-1);
 		tmp++;
 	}
 	if (*s == '-')
 		nb = -nb;
+	if (nb < INT_MIN)
+		return (-1);
 	return (nb);
 }

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 23:04:36 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/31 12:56:50 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/12 00:04:50 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	draw_projected(t_data *data)
 	size_t	j;
 
 	map_copy(data->map, data->p);
-	map_scale(data->p, data->scale, \
+	map_scale(data->p, data, \
 			data->map->height * data->map->width);
 	rotate_z(data->p, data->screen->angle_z, data->size);
 	rotate_y(data->p, data->screen->angle_y, data->size);
@@ -55,7 +55,6 @@ void	draw_projected(t_data *data)
 						&data->p[j + data->map->width * (i + 1)]);
 		}
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 }
 
 void	img_put_pixel(t_data *data, unsigned int x, \
