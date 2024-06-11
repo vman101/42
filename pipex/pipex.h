@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:48:39 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/09 16:52:53 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/11 09:44:25 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,13 @@ void	free_split(void *back);
 
 void	lst_memory(void *mem, void (*del)(void *c), int mode);
 int		p_stderr(int stderr_fd, const char *error, char const *specifier);
-int		ft_close(int fd, char const *specifier);
-int		ft_closeall(int pipe[2][2]);
 int		print_help(void);
+
 void	ft_pipe(int pipefd[2], char const *specifier);
 void	ft_fork(pid_t *pid, char const *specifier);
+int		ft_close(int fd, char const *specifier);
 void	ft_dup2(int fd_old, int fd_new, const char *specifier);
+void	ft_open(int *fd, const char *path, int flag, int mode);
 
 void	pipe_in(t_cmd *cmd_in, int pipefd[2], int fd);
 pid_t	pipe_out(t_cmd *cmd_out, int fd);

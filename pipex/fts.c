@@ -6,7 +6,7 @@
 /*   By: victor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 12:07:59 by victor            #+#    #+#             */
-/*   Updated: 2024/06/08 12:08:26 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/11 09:45:09 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,24 @@ void	ft_dup2(int fd_old, int fd_new, const char *specifier)
 
 void	ft_fork(pid_t *pid, const char *specifier)
 {
-	if (!pid)
+	*pid = fork();
+	if (*pid == -1)
 	{
-		p_stderr(2, "Invalid pointer ft_fork: %s", specifier);
+		p_stderr(2, "pipex: %s: ", specifier);
+		perror("fork");
 		lst_memory(NULL, NULL, CLEAN);
 	}
+}
+
+void ft_open(int *fd, const char *path, int flag, int mode)
+{
+	if (mode > 0)
+		*fd = open(path, flag, mode);
 	else
+		*fd = open(path, flag);
+	if (*fd == -1)
 	{
-		*pid = fork();
-		if (*pid == -1)
-		{
-			p_stderr(2, "pipex: %s: ", specifier);
-			perror("fork");
-			lst_memory(NULL, NULL, CLEAN);
-		}
+		perror("open");
+		p_stderr(2, "file: %s\n", path);
 	}
 }
