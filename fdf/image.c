@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 23:04:36 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/12 00:04:50 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/12 18:01:59 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,23 @@ void	img_clear_background(t_data *data, t_color color)
 	}
 }
 
-void	draw_projected(t_data *data)
+static void map_update(t_data *data)
 {
-	size_t	i;
-	size_t	j;
-
 	map_copy(data->map, data->p);
 	map_scale(data->p, data, \
 			data->map->height * data->map->width);
 	rotate_z(data->p, data->screen->angle_z, data->size);
 	rotate_y(data->p, data->screen->angle_y, data->size);
 	rotate_x(data->p, data->screen->angle_x, data->size);
+}
+
+void	draw_projected(t_data *data)
+{
+	size_t	i;
+	size_t	j;
+
 	i = -1;
+	map_update(data);
 	img_clear_background(data, 0x000000);
 	while (data->map->height > ++i)
 	{
@@ -53,6 +58,9 @@ void	draw_projected(t_data *data)
 			if (i + 1 < data->map->height)
 				draw_line(data, &data->p[j + data->map->width * i], \
 						&data->p[j + data->map->width * (i + 1)]);
+			if (j + 1 < data->map->width && i + 1 < data->map->height && data->map->colorized == true)
+				draw_line(data, &data->p[j + data->map->width * i], \
+						&data->p[(j + 1) + data->map->width * (i + 1)]);
 		}
 	}
 }

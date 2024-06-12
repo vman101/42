@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:36 by victor            #+#    #+#             */
-/*   Updated: 2024/06/11 23:40:14 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/12 17:56:05 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_map
 	t_point3d	center;
 	size_t		width;
 	size_t		height;
+	bool		colorized;
 }				t_map;
 
 typedef struct s_screen
@@ -83,14 +84,12 @@ typedef struct s_data
 	t_screen	*screen;
 	size_t		size;
 	char		***glyph;
-	float		scale_x;
-	float		scale_y;
+	float		scale;
 	float		scale_z;
 }				t_data;
 
 /* Setup */
 
-t_screen	*screen_create(t_map *map, t_data *data);
 t_data		*data_create(char **argv);
 int			data_destroy(t_data *data);
 void		destroy_points(char ****points, int i);

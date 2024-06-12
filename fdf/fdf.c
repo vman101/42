@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:39:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/12 00:05:13 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/12 18:11:37 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,23 @@ int	key_press_handle(int keycode, t_data *data)
 void	key_press_handle2(int keycode, t_data *data)
 {
 	if (keycode == XK_Up)
-		data->screen->offset_y -= 2 * data->scale_y;
+		data->screen->offset_y -= 2 * data->scale;
 	else if (keycode == XK_Right)
-		data->screen->offset_x += 2 * data->scale_x;
+		data->screen->offset_x += 2 * data->scale;
 	else if (keycode == XK_Left)
-		data->screen->offset_x -= 2 * data->scale_x;
+		data->screen->offset_x -= 2 * data->scale;
 	else if (keycode == XK_Down)
-		data->screen->offset_y += 2 * data->scale_y;
+		data->screen->offset_y += 2 * data->scale;
 	else if (keycode == '=')
 	{
-		data->scale_x += data->scale_x / 4;
-		data->scale_y += data->scale_y / 4;
+		data->scale += data->scale / 4;
+		data->scale += data->scale / 4;
 		data->scale_z += data->scale_z / 4;
 	}
 	else if (keycode == '-')
 	{
-		data->scale_x -= data->scale_x / 4;
-		data->scale_y -= data->scale_y / 4;
+		data->scale -= data->scale / 4;
+		data->scale -= data->scale / 4;
 		data->scale_z -= data->scale_z / 4;
 	}
 }
@@ -89,6 +89,7 @@ int	main(int argc, char **argv)
 	mlx_hook(data->win, 17, 0, handle_close, data);
 	draw_projected(data);
 	draw_menu(data);
+	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	mlx_loop(data->mlx);
 	return (0);
 }

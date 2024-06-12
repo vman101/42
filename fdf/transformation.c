@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:35:57 by victor            #+#    #+#             */
-/*   Updated: 2024/06/11 23:31:15 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/12 17:46:37 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ void	map_scale(t_point3d *p, t_data *data, size_t size)
 	i = 0;
 	while (i < size)
 	{
-		p[i].x *= data->scale_x;
-		p[i].y *= data->scale_x;
+		p[i].x *= data->scale;
+		p[i].y *= data->scale;
+		p[i].z *= data->scale_z;
 		i++;
 	}
 	center = map_calc_center(p, size);

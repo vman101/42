@@ -6,28 +6,28 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:36:53 by victor            #+#    #+#             */
-/*   Updated: 2024/06/11 23:57:24 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/12 18:08:42 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/fdf.h"
 
-t_screen	*screen_create(t_map *map, t_data *data)
+static t_screen	*screen_create(t_map *map, float scale)
 {
 	t_screen	*tmp;
 
 	tmp = malloc(sizeof(*tmp));
 	if (!tmp)
 		return (NULL);
-	tmp->width = ((float)(map->width) * data->scale_x) * 2;
+	tmp->width = scale * (float)(map->width);
 	if (tmp->width > 1920)
 		tmp->width = 1920;
-	tmp->height = ((float)(map->height) * data->scale_y) * 2;
+	tmp->height = scale * (float)(map->height);
 	if (tmp->height > 1080)
 		tmp->height = 1080;
 	tmp->angle_x = 30 * M_PI / 180;
-	tmp->angle_y = 120 * M_PI / 180;
-	tmp->angle_z = 90 * M_PI / 180;
+	tmp->angle_y = 150 * M_PI / 180;
+	tmp->angle_z = 30 * M_PI / 180;
 	tmp->offset_x = (tmp->width) / 2.f;
 	tmp->offset_y = (tmp->height) / 2.f;
 	return (tmp);
@@ -43,10 +43,11 @@ t_data	*data_create(char **argv)
 	tmp->map = map_create(argv[1]);
 	if (!tmp->map)
 		exit(data_destroy(tmp));
-	tmp->scale_x = (((float)MAX_WIDTH) / (float)(tmp->map->width)) / 2;
-	tmp->scale_y = (((float)MAX_HEIGHT) / (float)(tmp->map->height)) / 2;
-	tmp->scale_z = 1.0f;
-	tmp->screen = screen_create(tmp->map, tmp);
+	tmp->scale = (float)MAX_WIDTH / tmp->map->width;
+	tmp->scale = fmin(tmp->scale, (float)MAX_HEIGHT / tmp->map->height);
+	tmp->screen = screen_create(tmp->map, tmp->scale);
+	tmp->scale_z = ((float)tmp->map->width / tmp->map->height) * 1.5f;
+	tmp->scale /= 1.5f;
 	if (!tmp->screen)
 		exit(data_destroy(tmp));
 	tmp->mlx = mlx_init();
