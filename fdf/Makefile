@@ -1,7 +1,6 @@
 CC := cc
 
-CFLAGS := -Wall -Wextra -Werror -g3 
-#-fsanitize=leak,address,undefined
+CFLAGS := -Wall -Wextra -Werror -g3 -fsanitize=leak,address,undefined
 
 LINK := -lXext -lX11 -lm -lmlx
 
@@ -28,6 +27,7 @@ $(LIBS):
 clean:
 	rm -f $(OBJ)
 	rm -f $(LIBS)
+	make fclean -C libft
 
 fclean: clean
 	rm -f $(NAME)

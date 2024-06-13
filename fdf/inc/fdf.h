@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:36 by victor            #+#    #+#             */
-/*   Updated: 2024/06/13 13:23:01 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/13 15:25:26 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FDF_H
 
 # include <unistd.h>
-# include "ft_printf.h"
 # include "../libft/libft.h"
 # include <mlx.h>
 # include <X11/keysym.h>

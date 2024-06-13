@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 23:43:36 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/13 13:41:50 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/13 15:28:43 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stddef.h>
 # include <stdint.h>
 # include <limits.h>
+# include "ft_printf.h"
 
 typedef struct s_list
 {
