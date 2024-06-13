@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:36:53 by victor            #+#    #+#             */
-/*   Updated: 2024/06/12 18:08:42 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/13 12:22:33 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ t_data	*data_create(char **argv)
 	tmp->map = map_create(argv[1]);
 	if (!tmp->map)
 		exit(data_destroy(tmp));
-	tmp->scale = (float)MAX_WIDTH / tmp->map->width;
-	tmp->scale = fmin(tmp->scale, (float)MAX_HEIGHT / tmp->map->height);
+	tmp->scale = (float)MAX_WIDTH / tmp->map->height;
+	tmp->scale = fmin(tmp->scale, (float)MAX_HEIGHT / tmp->map->width);
 	tmp->screen = screen_create(tmp->map, tmp->scale);
 	tmp->scale_z = ((float)tmp->map->width / tmp->map->height) * 1.5f;
 	tmp->scale /= 1.5f;

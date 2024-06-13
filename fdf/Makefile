@@ -1,7 +1,6 @@
 CC := cc
 
-CFLAGS := -Wall -Wextra -Werror -g3 
-#-fsanitize=leak,address,undefined
+CFLAGS := -Wall -Wextra -Werror -g3 -fsanitize=leak,address,undefined
 
 LINK := -lXext -lX11 -lm -lmlx
 
@@ -23,6 +22,7 @@ $(NAME): $(OBJ) $(LIBS)
 
 $(LIBS):
 	make bonus -C libft
+	mv libft/libft.a libs/
 
 clean:
 	rm -f $(OBJ)

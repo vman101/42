@@ -28,10 +28,10 @@
 # include <stdint.h>
 
 char	*get_next_line(int fd);
-char	*ft_strjoin(char const *s1, char const *s2);
-void	*ft_calloc(size_t n, size_t s);
-size_t	ft_strlen(char const *str);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*g_strjoin(char const *s1, char const *s2);
+size_t	g_strlen(char const *str);
+void	*g_calloc(size_t n, size_t s);
+char	*g_substr(char const *s, unsigned int start, size_t len);
 char	*line_handle(char **buf_fetch);
 size_t	find_newline(char *buf);
 

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:39:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/12 18:11:37 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/13 12:28:11 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	key_press(int keycode, t_data *data)
 	}
 	if (!key_press_handle(keycode, data))
 		key_press_handle2(keycode, data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	draw_projected(data);
+	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	draw_menu(data);
 	return (1);
 }
@@ -85,11 +85,11 @@ int	main(int argc, char **argv)
 	data->glyph = glyphs_create("alpha.bit");
 	if (!data->glyph)
 		exit(data_destroy(data));
+	draw_projected(data);
+	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
+	draw_menu(data);
 	mlx_key_hook(data->win, key_press, data);
 	mlx_hook(data->win, 17, 0, handle_close, data);
-	draw_projected(data);
-	draw_menu(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	mlx_loop(data->mlx);
 	return (0);
 }

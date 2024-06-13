@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:35:57 by victor            #+#    #+#             */
-/*   Updated: 2024/06/12 17:46:37 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/13 11:41:46 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,6 @@ void	map_scale(t_point3d *p, t_data *data, size_t size)
 		i++;
 	}
 	center = map_calc_center(p, size);
-	substract_center(&center, p, size);
+	if (center.x > 0 && center.y > 0)
+		substract_center(&center, p, size);
 }

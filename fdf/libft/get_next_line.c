@@ -18,7 +18,7 @@ void	*buffer_extend(void *ptr_old, size_t size_new, size_t size_old)
 	void	*ptr_back;
 	void	*ptr_old_free;
 
-	ptr_new = ft_calloc(size_new + 1, 1);
+	ptr_new = g_calloc(size_new + 1, 1);
 	if (!ptr_new)
 		return (free(ptr_old), ptr_old = NULL, NULL);
 	ptr_back = ptr_new;
@@ -37,7 +37,7 @@ char	*handle_no_nl(char **buf, char **left)
 	}
 	if (!buf)
 		return (NULL);
-	if (ft_strlen(*buf))
+	if (g_strlen(*buf))
 		return (*buf);
 	free(*buf);
 	*buf = NULL;
@@ -48,10 +48,10 @@ char	*line_extract(char **buf_joined, char **left, size_t line_len)
 {
 	char	*line;
 
-	line = ft_substr(*buf_joined, 0, line_len);
+	line = g_substr(*buf_joined, 0, line_len);
 	if (!line)
 		return (free(*buf_joined), *buf_joined = NULL, NULL);
-	*left = ft_substr(*buf_joined, line_len, ft_strlen(*buf_joined) - line_len);
+	*left = g_substr(*buf_joined, line_len, g_strlen(*buf_joined) - line_len);
 	free(*buf_joined);
 	*buf_joined = NULL;
 	if (!*left)
@@ -67,7 +67,7 @@ char	*line_handle(char **buf_fetch)
 
 	if (!buf_fetch)
 		return (free(left), NULL);
-	buf_joined = ft_strjoin(left, *buf_fetch);
+	buf_joined = g_strjoin(left, *buf_fetch);
 	free(*buf_fetch);
 	*buf_fetch = NULL;
 	free(left);
@@ -89,7 +89,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0)
 		return (line_handle(NULL), NULL);
-	buf = ft_calloc(sizeof(*buf), BUFFER_SIZE + 1);
+	buf = g_calloc(sizeof(*buf), BUFFER_SIZE + 1);
 	buf_size_prev = 0;
 	buf_size_cur = BUFFER_SIZE;
 	while (1)

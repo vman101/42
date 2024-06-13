@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char const *str)
+size_t	g_strlen(char const *str)
 {
 	size_t	i;
 
@@ -44,7 +44,7 @@ size_t	find_newline(char *buf)
 	return (0);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*g_strjoin(char const *s1, char const *s2)
 {
 	char			*tmp;
 	unsigned int	i;
@@ -53,8 +53,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s2)
 		return (NULL);
 	if (!s1)
-		return (ft_substr(s2, 0, ft_strlen(s2)));
-	tmp = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(*tmp));
+		return (g_substr(s2, 0, g_strlen(s2)));
+	tmp = g_calloc(g_strlen(s1) + g_strlen(s2) + 1, sizeof(*tmp));
 	if (!tmp)
 		return (NULL);
 	i = 0;
@@ -73,13 +73,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (tmp);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*g_substr(char const *s, unsigned int start, size_t len)
 {
 	char			*tmp;
 	unsigned int	i;
 
 	i = 0;
-	if (!s || start >= ft_strlen(s) || len <= 0)
+	if (!s || start >= g_strlen(s) || len <= 0)
 	{
 		tmp = malloc(1);
 		if (!tmp)
@@ -87,9 +87,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		tmp[i] = 0;
 		return (tmp);
 	}
-	if (len + start > ft_strlen(s))
-		len = ft_strlen(s) - start;
-	tmp = ft_calloc(len + 1, sizeof(*tmp));
+	if (len + start > g_strlen(s))
+		len = g_strlen(s) - start;
+	tmp = g_calloc(len + 1, sizeof(*tmp));
 	if (!tmp)
 		return (NULL);
 	while (i < len && s[i])
@@ -98,4 +98,21 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		i++;
 	}
 	return (tmp);
+}
+
+void	*g_calloc(size_t n, size_t s)
+{
+	char				*tmp;
+	unsigned long		i;
+
+	i = 0;
+	if (n == 0)
+		return (malloc(0));
+	if (SIZE_MAX / n < s)
+		return (NULL);
+	tmp = malloc(n * s);
+	if (tmp)
+		while (i < n * s)
+			tmp[i++] = 0;
+	return ((void *)tmp);
 }
