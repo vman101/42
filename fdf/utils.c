@@ -6,11 +6,11 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/31 12:57:33 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/13 13:48:28 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./inc/libft.h"
+#include "libft/libft.h"
 
 void	*free_super_split(char ***back)
 {
@@ -25,16 +25,13 @@ void	*free_super_split(char ***back)
 		tmp = *back;
 		while (*tmp)
 		{
-			free(*tmp);
-			*tmp = NULL;
+			ft_free((void **)&*tmp);
 			tmp++;
 		}
-		free(*back);
-		*back = NULL;
+		ft_free((void **)&*back);
 		back++;
 	}
-	free(free_back);
-	free_back = NULL;
+	ft_free((void **)&free_back);
 	return (NULL);
 }
 
@@ -45,11 +42,10 @@ void	free_split(char **split)
 	back = split;
 	while (*back)
 	{
-		free(*back);
-		*back = NULL;
+		ft_free((void **)&*back);
 		back++;
 	}
-	free(split);
+	ft_free((void **)&split);
 }
 
 char	***super_split(char **strs, int size, int delimiter)

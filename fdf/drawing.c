@@ -6,18 +6,11 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:08:54 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/12 00:03:24 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/13 12:59:46 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/fdf.h"
-
-void	draw_point(t_data *data, t_point3d *point, t_color color)
-{
-	mlx_pixel_put(data->mlx, data->win, \
-			data->screen->offset_x + point->x, \
-			data->screen->offset_y + point->y, color);
-}
 
 t_color	line_color(t_color s, t_color e, float ratio)
 {

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 23:43:36 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/08 12:14:28 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/13 13:41:50 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 # define LIBFT_H
 
-# include "get_next_line.h"
-# include "ft_printf.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stddef.h>
@@ -27,6 +25,12 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+/* Input Handeling */
+char	***super_split(char **strs, int size, int delimiter);
+void	*free_super_split(char ***back);
+void	free_split(char **split);
+char	*get_next_line(int fd);
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -82,7 +86,8 @@ void	ft_putstr_fd(char *str, int fd);
 void	ft_putendl_fd(char *str, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
-/* Get Next Line */
-char	*get_next_line(int fd);
+/* safe functions */
+
+void	ft_free(void **ptr);
 
 #endif

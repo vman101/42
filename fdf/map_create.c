@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:06:48 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/12 17:57:41 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/13 12:49:40 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-t_point3d	point3d_create(float x, float y, float z, t_color color)
+inline t_point3d	point3d_create(float x, float y, float z, t_color color)
 {
-	t_point3d	p;
-
-	p = (t_point3d){x, y, z, color};
-	return (p);
+	return ((t_point3d){x, y, z, color});
 }
 
 static int	get_nb(char c, char *base)
@@ -61,37 +58,7 @@ static int	map_atoi(char const *s, int b)
 	return (nb);
 }
 
-t_map	*map_create(char const *path)
-{
-	t_map	*map;
-	char	****input;
-	void	*backup;
-
-	map = ft_calloc(1, sizeof(*map));
-	if (!map)
-		return (0);
-	map->height = map_get_rows(path, NULL);
-	if (map->height == 0)
-		return (free(map), NULL);
-	input = ft_calloc(map->height + 1, sizeof(*input));
-	if (!input)
-		return (free(map), NULL);
-	if (!map_get_rows(path, input))
-		return (print_usage(), free(map), NULL);
-	map->width = get_row_len((char const ****)input);
-	map->p = ft_calloc(map->height * map->width, sizeof(*map->p));
-	if (!map->p)
-	{
-		backup = input;
-		while (input)
-			free_super_split(*input++);
-		return (free(backup), free(map), NULL);
-	}
-	map_points_create(input, map);
-	return (map);
-}
-
-void	colors_correct(t_map *map)
+static void	colors_correct(t_map *map)
 {
 	size_t		i;
 	t_point3d	max;
@@ -130,7 +97,7 @@ void	colors_correct(t_map *map)
 	}
 }
 
-void	map_points_create(char ****points, t_map *map)
+static void	map_points_create(char ****points, t_map *map)
 {
 	int		x;
 	int		y;
@@ -156,4 +123,34 @@ void	map_points_create(char ****points, t_map *map)
 	while (points[i])
 		free_super_split(points[i++]);
 	return (free(points), colors_correct(map));
+}
+
+t_map	*map_create(char const *path)
+{
+	t_map	*map;
+	char	****input;
+	void	*backup;
+
+	map = ft_calloc(1, sizeof(*map));
+	if (!map)
+		return (NULL);
+	map->height = map_get_rows(path, NULL);
+	if (map->height == 0)
+		return (free(map), NULL);
+	input = ft_calloc(map->height + 1, sizeof(*input));
+	if (!input)
+		return (free(map), NULL);
+	if (!map_get_rows(path, input))
+		return (print_usage(), free(map), NULL);
+	map->width = get_row_len((char const ****)input);
+	map->p = ft_calloc(map->height * map->width, sizeof(*map->p));
+	if (!map->p)
+	{
+		backup = input;
+		while (*input)
+			free_super_split(*input++);
+		return (free(backup), free(map), NULL);
+	}
+	map_points_create(input, map);
+	return (map);
 }

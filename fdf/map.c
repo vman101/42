@@ -6,13 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:02:02 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/11 23:41:18 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/13 13:48:42 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/fdf.h"
 
-int	get_split_len(char **split)
+static int	get_split_len(char const **split)
 {
 	int	i;
 
@@ -46,15 +46,15 @@ void	destroy_points(char ****points, int i)
 {
 	while (i >= 0)
 		free_super_split(points[i--]);
-	free(points);
+	ft_free((void **)&points);
 }
 
-void	line_get(char ****row, char *buf)
+static void	line_get(char ****row, char *buf)
 {
 	char	**tmp;
 
 	tmp = ft_split(buf, ' ');
-	*row = super_split(tmp, get_split_len(tmp) + 1, ',');
+	*row = super_split(tmp, get_split_len((char const **)tmp) + 1, ',');
 	free_split(tmp);
 }
 
@@ -77,10 +77,10 @@ int	map_get_rows(char const *path, char ****row)
 		{
 			line_get(&row[i], buf);
 			if (!row[i])
-				return (free(buf), get_next_line(-1), \
+				return (ft_free((void **)&buf), get_next_line(-1), \
 						destroy_points(row, i), 0);
 		}
-		free(buf);
+		ft_free((void **)&buf);
 		i++;
 	}
 	close(fd);

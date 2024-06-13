@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:36:53 by victor            #+#    #+#             */
-/*   Updated: 2024/06/13 12:22:33 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/13 13:49:51 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_screen	*screen_create(t_map *map, float scale)
 	return (tmp);
 }
 
-t_data	*data_create(char **argv)
+t_data	*data_create(char const **argv)
 {
 	t_data	*tmp;
 
@@ -43,13 +43,13 @@ t_data	*data_create(char **argv)
 	tmp->map = map_create(argv[1]);
 	if (!tmp->map)
 		exit(data_destroy(tmp));
-	tmp->scale = (float)MAX_WIDTH / tmp->map->height;
-	tmp->scale = fmin(tmp->scale, (float)MAX_HEIGHT / tmp->map->width);
+	tmp->scale = fmin((float)MAX_WIDTH / tmp->map->height, \
+			(float)MAX_HEIGHT / tmp->map->width);
 	tmp->screen = screen_create(tmp->map, tmp->scale);
-	tmp->scale_z = ((float)tmp->map->width / tmp->map->height) * 1.5f;
-	tmp->scale /= 1.5f;
 	if (!tmp->screen)
 		exit(data_destroy(tmp));
+	tmp->scale_z = ((float)tmp->map->width / tmp->map->height) * 1.5f;
+	tmp->scale /= 1.5f;
 	tmp->mlx = mlx_init();
 	if (!tmp->mlx)
 		exit(data_destroy(tmp));
@@ -72,18 +72,18 @@ int	data_destroy(t_data *data)
 	{
 		mlx_destroy_window(data->mlx, data->win);
 		mlx_destroy_display(data->mlx);
-		free(data->screen);
-		free(data->mlx);
+		ft_free((void **)&data->screen);
+		ft_free((void **)&data->mlx);
 	}
 	if (data->map)
 	{
-		free(data->map->p);
-		free(data->map);
-		free(data->p);
+		ft_free((void **)&data->map->p);
+		ft_free((void **)&data->map);
+		ft_free((void **)&data->p);
 	}
 	if (data->glyph)
 		glyph_destroy(data->glyph);
-	free(data);
+	ft_free((void **)&data);
 	return (1);
 }
 
@@ -97,8 +97,8 @@ void	glyph_destroy(char ***glyph)
 	{
 		j = 0;
 		while (j < 7)
-			free(glyph[i][j++]);
-		free(glyph[i++]);
+			ft_free((void **)&glyph[i][j++]);
+		ft_free((void **)&glyph[i++]);
 	}
-	free(glyph);
+	ft_free((void **)&glyph);
 }

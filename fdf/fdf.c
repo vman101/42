@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:39:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/13 12:28:11 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/13 13:08:23 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		exit(print_usage());
-	data = data_create(argv);
+	data = data_create((char const **)argv);
 	img.img = mlx_new_image(data->mlx, data->screen->width, \
 			data->screen->height);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);

@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:36 by victor            #+#    #+#             */
-/*   Updated: 2024/06/12 17:56:05 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/13 13:23:01 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <unistd.h>
 # include "ft_printf.h"
-# include "libft.h"
+# include "../libft/libft.h"
 # include <mlx.h>
 # include <X11/keysym.h>
 # include <fcntl.h>
@@ -23,17 +23,10 @@
 # include <math.h>
 # include <stdbool.h>
 
-# define MAX_WIDTH 1200
-# define MAX_HEIGHT 900
+# define MAX_WIDTH 1920
+# define MAX_HEIGHT 1080
 # define NUM_LET 30
 # define TOLERANCE 0.0001f
-
-enum	e_vertex
-{
-	X,
-	Y,
-	Z
-};
 
 typedef unsigned int	t_color;
 
@@ -87,20 +80,27 @@ typedef struct s_data
 	float		scale;
 	float		scale_z;
 }				t_data;
+/* Statics */
+
+/*
+static void		draw_point(t_data *data, t_point3d *point, t_color color);
+static void		calculate_line(float *err, t_point3d *begin, \
+							t_point3d *move, t_point3d *end);
+static t_screen	*screen_create(t_map *map, float scale);
+static void		img_clear_background(t_data *data, t_color color);
+*/
 
 /* Setup */
 
-t_data		*data_create(char **argv);
+t_data		*data_create(char const **argv);
 int			data_destroy(t_data *data);
 void		destroy_points(char ****points, int i);
 
 /* Map Creation */
 
-int			get_split_len(char **split);
 int			get_row_len(char const ****row);
 int			map_get_rows(char const *path, char ****row);
 t_map		*map_create(char const *path);
-void		map_points_create(char ****points, t_map *map);
 t_point3d	point3d_create(float x, float y, float z, t_color color);
 
 /* Debug */
@@ -124,13 +124,13 @@ void		map_scale(t_point3d *p, t_data *data, size_t size);
 
 void		draw_projected(t_data *data);
 void		draw_line(t_data *data, t_point3d *begin, t_point3d *end);
-void		draw_point(t_data *data, t_point3d *point, t_color color);
 t_color		line_color(t_color s, t_color e, float ratio);
 
 /* Glyphs */
+
 char		**get_glyph(int fd);
 char		***glyphs_create(char const *path);
-void		glyph_draw(t_data *data, t_point3d *begin, char **glyph);
+void		glyph_draw(t_data *data, t_point3d *begin, char const **glyph);
 void		glyph_print(t_point3d *begin, char const *text, t_data *data);
 void		glyph_destroy(char ***glyph);
 void		draw_menu(t_data *data);
@@ -139,6 +139,4 @@ void		draw_menu(t_data *data);
 
 void		img_put_pixel(t_data *data, unsigned int x, \
 							unsigned int y, t_color color);
-void		img_clear_background(t_data *data, t_color color);
-
 #endif

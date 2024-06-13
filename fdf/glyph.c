@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:29:23 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/31 12:56:44 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/13 13:48:52 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**get_glyph(int fd)
 		buf = get_next_line(fd);
 		if (!buf || *buf == '#')
 		{
-			free(buf);
+			ft_free((void **)&buf);
 			break ;
 		}
 		glyph[i++] = buf;
@@ -62,7 +62,7 @@ char	***glyphs_create(char const *path)
 	return (glyphs);
 }
 
-void	glyph_draw(t_data *data, t_point3d *begin, char **glyph)
+void	glyph_draw(t_data *data, t_point3d *begin, char const **glyph)
 {
 	size_t	i;
 	size_t	j;
@@ -90,7 +90,7 @@ void	glyph_draw(t_data *data, t_point3d *begin, char **glyph)
 	}
 }
 
-int	glyph_which(t_point3d *begin, char c)
+static int	glyph_which(t_point3d *begin, char const c)
 {
 	if (ft_isalpha(c))
 		return (begin->x += 12, c - 97);
@@ -119,7 +119,7 @@ void	glyph_print(t_point3d *begin, char const *text, t_data *data)
 	{
 		index = glyph_which(begin, text[i]);
 		if (index >= 0)
-			glyph_draw(data, begin, data->glyph[index]);
+			glyph_draw(data, begin, (char const **)data->glyph[index]);
 		else if (index == -1)
 			begin->x = x;
 		i++;
