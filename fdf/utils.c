@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:21:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/13 13:48:28 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/13 23:46:07 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*free_super_split(char ***back)
 	if (!back)
 		return (NULL);
 	free_back = back;
-	while (*back)
+	while (back && *back)
 	{
 		tmp = *back;
 		while (*tmp)
@@ -39,6 +39,8 @@ void	free_split(char **split)
 {
 	char	**back;
 
+	if (!split)
+		return ;
 	back = split;
 	while (*back)
 	{
@@ -53,6 +55,8 @@ char	***super_split(char **strs, int size, int delimiter)
 	char			***split;
 	unsigned int	i;
 
+	if (!strs)
+		return (NULL);
 	split = ft_calloc(size, sizeof(*split));
 	if (!split)
 		return (NULL);

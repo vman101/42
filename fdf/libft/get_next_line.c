@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:20:17 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/27 17:44:59 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/14 00:05:31 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ char	*line_extract(char **buf_joined, char **left, size_t line_len)
 
 	line = g_substr(*buf_joined, 0, line_len);
 	if (!line)
-		return (free(*buf_joined), *buf_joined = NULL, NULL);
+		return (free(*buf_joined), *buf_joined = NULL, (char *)-1);
 	*left = g_substr(*buf_joined, line_len, g_strlen(*buf_joined) - line_len);
 	free(*buf_joined);
 	*buf_joined = NULL;
 	if (!*left)
-		return (free(line), line = NULL, NULL);
+		return (free(line), line = NULL, (char *)-1);
 	return (line);
 }
 
@@ -66,14 +66,14 @@ char	*line_handle(char **buf_fetch)
 	static char	*left;
 
 	if (!buf_fetch)
-		return (free(left), NULL);
+		return (free(left), left = NULL, (char *)-1);
 	buf_joined = g_strjoin(left, *buf_fetch);
 	free(*buf_fetch);
 	*buf_fetch = NULL;
 	free(left);
 	left = NULL;
 	if (!buf_joined)
-		return (NULL);
+		return ((char *)-1);
 	line_len = find_newline(buf_joined);
 	if (line_len)
 		return (line_extract(&buf_joined, &left, line_len));

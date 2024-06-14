@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:08:54 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/13 12:59:46 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/13 17:48:41 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,27 @@ static void	calculate_line(float *err, t_point3d *begin, \
 	}
 }
 
-void	draw_line(t_data *data, t_point3d *begin, t_point3d *end)
+void	draw_line(t_data *data, t_point3d begin, t_point3d end)
 {
 	float		err;
 	t_point3d	move;
 	float		total_dist;
 	float		ratio;
 
-	total_dist = hypotf(end->x - begin->x, end->y - begin->y);
-	move = *begin;
-	err = fabs(end->x - begin->x) - fabs(end->y - begin->y);
-	while (fabs(move.x - end->x) > TOLERANCE || \
-			fabs(move.y - end->y) > TOLERANCE)
+	total_dist = hypotf(end.x - begin.x, end.y - begin.y);
+	move = begin;
+	err = fabs(end.x - begin.x) - fabs(end.y - begin.y);
+	while (fabs(move.x - end.x) > TOLERANCE || \
+			fabs(move.y - end.y) > TOLERANCE)
 	{
-		ratio = hypotf(move.x - begin->x, move.y - begin->y) / total_dist;
-		move.color = line_color(begin->color, end->color, ratio);
+		ratio = hypotf(move.x - begin.x, move.y - begin.y) / total_dist;
+		move.color = line_color(begin.color, end.color, ratio);
 		if (move.x + data->screen->offset_x > 0 && move.y + \
 				data->screen->offset_y > 0 && \
 				move.x + data->screen->offset_x < data->screen->width && \
 				move.y + data->screen->offset_y < data->screen->height)
 			img_put_pixel(data, move.x + data->screen->offset_x, \
 					move.y + data->screen->offset_y, move.color);
-		calculate_line(&err, begin, &move, end);
+		calculate_line(&err, &begin, &move, &end);
 	}
 }

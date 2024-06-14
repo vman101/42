@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 09:21:36 by victor            #+#    #+#             */
-/*   Updated: 2024/06/13 15:25:26 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/14 13:29:19 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@
 
 typedef unsigned int	t_color;
 
+enum	e_modes
+{
+	MAX = 0,
+	SINGLE = 1
+};
+
 typedef struct s_point3d
 {
 	float		x;
@@ -43,6 +49,7 @@ typedef struct s_map
 	t_point3d	center;
 	size_t		width;
 	size_t		height;
+	size_t		size;
 	bool		colorized;
 }				t_map;
 
@@ -86,21 +93,22 @@ static void		draw_point(t_data *data, t_point3d *point, t_color color);
 static void		calculate_line(float *err, t_point3d *begin, \
 							t_point3d *move, t_point3d *end);
 static t_screen	*screen_create(t_map *map, float scale);
+static void		destroy_points(char ****points, int i);
 static void		img_clear_background(t_data *data, t_color color);
 */
 
 /* Setup */
 
-t_data		*data_create(char const **argv);
+void		*data_create(t_data *data, char const **argv);
 int			data_destroy(t_data *data);
-void		destroy_points(char ****points, int i);
 
 /* Map Creation */
 
-int			get_row_len(char const ****row);
-int			map_get_rows(char const *path, char ****row);
+int			get_split_len(char const **split);
+int			get_row_len(char const ****row, int mode);
+int			map_get_rows(char const *path, char ****row, bool *flag);
 t_map		*map_create(char const *path);
-t_point3d	point3d_create(float x, float y, float z, t_color color);
+void		map_colors_correct(t_map *map);
 
 /* Debug */
 
@@ -121,13 +129,13 @@ void		map_scale(t_point3d *p, t_data *data, size_t size);
 
 /* Drawing */
 
-void		draw_projected(t_data *data);
-void		draw_line(t_data *data, t_point3d *begin, t_point3d *end);
+void		draw_projected(t_data *data, t_map *map);
+void		draw_line(t_data *data, t_point3d begin, t_point3d end);
 t_color		line_color(t_color s, t_color e, float ratio);
 
 /* Glyphs */
 
-char		**get_glyph(int fd);
+/*static char		**get_glyph(int fd, bool *flag);*/
 char		***glyphs_create(char const *path);
 void		glyph_draw(t_data *data, t_point3d *begin, char const **glyph);
 void		glyph_print(t_point3d *begin, char const *text, t_data *data);
@@ -138,4 +146,5 @@ void		draw_menu(t_data *data);
 
 void		img_put_pixel(t_data *data, unsigned int x, \
 							unsigned int y, t_color color);
+void		img_clear_background(t_data *data, t_color color);
 #endif

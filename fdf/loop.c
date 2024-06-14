@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 23:27:50 by vvobis            #+#    #+#             */
-/*   Updated: 2024/05/31 12:56:57 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/14 18:45:27 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	print_usage(void)
 {
 	ft_printf("Wrong Usage!\n\tPlease provide a valid map");
 	ft_printf("(consistent row length and valid values)\n");
+	ft_printf("\tColor values in hex from: 0x0 to 0xffffff\n");
 	ft_printf("\tSyntax: \"./fdf example_map.fdf\"\n");
 	return (1);
 }

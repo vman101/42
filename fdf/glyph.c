@@ -6,25 +6,29 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:29:23 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/13 13:48:52 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/14 00:23:14 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/fdf.h"
+#include <stdbool.h>
 
-char	**get_glyph(int fd)
+static char	**get_glyph(int fd, bool *flag)
 {
 	char	*buf;
 	char	**glyph;
 	size_t	i;
 
+	*flag = false;
 	glyph = ft_calloc(7, sizeof(*glyph));
 	if (!glyph)
-		return (NULL);
+		return (*flag = true, NULL);
 	i = 0;
 	while (1)
 	{
 		buf = get_next_line(fd);
+		if (buf == (char *)-1)
+			return (*flag = true, glyph);
 		if (!buf || *buf == '#')
 		{
 			ft_free((void **)&buf);
@@ -39,6 +43,7 @@ char	***glyphs_create(char const *path)
 {
 	char	***glyphs;
 	size_t	i;
+	bool	flag;
 	int		fd;
 
 	fd = open(path, O_RDONLY);
@@ -53,12 +58,13 @@ char	***glyphs_create(char const *path)
 	i = 0;
 	while (i < NUM_LET)
 	{
-		glyphs[i] = get_glyph(fd);
-		if (!glyphs[i++])
-			return (NULL);
+		glyphs[i++] = get_glyph(fd, &flag);
+		if (flag)
+			return (glyph_destroy(glyphs), get_next_line(-1), NULL);
 	}
-	close(fd);
 	get_next_line(-1);
+	if (close(fd) == -1)
+		return (glyph_destroy(glyphs), NULL);
 	return (glyphs);
 }
 

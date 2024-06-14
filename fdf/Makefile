@@ -1,12 +1,13 @@
 CC := cc
 
-CFLAGS := -Wall -Wextra -Werror -g3 -fsanitize=leak,address,undefined
+CFLAGS := -Wall -Wextra -Werror -g3 
+#-fsanitize=leak,address,undefined
 
 LINK := -lXext -lX11 -lm -lmlx
 
 NAME := fdf
 
-SRC := fdf.c utils.c map.c map_create.c drawing.c rotation.c transformation.c setup.c glyph.c image.c loop.c
+SRC := fdf.c utils.c map.c map_create.c drawing.c rotation.c transformation.c setup.c glyph.c image.c loop.c map_correct.c
 
 OBJ := $(SRC:.c=.o)
 

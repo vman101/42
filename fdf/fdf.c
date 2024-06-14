@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:39:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/13 15:21:27 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/14 11:34:06 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ int	key_press(int keycode, t_data *data)
 	}
 	if (!key_press_handle(keycode, data))
 		key_press_handle2(keycode, data);
-	draw_projected(data);
+	draw_projected(data, data->map);
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	draw_menu(data);
+	img_clear_background(data, 0x000000);
 	return (1);
 }
 
@@ -75,17 +76,20 @@ int	main(int argc, char **argv)
 	t_data	*data;
 	t_img	img;
 
-	if (argc != 2)
+	if (argc != 2 || !ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1])) \
+			|| *(ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1])) + 4) != 0)
 		exit(print_usage());
-	data = data_create((char const **)argv);
+	data = ft_calloc(1, sizeof(*data));
+	if (!data)
+		exit(EXIT_FAILURE);
+	data_create(data, (char const **)argv);
 	img.img = mlx_new_image(data->mlx, data->screen->width, \
 			data->screen->height);
+	if (!img.img)
+		exit(data_destroy(data));
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
 	data->img = img;
-	data->glyph = glyphs_create("alpha.bit");
-	if (!data->glyph)
-		exit(data_destroy(data));
-	draw_projected(data);
+	draw_projected(data, data->map);
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	draw_menu(data);
 	mlx_key_hook(data->win, key_press, data);
