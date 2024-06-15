@@ -6,14 +6,11 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:20:21 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/08 12:21:05 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/14 14:29:52 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include "libft/libft.h"
-#include <stdbool.h>
-#include <sys/types.h>
 
 static t_file	*input_setup(char ***argv, int argc)
 {
@@ -40,7 +37,8 @@ int	main(int argc, char **argv, char **env)
 	file = input_setup(&argv, argc);
 	ft_pipe(pipefd, "in main");
 	cmd = command_create((char **)ft_split(*argv++, ' '), env);
-	pipe_in(cmd, pipefd, file->fd);
+	if (file->fd != -1)
+		pipe_in(cmd, pipefd, file->fd);
 	cmd = command_create((char **)ft_split(*argv++, ' '), env);
 	file = file_create(*argv, O_WRONLY | O_CREAT, 0644);
 	ft_dup2(pipefd[PIPE_OUT], 0, "in main");

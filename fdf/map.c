@@ -6,12 +6,11 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:02:02 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/14 18:38:45 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/15 16:48:57 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/fdf.h"
-#include "libft/libft.h"
 
 int	get_split_len(char const **split)
 {

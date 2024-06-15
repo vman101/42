@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 23:27:50 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/14 18:45:27 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/15 16:05:57 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 int	print_usage(void)
 {
-	ft_printf("Wrong Usage!\n\tPlease provide a valid map");
-	ft_printf("(consistent row length and valid values)\n");
-	ft_printf("\tColor values in hex from: 0x0 to 0xffffff\n");
-	ft_printf("\tSyntax: \"./fdf example_map.fdf\"\n");
+	ft_putstr_fd("Wrong Usage!\n\tPlease provide a valid map", 2);
+	ft_putstr_fd("(consistent row length and valid values)\n", 2);
+	ft_putstr_fd("\tColor values in hex from: 0x0 to 0xffffff\n", 2);
+	ft_putstr_fd("\tSyntax: \"./fdf example_map.fdf\"\n", 2);
 	return (1);
 }
 
 int	handle_close(t_data *data)
 {
 	data_destroy(data);
-	exit (EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 void	draw_menu(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: victor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 12:07:59 by victor            #+#    #+#             */
-/*   Updated: 2024/06/11 09:58:26 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/14 14:25:08 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_open(int *fd, const char *path, int flag, int mode)
 		*fd = open(path, flag);
 	if (*fd == -1)
 	{
+		p_stderr(2, "file: %s: ", path);
 		perror("open");
-		p_stderr(2, "file: %s\n", path);
 	}
 }

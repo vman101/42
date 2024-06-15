@@ -6,35 +6,27 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:06:48 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/14 18:52:53 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/15 16:43:24 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/fdf.h"
-#include "libft/libft.h"
-#include <stdbool.h>
-#include <unistd.h>
 
-static int	get_nb(char c, char *base)
+int	check_number(long *nb, int b, char *base, char c)
 {
 	int	i;
 
-	i = 0;
 	if (!ft_strchr(base, c))
-		return (-1);
+		return (0);
+	i = 0;
 	while (base[i] && base[i] != c)
 		i++;
-	return (i);
+	*nb *= b;
+	*nb += i;
+	return (1);
 }
 
-void	check_number(long *nb, int b, char *base, char c)
-{
-	int	new_number;
-
-	new_number = get_nb(c, base);
-}
-
-static int	map_atoi(char const *s, int b)
+static int	map_atoi(char const *s, int b, bool *flag)
 {
 	long		nb;
 	char const	*tmp;
@@ -54,16 +46,16 @@ static int	map_atoi(char const *s, int b)
 	if (*tmp == '+' || *tmp == '-')
 		tmp++;
 	while (*tmp && *tmp != '\n')
-	{
-		nb *= b;
-		nb += get_nb(ft_tolower(*tmp++), base);
-	}
+		if (!check_number(&nb, b, base, ft_tolower(*tmp++)))
+			*flag = true;
 	if (*s == '-')
 		nb = -nb;
+	if (nb == 125)
+		printf("%ld\n", nb);
 	return (nb);
 }
 
-static void	map_points_create(char ****points, t_map *map)
+static void	map_points_create(char ****points, t_map *map, bool *flag)
 {
 	int		x;
 	int		y;
@@ -72,7 +64,7 @@ static void	map_points_create(char ****points, t_map *map)
 
 	i = 0;
 	y = -1;
-	while (points[++y] && map)
+	while (points[++y] && map && *flag == false)
 	{
 		x = -1;
 		row_len = get_row_len((char const ****)&points[y], SINGLE);
@@ -81,14 +73,32 @@ static void	map_points_create(char ****points, t_map *map)
 			if (map->colorized == false && points[y][x][1])
 				map->colorized = true;
 			map->p[i++] = (t_point3d){x, y, \
-					map_atoi(points[y][x][0], 10), \
-					map_atoi(points[y][x][1], 16)};
+					map_atoi(points[y][x][0], 10, flag), \
+					map_atoi(points[y][x][1], 16, flag)};
 		}
 	}
 	i = 0;
 	while (points[i])
 		free_super_split(points[i++]);
 	return (ft_free((void **)&points), map_colors_correct(map));
+}
+
+static void	*map_size_set(t_map *map, char ****input, bool *flag)
+{
+	map->width = get_row_len((char const ****)input, MAX);
+	if (*flag || map->width == 0)
+		return (print_usage(), map_points_create(input, NULL, flag), \
+				ft_free((void **)&map), NULL);
+	map->size = map->width * map->height;
+	map->p = ft_calloc(map->size + 1, sizeof(*map->p));
+	if (!map->p)
+		return (map_points_create(input, NULL, flag), \
+				ft_free((void **)&map), NULL);
+	map_points_create(input, map, flag);
+	if (*flag)
+		return (print_usage(), ft_free((void **)&map->p), \
+				ft_free((void **)&map), NULL);
+	return (map);
 }
 
 t_map	*map_create(char const *path)
@@ -106,14 +116,5 @@ t_map	*map_create(char const *path)
 	if (!input || flag)
 		return (ft_free((void **)&input), ft_free((void **)&map), NULL);
 	map_get_rows(path, input, &flag);
-	map->width = get_row_len((char const ****)input, MAX);
-	if (flag || map->width == 0)
-		return (print_usage(), map_points_create(input, NULL), \
-				ft_free((void **)&map), NULL);
-	map->size = map->width * map->height;
-	map->p = ft_calloc(map->size + 1, sizeof(*map->p));
-	if (!map->p)
-		return (map_points_create(input, NULL), ft_free((void **)&map), NULL);
-	map_points_create(input, map);
-	return (map);
+	return (map_size_set(map, input, &flag));
 }

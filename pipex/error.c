@@ -6,12 +6,11 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 16:17:08 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/08 12:10:16 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/15 17:38:47 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <unistd.h>
 
 void	lst_memory(void *mem, void (*del)(void *c), int mode)
 {

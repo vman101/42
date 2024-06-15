@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:39:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/14 11:34:06 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/15 16:24:07 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ int	key_press_handle(int keycode, t_data *data)
 void	key_press_handle2(int keycode, t_data *data)
 {
 	if (keycode == XK_Up)
-		data->screen->offset_y -= 2 * data->scale;
+		data->screen->offset_y -= 20;
 	else if (keycode == XK_Right)
-		data->screen->offset_x += 2 * data->scale;
+		data->screen->offset_x += 20;
 	else if (keycode == XK_Left)
-		data->screen->offset_x -= 2 * data->scale;
+		data->screen->offset_x -= 20;
 	else if (keycode == XK_Down)
-		data->screen->offset_y += 2 * data->scale;
+		data->screen->offset_y += 20;
 	else if (keycode == '=')
 	{
 		data->scale += data->scale / 4;

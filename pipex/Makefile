@@ -1,6 +1,18 @@
-NAME := pipex
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/06/15 11:54:30 by vvobis            #+#    #+#              #
+#    Updated: 2024/06/15 12:37:20 by vvobis           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-BONNAME := pipex_bonus
+NAME = pipex
+
+BONNAME = pipex_bonus
 
 CC := cc
 
@@ -23,11 +35,11 @@ bonus: $(BONNAME)
 $(NAME): $(OBJ) $(LIBS) pipex.h
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
 
-$(BONNAME): $(BONOBJ) $(LIBS)
+$(BONNAME): $(BONOBJ) $(LIBS) pipex.h
 	$(CC) $(CFLAGS) -o $(BONNAME) $(BONOBJ) $(LIBS)
 
-%.o: %.c
-	$(CC) -c $(CFLAGS) $^
+%.o:%.c
+	$(CC) $(CFLAGS) -c $^
 
 $(LIBS):
 	make bonus -C libft

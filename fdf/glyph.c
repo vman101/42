@@ -6,12 +6,11 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 17:29:23 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/14 00:23:14 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/15 16:48:16 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/fdf.h"
-#include <stdbool.h>
 
 static char	**get_glyph(int fd, bool *flag)
 {
