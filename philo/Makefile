@@ -9,18 +9,13 @@ SRC := philo.c
 
 OBJ := $(SRC:.c=.o)
 
-LIBS := libs/libft.a
-
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LINK)
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
-
-$(LIBS):
-	make bonus -C libft
 
 clean:
 	rm -f $(OBJ)
