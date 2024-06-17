@@ -13,9 +13,9 @@ $(OBJ): $(SRC)
 	$(CC) $(CFLAGS) -c $(SRC)
 
 clean:
-	rm -r $(OBJ)
+	rm -f $(OBJ)
 
 fclean: clean
-	rm -r $(NAME)
+	rm -f $(NAME)
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:06:48 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/15 16:43:24 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/16 12:49:20 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ static int	map_atoi(char const *s, int b, bool *flag)
 			*flag = true;
 	if (*s == '-')
 		nb = -nb;
-	if (nb == 125)
-		printf("%ld\n", nb);
 	return (nb);
 }
 

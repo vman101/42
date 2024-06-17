@@ -1,21 +1,21 @@
 CC := cc
 
-CFLAGS := -Wall -Wextra -Werror -g
-#3 -fsanitize=leak,address,undefined
+CFLAGS := -Wall -Wextra -Werror -g3 
+#-fsanitize=leak,address,undefined
 
 NAME := philo
 
-SRC := philo.c
+SRC := philo.c setup.c
 
 OBJ := $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^
+$(NAME): $(OBJ) philo.h
+	$(CC) $(CFLAGS) -o $@ $(OBJ)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $<
+$(OBJ): $(SRC)
+	$(CC) $(CFLAGS) -c $^
 
 clean:
 	rm -f $(OBJ)

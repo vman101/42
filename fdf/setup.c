@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:36:53 by victor            #+#    #+#             */
-/*   Updated: 2024/06/14 18:24:49 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/16 12:50:40 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	*data_create(t_data *data, char const **argv)
 			data->screen->height, "FDF");
 	if (!data->win)
 		exit(data_destroy(data));
-	data->glyph = glyphs_create("alpha.bit");
+	data->glyph = glyphs_create("alpha_bit_bonus");
 	if (!data->glyph)
 		exit(data_destroy(data));
 	data->p = ft_calloc(data->map->size + 1, sizeof(t_point3d));
