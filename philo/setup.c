@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:10:06 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/17 16:43:44 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/17 19:00:05 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_monitor	*monitor_create(unsigned int number_of_philosophers)
 	monitor = malloc(sizeof(*monitor));
 	if (!monitor)
 		return (NULL);
+	memset(monitor, 0, sizeof(*monitor));
 	i = 0;
 	monitor->fork = malloc(sizeof(monitor->fork) * number_of_philosophers);
 	monitor->philosopher = malloc(sizeof(monitor->philosopher) * number_of_philosophers);
@@ -43,6 +44,8 @@ t_monitor	*monitor_create(unsigned int number_of_philosophers)
 		ft_free((void **)&monitor);
 		return (NULL);
 	}
+	pthread_mutex_init(monitor->mutex_can_print, NULL);
+	pthread_mutex_init(monitor->mutex_checking, NULL);
 	while (i < number_of_philosophers)
 	{
 		monitor->fork[i] = fork_create(i);
@@ -110,11 +113,34 @@ t_fork	*fork_create(unsigned int identifier)
 void	fork_destroy(t_fork *fork)
 {
 	pthread_mutex_destroy(fork->mutex_is_grabbed);
+	ft_free((void **)&fork->mutex_is_grabbed);
 	ft_free((void **)&fork);
 }
 
 void	philosopher_destroy(t_philosopher *philosopher)
 {
+	pthread_mutex_destroy(philosopher->mutex_state_is_changing);
+	ft_free((void **)&philosopher->time_last_meal);
+	ft_free((void **)&philosopher->mutex_state_is_changing);
 	ft_free((void **)&philosopher);
 }
 
+void	monitor_destroy(t_monitor *monitor)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < monitor->number_of_philosophers)
+	{
+		philosopher_destroy(monitor->philosopher[i]);
+		fork_destroy(monitor->fork[i]);
+		i++;
+	}
+	pthread_mutex_destroy(monitor->mutex_can_print);
+	pthread_mutex_destroy(monitor->mutex_checking);
+	ft_free((void **)&monitor->philosopher);
+	ft_free((void **)&monitor->fork);
+	ft_free((void **)&monitor->mutex_can_print);
+	ft_free((void **)&monitor->mutex_checking);
+	ft_free((void **)&monitor);
+}

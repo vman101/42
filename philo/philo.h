@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:45:09 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/17 17:09:21 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/06/17 18:52:22 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define MILLISECONDS_CONVERTER 1000
 
 # define NUM_PHILOSOPHERS	5
-# define TIME_TO_DIE		900
+# define TIME_TO_DIE		1000
 # define TIME_TO_EAT		200
 # define TIME_TO_SLEEP		200
 
@@ -92,6 +92,7 @@ t_monitor		*monitor_create(unsigned int number_of_philosophers);
 t_philosopher	*philosopher_create(unsigned int identifier, t_monitor *monitor);
 void			fork_destroy(t_fork *fork);
 void			philosopher_destroy(t_philosopher *philosopher);
+void			monitor_destroy(t_monitor *monitor);
 
 /* Routine Functions */
 

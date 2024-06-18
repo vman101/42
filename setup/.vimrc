@@ -9,17 +9,9 @@ let g:nvim_tree_show_icons = 1
 set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-Plugin '42Paris/42header'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'preservim/nerdtree'
-Plugin 'HealsCodes/vim-gas'
-Plugin 'LunarWatcher/auto-pairs'
-Plugin 'tpope/vim-surround'
+Plugin 'rust-lang/rust.vim'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'navarasu/onedark.nvim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'VundleVim/Vundle.vim'
 call vundle#end()            " required
 filetype plugin on    " required
 

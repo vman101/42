@@ -1,13 +1,22 @@
 vim.cmd ("source ~/.vimrc")
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 vim.cmd ("set mouse=a")
-vim.opt.rtp:prepend(lazypath)
 -- Example using a list of specs with the default options
 vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
 vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   {
     "numToStr/Comment.nvim",
@@ -37,12 +46,12 @@ require("lazy").setup({
     'hrsh7th/cmp-nvim-lsp',
     'nvimdev/lspsaga.nvim',
     'hrsh7th/cmp-buffer',
-    'nvim-tree/nvim-tree.lua',
     'hrsh7th/cmp-path',
     'hrsh7th/cmp-cmdline',
     'hrsh7th/nvim-cmp',
     'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',
+    'preservim/nerdtree',
     'VundleVim/Vundle.vim',
     '42Paris/42header',
     'sheerun/vim-polyglot',
@@ -56,11 +65,23 @@ require("lazy").setup({
     { "folke/neoconf.nvim", cmd = "Neoconf" },
     "folke/neodev.nvim",
     { "nvim-treesitter/nvim-treesitter", cmd = "TSUpdate" },
-    'phaazon/hop.nvim',
+	'github/copilot.vim',
 })
-require("hop").setup()
-require("lazy").setup(plugins, opts)
 require('lspsaga').setup({})
+local nvim_lsp = require('lspconfig')
+
+nvim_lsp.rust_analyzer.setup {
+  on_attach = function(client, bufnr)
+    local opts = { noremap=true, silent=true }
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    -- Add more keymaps as needed
+  end,
+  settings = {
+    ["rust-analyzer"] = {}
+  }
+}
+
 require'luasnip'.config.setup({
   expand_on_enter = false,
 })
@@ -220,35 +241,3 @@ require'nvim-web-devicons'.get_icons()
 
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
-
--- place this in one of your configuration file(s)
-local hop = require('hop')
-local directions = require('hop.hint').HintDirection
-vim.keymap.set('', 'f', function()
-  hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true })
-end, {remap=true})
-vim.keymap.set('', 'F', function()
-  hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true })
-end, {remap=true})
-vim.keymap.set('', 't', function()
-  hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
-end, {remap=true})
-vim.keymap.set('', 'T', function()
-  hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
-end, {remap=true})
-
--- OR setup with some options
-require("nvim-tree").setup({
-  sort = {
-    sorter = "case_sensitive",
-  },
-  view = {
-    width = 30,
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = true,
-  },
-})
