@@ -11,10 +11,10 @@ OBJ := $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ) philo.h
+$(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $(OBJ)
 
-$(OBJ): $(SRC)
+$(OBJ): $(SRC) philo.h
 	$(CC) $(CFLAGS) -c $^
 
 clean:

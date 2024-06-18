@@ -6,14 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:45:09 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/17 18:52:22 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/19 00:56:55 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <bits/types/struct_timeval.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <pthread.h>
@@ -28,7 +27,7 @@
 # define MILLISECONDS_CONVERTER 1000
 
 # define NUM_PHILOSOPHERS	5
-# define TIME_TO_DIE		1000
+# define TIME_TO_DIE		200
 # define TIME_TO_EAT		200
 # define TIME_TO_SLEEP		200
 
@@ -48,8 +47,10 @@ typedef struct	s_philosopher
 {
 	uint8_t				state;
 	bool				state_has_changed;
-	t_fork				*first_fork_grabbed;
-	t_fork				*second_fork_grabbed;
+	bool				first_fork_grabbed;
+	bool				second_fork_grabbed;
+	t_fork				*first_fork;
+	t_fork				*second_fork;
 	unsigned int		identifier;
 	t_time				*time_last_meal;
 	pthread_mutex_t		*mutex_state_is_changing;
@@ -60,6 +61,7 @@ typedef struct	s_monitor
 {
 	bool					philosopher_dead;
 	pthread_mutex_t			*mutex_can_print;
+	bool					can_print;
 	pthread_mutex_t			*mutex_checking;
 	unsigned int			number_of_philosophers;
 	t_time					start_time;
@@ -73,7 +75,8 @@ enum e_mode
 	THINKING,
 	EATING,
 	SLEEPING,
-	DEAD
+	DEAD,
+	NONE,
 };
 
 enum e_philosopher_offset

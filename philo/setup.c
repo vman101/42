@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:10:06 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/17 19:00:05 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/18 23:46:05 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ void	fork_destroy(t_fork *fork)
 void	philosopher_destroy(t_philosopher *philosopher)
 {
 	pthread_mutex_destroy(philosopher->mutex_state_is_changing);
-	ft_free((void **)&philosopher->time_last_meal);
 	ft_free((void **)&philosopher->mutex_state_is_changing);
+	ft_free((void **)&philosopher->time_last_meal);
 	ft_free((void **)&philosopher);
 }
 

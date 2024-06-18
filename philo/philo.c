@@ -6,13 +6,67 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:49:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/17 19:12:34 by victor           ###   ########.fr       */
+/*   Updated: 2024/06/19 01:14:12 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <bits/pthreadtypes.h>
 #include <bits/types/struct_timeval.h>
+#include <pthread.h>
+#include <stdbool.h>
 #include <unistd.h>
+
+void	philosopher_mutex_lock(t_philosopher *philosopher, pthread_mutex_t *mutex, uint32_t mode)
+{
+	if (philosopher->monitor->philosopher_dead == true)
+		return ;
+	pthread_mutex_lock(philosopher->mutex_state_is_changing);
+	pthread_mutex_lock(mutex);
+	if (mode != NONE)
+	{
+		philosopher->state = mode;
+		philosopher->state_has_changed = true;
+	}
+	pthread_mutex_unlock(philosopher->mutex_state_is_changing);
+}
+
+void	philosopher_mutex_unlock(t_philosopher *philosopher, pthread_mutex_t *mutex, uint32_t mode)
+{
+	if (philosopher->monitor->philosopher_dead == true)
+		return ;
+	pthread_mutex_lock(philosopher->mutex_state_is_changing);
+	pthread_mutex_unlock(mutex);
+	if (mode != NONE)
+	{
+		philosopher->state = mode;
+		philosopher->state_has_changed = true;
+	}
+	pthread_mutex_unlock(philosopher->mutex_state_is_changing);
+}
+
+void	philosopher_sleep(t_philosopher *philosopher, unsigned int time_to_sleep)
+{
+	if (philosopher->monitor->philosopher_dead == true)
+		return ;
+	pthread_mutex_lock(philosopher->mutex_state_is_changing);
+	philosopher->state = SLEEPING;
+	philosopher->state_has_changed = true;
+	pthread_mutex_unlock(philosopher->mutex_state_is_changing);
+	usleep(time_to_sleep * MILLISECONDS_CONVERTER);
+}
+
+void	philosopher_eat(t_philosopher *philosopher, unsigned int time_to_eat)
+{
+	if (philosopher->monitor->philosopher_dead == true)
+		return ;
+	pthread_mutex_lock(philosopher->mutex_state_is_changing);
+	gettimeofday(philosopher->time_last_meal, NULL);
+	philosopher->state = EATING;
+	philosopher->state_has_changed = true;
+	pthread_mutex_unlock(philosopher->mutex_state_is_changing);
+	usleep(time_to_eat * MILLISECONDS_CONVERTER);
+}
 
 long	time_value_substract(t_time time_minuend, t_time time_substrahend)
 {
@@ -24,11 +78,35 @@ long	time_value_substract(t_time time_minuend, t_time time_substrahend)
 	return (time_minuend_total_value - time_substrahend_total_value);
 }
 
-void	philosopher_state_print(t_philosopher *philosopher, char const *philosopher_state)
+void	philosopher_state_print(t_philosopher *philosopher)
 {
-	pthread_mutex_lock(philosopher->monitor->mutex_can_print);
-	printf("%d %d %s\n", philosopher->monitor->time_stamp, philosopher->identifier, philosopher_state);
-	pthread_mutex_unlock(philosopher->monitor->mutex_can_print);
+	unsigned int	philosopher_state;
+
+	pthread_mutex_lock(philosopher->mutex_state_is_changing);
+	if (philosopher->first_fork_grabbed == true && philosopher->second_fork_grabbed == false && philosopher->state_has_changed == true)
+	{
+		printf("%u %d has taken a fork\n", philosopher->monitor->time_stamp, philosopher->identifier);
+		philosopher->state_has_changed = false;
+	}
+	if (philosopher->second_fork_grabbed  == true &&  philosopher->state_has_changed == true)
+	{
+		printf("%u %d has taken a fork\n", philosopher->monitor->time_stamp, philosopher->identifier);
+		philosopher->state_has_changed = false;
+	}
+	philosopher_state = philosopher->state;
+	if (philosopher->state_has_changed == true)
+	{
+		if (philosopher_state == EATING)
+			printf("%u %d is eating\n", philosopher->monitor->time_stamp, philosopher->identifier);
+		else if (philosopher_state == SLEEPING)
+			printf("%u %d is sleeping\n", philosopher->monitor->time_stamp, philosopher->identifier);
+		else if (philosopher_state == THINKING)
+			printf("%u %d is thinking\n", philosopher->monitor->time_stamp, philosopher->identifier);
+		else if (philosopher_state == DEAD)
+			printf("%u %d died\n", philosopher->monitor->time_stamp, philosopher->identifier);
+		philosopher->state_has_changed = false;
+	}
+	pthread_mutex_unlock(philosopher->mutex_state_is_changing);
 }
 
 void	*philosopher_routine_start(void *philosopher_input)
@@ -36,7 +114,6 @@ void	*philosopher_routine_start(void *philosopher_input)
 	t_philosopher	*philosopher;
 	t_monitor		*monitor;
 	t_fork			*switch_fork;
-	t_time			rand;
 
 	philosopher = philosopher_input;
 	monitor = philosopher->monitor;
@@ -44,35 +121,70 @@ void	*philosopher_routine_start(void *philosopher_input)
 	gettimeofday(philosopher->time_last_meal, NULL);
 	pthread_mutex_unlock(philosopher->mutex_state_is_changing);
 	if (philosopher->identifier == 0)
-		philosopher->first_fork_grabbed = monitor->fork[monitor->number_of_philosophers - 1];
+		philosopher->first_fork = monitor->fork[monitor->number_of_philosophers - 1];
 	else
-		philosopher->first_fork_grabbed = monitor->fork[philosopher->identifier];
+		philosopher->first_fork = monitor->fork[philosopher->identifier];
 	if (philosopher->identifier == monitor->number_of_philosophers - 1)
-		philosopher->second_fork_grabbed = monitor->fork[0];
+		philosopher->second_fork = monitor->fork[0];
 	else
-		philosopher->second_fork_grabbed = monitor->fork[philosopher->identifier + 1];
+		philosopher->second_fork = monitor->fork[philosopher->identifier + 1];
 	while (monitor->philosopher_dead == false)
 	{
-		gettimeofday(&rand, NULL);
-		if (rand.tv_usec % 2)
+		if (philosopher->time_last_meal->tv_usec % 2)
 		{
-			switch_fork = philosopher->first_fork_grabbed;
-			philosopher->first_fork_grabbed = philosopher->second_fork_grabbed;
-			philosopher->second_fork_grabbed = switch_fork;
+			usleep(100);
+			switch_fork = philosopher->first_fork;
+			philosopher->first_fork = philosopher->second_fork;
+			philosopher->second_fork = switch_fork;
 		}
-		pthread_mutex_lock(philosopher->first_fork_grabbed->mutex_is_grabbed);
-		philosopher_state_print(philosopher, "has taken a fork");
-		pthread_mutex_lock(philosopher->second_fork_grabbed->mutex_is_grabbed);
-		philosopher_state_print(philosopher, "is eating");
-		pthread_mutex_lock(philosopher->mutex_state_is_changing);
-		gettimeofday(philosopher->time_last_meal, NULL);
-		pthread_mutex_unlock(philosopher->mutex_state_is_changing);
-		usleep(TIME_TO_EAT * MILLISECONDS_CONVERTER);
-		pthread_mutex_unlock(philosopher->first_fork_grabbed->mutex_is_grabbed);
-		pthread_mutex_unlock(philosopher->second_fork_grabbed->mutex_is_grabbed);
-		philosopher_state_print(philosopher, "is sleeping");
-		usleep(TIME_TO_SLEEP * MILLISECONDS_CONVERTER);
-		philosopher_state_print(philosopher, "is thinking");
+		philosopher_mutex_lock(philosopher, philosopher->first_fork->mutex_is_grabbed, NONE);
+		philosopher->first_fork_grabbed = true;
+		philosopher_mutex_lock(philosopher, philosopher->second_fork->mutex_is_grabbed, EATING);
+		philosopher->second_fork_grabbed = true;
+		philosopher_eat(philosopher, TIME_TO_EAT);
+		philosopher_mutex_unlock(philosopher, philosopher->second_fork->mutex_is_grabbed, NONE);
+		philosopher->first_fork_grabbed = false;
+		philosopher_mutex_unlock(philosopher, philosopher->first_fork->mutex_is_grabbed, SLEEPING);
+		philosopher->second_fork_grabbed = false;
+		philosopher_sleep(philosopher, TIME_TO_SLEEP);
+		philosopher->state = THINKING;
+	}
+	return (&philosopher->identifier);
+}
+
+void	*monitor_loop(void *monitor_input)
+{
+	size_t			i;
+	t_monitor		*monitor;
+	t_philosopher	*philosopher_current;
+	t_time			time_program_start;
+	t_time			time_current;
+
+	monitor = monitor_input;
+	gettimeofday(&time_program_start, NULL);
+	monitor->philosopher_dead = false;
+	monitor->can_print = true;
+	while (!monitor->philosopher_dead)
+	{
+		i = 0;
+		while (i < NUM_PHILOSOPHERS && monitor->philosopher_dead == false)
+		{
+			philosopher_current = monitor->philosopher[i];
+			gettimeofday(&time_current, NULL);
+			int64_t time = time_value_substract(time_current, *philosopher_current->time_last_meal);
+			monitor->time_stamp = time_value_substract(time_current, time_program_start);
+			/*pthread_mutex_lock(philosopher_current->mutex_state_is_changing);*/
+			if (time > TIME_TO_DIE)
+			{
+				philosopher_current->state = DEAD;
+				monitor->philosopher_dead = true;
+			}
+			if (philosopher_current->state_has_changed == true)
+				philosopher_state_print(philosopher_current);
+			/*pthread_mutex_unlock(philosopher_current->mutex_state_is_changing);*/
+			i++;
+		}
+		usleep(500);
 	}
 	return (NULL);
 }
@@ -80,18 +192,15 @@ void	*philosopher_routine_start(void *philosopher_input)
 int main()
 {
 	pthread_t		*philosopher_thread;
-	void			*thread_return_value;
+	pthread_t		*monitor_thread;
+	int				*thread_return_value;
 	t_monitor		*monitor;
-	t_philosopher	*philosopher_current;
-	t_time			time_program_start;
-	t_time			time_current;
 	unsigned int	i;
 
-	gettimeofday(&time_program_start, NULL);
 	monitor = monitor_create(NUM_PHILOSOPHERS);
-	thread_return_value = malloc(sizeof(*thread_return_value));
 	philosopher_thread = malloc(sizeof(*philosopher_thread) * NUM_PHILOSOPHERS);
-	if (!monitor || !thread_return_value || !philosopher_thread)
+	monitor_thread = malloc(sizeof(*monitor_thread));
+	if (!monitor ||  !philosopher_thread)
 	{
 		ft_free((void **)&monitor);
 		ft_free((void **)&thread_return_value);
@@ -103,36 +212,15 @@ int main()
 		pthread_create(&philosopher_thread[i], NULL, philosopher_routine_start, monitor->philosopher[i]);
 		i++;
 	}
-	monitor->philosopher_dead = false;
+	pthread_create(monitor_thread, NULL, monitor_loop, monitor);
+	i = 0;
+	while (monitor->philosopher_dead == false)
+		sleep(1);
 
-	while (!monitor->philosopher_dead)
-	{
-		i = 0;
-		while (i < NUM_PHILOSOPHERS)
-		{
-			philosopher_current = monitor->philosopher[i];
-			pthread_mutex_lock(philosopher_current->mutex_state_is_changing);
-			gettimeofday(&time_current, NULL);
-			int64_t time = time_value_substract(time_current, *philosopher_current->time_last_meal);
-			monitor->time_stamp = time_value_substract(time_current, time_program_start);
-			if (time > TIME_TO_DIE)
-			{
-				philosopher_state_print(philosopher_current, "died");
-				monitor->philosopher_dead = true;
-				break ;
-			}
-			pthread_mutex_unlock(philosopher_current->mutex_state_is_changing);
-			i++;
-		}
-		usleep(1000);
-	}
-	while (i < NUM_PHILOSOPHERS)
-	{
-		pthread_join(philosopher_thread[i], NULL);
-		i++;
-	}
+	pthread_mutex_unlock(monitor->mutex_can_print);
+	pthread_mutex_destroy(monitor->mutex_can_print);
 	monitor_destroy(monitor);
 	ft_free((void **)&philosopher_thread);
-	ft_free((void **)&thread_return_value);
+	ft_free((void **)&monitor_thread);
 	return (0);
 }
