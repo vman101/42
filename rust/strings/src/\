@@ -1,0 +1,10 @@
+fn main() {
+    let str: &str = "Hello, World!";
+
+    println!("{}", &str)
+}
+
+fn change_string(str: &mut str) 
+{
+    str = "Hello, Rust!"
+}
