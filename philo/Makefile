@@ -14,8 +14,8 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $(OBJ)
 
-$(OBJ): $(SRC) philo.h
-	$(CC) $(CFLAGS) -c $^
+$(OBJ): $(SRC)
+	$(CC) $(CFLAGS) -c $(SRC)
 
 clean:
 	rm -f $(OBJ)

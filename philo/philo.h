@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:45:09 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/19 00:56:55 by victor           ###   ########.fr       */
+/*   Updated: 2024/09/06 16:47:55 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,15 @@
 
 # define MILLISECONDS_CONVERTER 1000
 
-# define NUM_PHILOSOPHERS	5
-# define TIME_TO_DIE		200
+# define NUM_PHILOSOPHERS	4
+# define TIME_TO_DIE		400
 # define TIME_TO_EAT		200
 # define TIME_TO_SLEEP		200
 
 # define TRUE				1
 # define FALSE				0
+
+# define SHOULD_EXIT do { printf("Should exit clean\n"); } while (0);
 
 typedef struct	timeval	t_time;
 
@@ -40,7 +42,7 @@ typedef struct	s_fork
 {
 	bool			is_grabed;
 	unsigned int	identifier;
-	pthread_mutex_t	*mutex_is_grabbed;
+	pthread_mutex_t	mutex_is_grabbed;
 }				t_fork;
 
 typedef struct	s_philosopher
@@ -49,25 +51,27 @@ typedef struct	s_philosopher
 	bool				state_has_changed;
 	bool				first_fork_grabbed;
 	bool				second_fork_grabbed;
+	bool				is_ready;
 	t_fork				*first_fork;
 	t_fork				*second_fork;
 	unsigned int		identifier;
-	t_time				*time_last_meal;
-	pthread_mutex_t		*mutex_state_is_changing;
+	t_time				time_last_meal;
+	pthread_mutex_t		mutex_state_is_changing;
 	struct s_monitor	*monitor;
 }				t_philosopher;
 
 typedef struct	s_monitor
 {
 	bool					philosopher_dead;
-	pthread_mutex_t			*mutex_can_print;
+	pthread_mutex_t			mutex_can_print;
 	bool					can_print;
-	pthread_mutex_t			*mutex_checking;
+	bool					go;
+	pthread_mutex_t			mutex_checking;
 	unsigned int			number_of_philosophers;
 	t_time					start_time;
 	uint32_t				time_stamp;
-	t_fork					**fork;
-	struct s_philosopher	**philosopher;
+	t_fork					*fork;
+	struct s_philosopher	*philosopher;
 }				t_monitor;
 
 enum e_mode
@@ -87,12 +91,12 @@ enum e_philosopher_offset
 };
 
 /* utils */
-void			ft_free(void **ptr);
+void			ft_free(void *ptr);
 
 /* philo */
-t_fork			*fork_create(unsigned int identifier);
-t_monitor		*monitor_create(unsigned int number_of_philosophers);
-t_philosopher	*philosopher_create(unsigned int identifier, t_monitor *monitor);
+void			fork_create(t_fork *fork, unsigned int identifier);
+void			monitor_create(t_monitor *monitor, unsigned int number_of_philosophers);
+void			philosopher_create(t_philosopher *philosopher, unsigned int identifier, t_monitor *monitor);
 void			fork_destroy(t_fork *fork);
 void			philosopher_destroy(t_philosopher *philosopher);
 void			monitor_destroy(t_monitor *monitor);
