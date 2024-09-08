@@ -6,7 +6,7 @@
 #    By: victor </var/spool/mail/victor>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/08 16:30:33 by victor            #+#    #+#              #
-#    Updated: 2024/09/08 23:12:45 by victor           ###   ########.fr        #
+#    Updated: 2024/09/08 23:58:52 by victor           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,8 +38,10 @@ $(LIBS):
 
 clean:
 	rm -f $(OBJ)
+	make clean -C libft
 
 fclean: clean
 	rm -f $(NAME)
+	make fclean -C libft
 
 re: fclean all
