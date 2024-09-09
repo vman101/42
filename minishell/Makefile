@@ -6,7 +6,7 @@
 #    By: victor </var/spool/mail/victor>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/05 12:24:47 by victor            #+#    #+#              #
-#    Updated: 2024/07/06 22:48:49 by victor           ###   ########.fr        #
+#    Updated: 2024/07/07 12:21:56 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC := cc
 
-CFLAGS := -Wall -Werror -Wextra -lreadline -g3 -fsanitize=address,undefined,leak
+CFLAGS := -Wall -Wextra -lreadline -g3 -fsanitize=address,undefined,leak -static-libsan
 
 LIBS := libft/libft.a
 

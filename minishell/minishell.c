@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:22:34 by victor            #+#    #+#             */
-/*   Updated: 2024/07/07 00:59:26 by victor           ###   ########.fr       */
+/*   Updated: 2024/07/07 12:35:37 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,44 @@ void	cursor_position_get(uint32_t cursor_position[2])
 	ft_free((void **)&cursor_position_str);
 }
 
-char	*prompt_get_input()
+uint8_t	prompt_escape_sequence_arrowkeys(uint32_t *cursor_position_current)
+{
+	char		escape_sequence[2];
+
+	if (read(0, escape_sequence, 2) == -1)
+	{
+		perror("read");
+		return (0);
+	}
+	if (escape_sequence[0] == 91 && escape_sequence[1] == 65)
+		;
+	else if (escape_sequence[0] == 91 && escape_sequence[1] == 66)
+		;
+	else if (escape_sequence[0] == 91 && escape_sequence[1] == 67)
+	{
+		(*cursor_position_current)++;
+		ft_printf(CURSOR_MOVE_RIGHT);
+	}
+	else if (escape_sequence[0] == 91 && escape_sequence[1] == 68)
+	{
+		(*cursor_position_current)--;
+		ft_printf(CURSOR_MOVE_LEFT);
+	}
+	return (1);
+}
+
+char	*prompt_get_input(t_prompt *prompt)
 {
 	char		*input;
 	char		*input_free_ptr;
 	char		character;
 	uint32_t	cursor_position_original[2];
 	uint32_t	cursor_position_new[2];
-	char		escape_sequence[2];
 	uint32_t	cursor_position_current;
 	int32_t		bytes_read;
 	uint32_t	total_bytes_read;
 
+	(void)prompt;
 	input = ft_calloc(1, PROMPT_INPUT_BUFFER_SIZE + 1);
 	if (!input)
 	{
@@ -108,21 +134,10 @@ char	*prompt_get_input()
 		}
 		else if (character == 27)
 		{
-			if (read(0, escape_sequence, 2) == -1)
-			{
-				ft_free((void **)&input);
-				perror("read");
-				return (NULL);
-			}
-			if (escape_sequence[0] == 91 && escape_sequence[1] == 65)
-				ft_printf(CURSOR_MOVE_UP);
-			else if (escape_sequence[0] == 91 && escape_sequence[1] == 66)
-				ft_printf(CURSOR_MOVE_DOWN);
-			else if (escape_sequence[0] == 91 && escape_sequence[1] == 67)
-				ft_printf(CURSOR_MOVE_RIGHT);
-			else if (escape_sequence[0] == 91 && escape_sequence[1] == 68)
-				ft_printf(CURSOR_MOVE_LEFT);
+			if (!prompt_escape_sequence_arrowkeys(&cursor_position_current))
+				return (ft_free((void **)&input), NULL);
 		}
+		/*TODO Implement Backspace Delete Behavior*/
 		else if (character == 127 && cursor_position_current > 0)
 		{
 			cursor_position_current--;
@@ -154,9 +169,8 @@ char	*prompt_get_input()
 		ft_printf(CURSOR_POSITION_SAVE);
 		cursor_position_get(cursor_position_new);
 		ft_printf(CURSOR_POSITION_RESTORE);
-		ft_printf(CURSOR_POSITION_SET, cursor_position_original[0], cursor_position_original[1]);
 		ft_printf("%s", input);
-		ft_printf(CURSOR_POSITION_SET, cursor_position_new[0], cursor_position_new[1]);
+		/*ft_printf(CURSOR_POSITION_SET, cursor_position_new[0], cursor_position_new[1]);*/
 		cursor_position_current++;
 	}
 	if (total_bytes_read == 0)
@@ -192,7 +206,7 @@ t_prompt	*prompt_get(t_prompt *prompt)
 	pwd = getcwd(NULL, 0);
 	prompt_display(pwd);
 	ft_free((void **)&pwd);
-	prompt->command = prompt_get_input();
+	prompt_get_input(prompt);
 	return (prompt);
 }
 
@@ -200,8 +214,9 @@ int main(int argc, char **argv, char **env)
 {
 	t_prompt	*prompt;
 	t_history	history;
+	char		*input;
 
-	terminal_raw_mode_enable();
+	/*terminal_raw_mode_enable();*/
 	(void)argc;
 	(void)argv;
 	(void)env;
@@ -212,10 +227,12 @@ int main(int argc, char **argv, char **env)
 	lst_memory(prompt, prompt_destroy, ADD);
 	while (1)
 	{
-		prompt_get(prompt);
-		if (!prompt->command)
-			break ;
-		m_tokenizer(prompt->command, (char const **)env);
+		input = readline("minishell$ ");
+		add_history(input);
+		/*prompt_get(prompt);*/
+		/*if (!prompt->command)*/
+		/*	break ;*/
+		/*m_tokenizer(prompt->command, (char const **)env);*/
 		ft_free((void **)&prompt->command);
 	}
 	ft_close(history, "history");
