@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: victor </var/spool/mail/victor>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/08 16:30:33 by victor            #+#    #+#              #
-#    Updated: 2024/09/08 16:30:35 by victor           ###   ########.fr        #
+#    Created: 2024/09/08 17:46:41 by victor            #+#    #+#              #
+#    Updated: 2024/09/08 17:56:40 by victor           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,18 +14,18 @@ CC := cc
 
 CFLAGS := -Wall -Wextra -Werror
 
-NAME := philo
+NAME := memory.a
 
-SRC := philo.c setup.c ft_atol.c time.c routine.c monitor.c
+SRC := memory.c list.c
 
 OBJ := $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $(OBJ)
+$(NAME): $(OBJ) $(LIBS)
+	ar rcs $(NAME) $(OBJ)
 
-$(OBJ): $(SRC) philo.h
+$(OBJ): $(SRC)
 	$(CC) $(CFLAGS) -c $(SRC)
 
 clean:

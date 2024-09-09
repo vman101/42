@@ -5,149 +5,105 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 16:23:55 by vvobis            #+#    #+#             */
-/*   Updated: 2024/08/29 11:22:41 by vvobis           ###   ########.fr       */
+/*   Created: 2024/05/31 14:49:26 by vvobis            #+#    #+#             */
+/*   Updated: 2024/09/08 16:30:06 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <sys/time.h>
 
-typedef struct s_stack
+bool	validate_input(char **argv)
 {
-	void	*stack_ptr;
-	t_phil	*phils;
-	t_fork	*forks;
-	bool	should_run;
-}	t_stack;
+	uint32_t	i;
+	uint32_t	j;
 
-void	*thread_print_string(void *str_ptr)
-{
-	char	*str;
-
-	str = str_ptr;
-	while (1)
-	{
-		printf("%s\n", str);
-		usleep(10000);
-	}
-	return (NULL);
-}
-
-void	*thread_print_hello(void *str_ptr)
-{
-	char	*str;
-
-	str = str_ptr;
-	while (1)
-	{
-		printf("%s\n", str);
-		usleep(10000);
-	}
-	return (NULL);
-}
-
-#define NUM 5
-
-void	memory_stack_create(t_stack *stack, u32 n)
-{
-	u32	size;
-	u32	i;
-
-	size = (sizeof(t_phil) + sizeof(t_fork)) * n;
-	stack->stack_ptr = malloc(size);
-	if (!stack)
-	{
-		perror("malloc");
-		exit (1);
-	}
-	stack->phils = stack->stack_ptr;
-	memset(stack->phils, 0, size);
-	stack->forks = (t_fork *)&stack->phils[n];
 	i = 0;
-	while (i < n)
+	while (argv[i])
 	{
-		stack->phils[i].id = i;
-		stack->forks[i].id = i;
-		pthread_mutex_init(&stack->forks[i].mutex, NULL);
+		j = 0;
+		while (argv[i][j])
+		{
+			if (argv[i][j] < '0' || argv[i][j] > '9')
+			{
+				if (argv[i][j] == '+' \
+						&& (j == 0 || argv[i][j - (j > 0)] != '+'))
+					;
+				else
+					return (false);
+			}
+			j++;
+		}
 		i++;
 	}
+	return (true);
 }
 
-u32 ft_strlen(char *s)
+bool	parameters_setup(t_parameters *params, int argc, char **argv)
 {
-	u32	i;
+	uint8_t	too_big;
 
+	if (argc < 5 || argc > 6 || !validate_input(argv))
+		return (print_help(), false);
+	too_big = 0;
+	params->philosopher_count = ft_atol(argv[0], &too_big);
+	params->time_to_die = ft_atol(argv[1], &too_big);
+	params->time_to_eat = ft_atol(argv[2], &too_big);
+	params->time_to_sleep = ft_atol(argv[3], &too_big);
+	if (argc > 5)
+		params->times_should_eat = ft_atol(argv[4], &too_big);
+	else
+		params->times_should_eat = -1;
+	if (too_big > 0)
+		return (false);
+	return (true);
+}
+
+void	warning(t_parameters params)
+{
+	printf("There seem to be more than 1000 threads.\n"
+		"This warning sets an arbitrary limit just for completeness.\n"
+		"You can try and wait fo all %d thread to be created...\n", \
+		params.philosopher_count);
+}
+
+void	main_loop(t_monitor *monitor, pthread_t *thread, t_parameters params)
+{
+	int64_t			i;
+
+	monitor_create(monitor, params);
+	thread = malloc(sizeof(*thread) * (params.philosopher_count + 1));
+	if (!thread)
+		return ;
+	pthread_create(&thread[0], NULL, timestamp_routine, &monitor->timestamp);
 	i = 0;
-	while (s[i])
+	while (i < params.philosopher_count)
+	{
+		if (pthread_create(&thread[i + 1], NULL, philosopher_routine_start, \
+					&monitor->philosopher[i]) != 0)
+		{
+			print_help();
+			cancel_threads(i, monitor);
+			break ;
+		}
+		else if (i == 1000)
+			warning(params);
 		i++;
-	return (i);
-}
-
-void	ft_putstr(char *s)
-{
-	u32	len;
-	u32	i;
-
-	i = 0;
-	len = ft_strlen(s);
-	write(1, s, len);
-}
-
-#define APPROXIMATE_DIV_1000 1049
-
-unsigned long long get_timestamp_in_milliseconds(struct timeval start)
-{
-	struct timeval result;
-	struct timeval current;
-
-    gettimeofday(&current, NULL);
-    (result).tv_sec = (current).tv_sec - (start).tv_sec;                              
-    (result).tv_usec = (current).tv_usec - (start).tv_usec;                          
-    if ((result).tv_usec < 0)
-	{                                               
-      --(result).tv_sec;                                                      
-      (result).tv_usec += 1000000;                                            
-    }                                                                          
-    unsigned long long microseconds = result.tv_sec * 1000000ULL + result.tv_usec;
-    return (microseconds * APPROXIMATE_DIV_1000) >> 20;
-}
-
-void	*time_thread_func(void *timestamp_ptr)
-{
-	t_timestamp		*timestamp;
-	struct timeval	time_start;
-
-	if (gettimeofday(&time_start, NULL) == -1)
-		return (NULL);
-	timestamp = timestamp_ptr;
-	while (1)
-	{
-		pthread_mutex_lock(&timestamp->mutex);
-		timestamp->value = get_timestamp_in_milliseconds(time_start); 
-		pthread_mutex_unlock(&timestamp->mutex);
-		printf("%llu\n", timestamp->value);
-		usleep(1000000);
 	}
+	monitor_loop(monitor);
+	while (i > 0)
+		pthread_join(thread[i--], NULL);
+	monitor_destroy(monitor);
 }
 
-int main()
+int	main(int argc, char **argv)
 {
-	pthread_t	thread;
-	pthread_t	time_thread;
-	t_stack		stack;
-	u8			i;
-	t_timestamp stamp;
+	pthread_t		*thread;
+	t_monitor		monitor;
+	t_parameters	params;
 
-	i = 0;
-
-	stack.should_run = true;
-	pthread_mutex_init(&stamp.mutex, NULL);
-	pthread_create(&time_thread, NULL, time_thread_func, &stamp);
-	memory_stack_create(&stack, NUM);
-	while (stack.should_run)
-	{
-		usleep(10000);
-	}
-	pthread_create(&thread, NULL, thread_print_string, "hello thread");
+	thread = NULL;
+	if (parameters_setup(&params, argc, &argv[1]))
+		main_loop(&monitor, thread, params);
+	ft_free(&thread);
+	return (0);
 }

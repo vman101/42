@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:10:06 by vvobis            #+#    #+#             */
-/*   Updated: 2024/09/07 15:02:35 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/09/08 16:28:31 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	ft_free(void *ptr_ptr)
 {
-	void **ptr = ptr_ptr;
+	void	**ptr;
+
+	ptr = ptr_ptr;
 	if (ptr && *ptr)
 	{
 		free(*ptr);
@@ -37,14 +39,17 @@ void	monitor_create(t_monitor *monitor, t_parameters params)
 	i = 0;
 	memset(monitor, 0, sizeof(*monitor));
 	monitor->params = params;
-	monitor->fork = malloc(sizeof(*monitor->fork) * params.philosopher_count);
-	monitor->philosopher = malloc(sizeof(*monitor->philosopher) * params.philosopher_count);
+	monitor->fork = malloc(sizeof(*monitor->fork) * \
+			(params.philosopher_count + 1));
+	monitor->philosopher = malloc(sizeof(*monitor->philosopher) \
+			* params.philosopher_count);
 	if (!monitor->philosopher || !monitor->fork)
-		SHOULD_EXIT
-	if (pthread_mutex_init(&monitor->timestamp.mutex, NULL) != 0 || pthread_mutex_init(&monitor->can_print, NULL))
+		return ;
+	if (pthread_mutex_init(&monitor->timestamp.mutex, NULL) != 0 \
+			|| pthread_mutex_init(&monitor->can_print, NULL))
 	{
 		printf("timestamp_mutex init failed\n");
-		SHOULD_EXIT
+		return ;
 	}
 	monitor->timestamp.monitor = monitor;
 	while (i < params.philosopher_count)
@@ -55,28 +60,17 @@ void	monitor_create(t_monitor *monitor, t_parameters params)
 	}
 }
 
-void	philosopher_create(t_philosopher *philosopher, unsigned int identifier, t_monitor *monitor)
+void	philosopher_create(t_philosopher *philosopher, \
+							unsigned int identifier, t_monitor *monitor)
 {
 	memset(philosopher, 0, sizeof(*philosopher));
 	if (pthread_mutex_init(&philosopher->mutex, NULL) != 0)
 	{
 		printf("philosopher mutex_state_is_changing init failed");
-		SHOULD_EXIT
+		return ;
 	}
 	philosopher->identifier = identifier;
 	philosopher->monitor = monitor;
-}
-
-void	fork_destroy(t_fork *fork)
-{
-	pthread_mutex_unlock(fork);
-	pthread_mutex_destroy(fork);
-}
-
-void	philosopher_destroy(t_philosopher *philosopher)
-{
-	pthread_mutex_unlock(&philosopher->mutex);
-	pthread_mutex_destroy(&philosopher->mutex);
 }
 
 void	monitor_destroy(t_monitor *monitor)
@@ -86,8 +80,9 @@ void	monitor_destroy(t_monitor *monitor)
 	i = 0;
 	while (i < monitor->params.philosopher_count)
 	{
-		philosopher_destroy(&monitor->philosopher[i]);
-		fork_destroy(&monitor->fork[i]);
+		pthread_mutex_destroy(&monitor->fork[i]);
+		pthread_mutex_unlock(&monitor->philosopher[i].mutex);
+		pthread_mutex_destroy(&monitor->philosopher[i].mutex);
 		i++;
 	}
 	ft_free((void **)&monitor->philosopher);

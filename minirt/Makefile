@@ -6,32 +6,42 @@
 #    By: victor </var/spool/mail/victor>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/08 16:30:33 by victor            #+#    #+#              #
-#    Updated: 2024/09/08 16:30:35 by victor           ###   ########.fr        #
+#    Updated: 2024/09/08 23:58:52 by victor           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := cc
 
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -g3
 
-NAME := philo
+LDFLAGS := -lmlx -lm -lXext -lX11
 
-SRC := philo.c setup.c ft_atol.c time.c routine.c monitor.c
+NAME := minirt
+
+SRC := entry.c minirt_utils.c
+
+LIBS := libft/libft.a memory/memory.a
 
 OBJ := $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $(OBJ)
+$(NAME): $(OBJ) $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $(OBJ) $(LIBS) $(LDFLAGS)
 
-$(OBJ): $(SRC) philo.h
+$(OBJ): $(SRC) minirt.h
 	$(CC) $(CFLAGS) -c $(SRC)
+
+$(LIBS):
+	make -C libft
+	make -C memory
 
 clean:
 	rm -f $(OBJ)
+	make clean -C libft
 
 fclean: clean
 	rm -f $(NAME)
+	make fclean -C libft
 
 re: fclean all
