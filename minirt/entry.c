@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 16:33:29 by victor            #+#    #+#             */
-/*   Updated: 2024/09/08 23:48:47 by victor           ###   ########.fr       */
+/*   Updated: 2024/09/10 12:54:59 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,14 @@ bool	parse_sphere(char *entry, t_body *body)
 		|| !collect_position(&entry, &params[4], 2))
 		return (ft_putendl_fd("Invalid sphere configuration", 2), false);
 	body->type = BODY_SPHERE;
-	body->sphere = (t_sphere){.x = ft_atod(params[0]), .y = ft_atod(params[1]), .z = ft_atod(params[2]), \
-							.diameter = ft_atod(params[3]), .color = (ft_atoi(params[4]) << 16) | (ft_atoi(params[5]) << 8) | ft_atoi(params[6])};
+	body->sphere = (t_sphere){.x = ft_atod(params[0]), \
+		.y = ft_atod(params[1]), .z = ft_atod(params[2]), \
+		.diameter = ft_atod(params[3]), \
+		.color = (0x20 << 24 | ft_atoi(params[4]) << 16) | (ft_atoi(params[5]) << 8) | ft_atoi(params[6])};
 	return (true);
 }
 
-void	body_determine(char *entry, t_body *body)
+void	body_determine(char *entry, t_scene *scene)
 {
 	char	*tmp;
 
@@ -129,33 +131,66 @@ void	body_determine(char *entry, t_body *body)
 	while (*tmp && !ft_isspace(*tmp))
 		tmp++;
 	if (!*tmp)
-		exit (__LINE__);
+		return ;
 	*tmp++ = 0;
 	if (ft_strncmp(entry, "sp", 2) == 0)
-		parse_sphere(tmp, body);
+		parse_sphere(tmp, &scene->body[scene->body_count]);
+	scene->body_count += 1;
 }
 
-void	bodies_retrieve(const char *filepath, t_body bodies[])
+char	*buffer_read_chunk(t_line *line, i32 fd, bool *file_end_reached)
+{
+	i64		bytes_read;
+	char	*tmp;
+
+	if (!*file_end_reached)
+	{
+		bytes_read = ft_read(fd, line->buffer + line->length, READ_BUFFER_SIZE - line->length);
+		if (bytes_read < 0)
+			return (NULL);
+		else if (bytes_read == 0)
+			*file_end_reached = true;
+	}
+	tmp = ft_strchr(line->buffer, '\n');
+	if (!tmp)
+	{
+		tmp =  ft_strchr(line->buffer, '\0');
+		if (!tmp)
+			return (ft_printf("The length of line %d is too long for the current implementation\nexiting...\n", line->count), NULL);
+	}
+	*tmp = 0;
+	line->count++;
+	line->length = ft_strlen(line->buffer);
+	return (tmp);
+}
+
+void	bodies_retrieve(const char *filepath, t_scene *scene)
 {
 	i32		fd;
-	char	buffer[1024];
-	i64		bytes_read;
+	t_line	line;
+	bool	file_end_reached;
 
-	ft_bzero(buffer, sizeof(buffer));
+	file_end_reached = false;
+	ft_bzero(&line, sizeof(line));
 	ft_open(&fd, filepath, O_RDONLY, 0);
-	bytes_read = 1;
-	if (fd > 0)
-		while (bytes_read > 0)
-			bytes_read = ft_read(fd, buffer, 1024);
-	body_determine(buffer, bodies);
-	ft_printf("buffer content: %s\n", buffer);
-	(void)bodies;
+	if (fd < 0)
+		return ;
+	while (scene->body_count != MAX_BODY - 1 && !(file_end_reached == true && line.length == 0))
+	{
+		if (!buffer_read_chunk(&line, fd, &file_end_reached))
+			return ;
+		body_determine(line.buffer, scene);
+		ft_memmove(line.buffer, line.buffer + line.length + 1, READ_BUFFER_SIZE - line.length);
+		line.length = ft_strlen(line.buffer);
+		ft_bzero(line.buffer + line.length, READ_BUFFER_SIZE - line.length - (line.length < READ_BUFFER_SIZE));
+		ft_printf("buffer content: %s\n", line.buffer);
+	}
 	ft_close(fd);
 }
 
 void	sphere_print(t_sphere sphere)
 {
-	printf("sphere:\nx: %f\ny: %f\nz: %f\ndia: %f\ncolor: %X", sphere.x, sphere.y, sphere.z, sphere.diameter, sphere.color);
+	printf("sphere:\nx: %f\ny: %f\nz: %f\ndia: %f\ncolor: %X\n", sphere.x, sphere.y, sphere.z, sphere.diameter, sphere.color);
 }
 
 void	print_body(t_body body[])
@@ -171,12 +206,16 @@ void	print_body(t_body body[])
 	}
 }
 
-int	key_press(int keycode, void *param)
+int	key_press(int keycode, void *param_ptr)
 {
-	(void)param;
+	void	**param;
 
+	param = param_ptr;
 	if (keycode == XK_Escape)
 	{
+		mlx_destroy_window(param[0], param[1]);
+		mlx_destroy_display(param[0]);
+		ft_free(&param[0]);
 		exit (0);
 	}
 	return (0);
@@ -184,10 +223,10 @@ int	key_press(int keycode, void *param)
 
 void	sphere_2d_draw(t_sphere sphere, void *win, void *mlx)
 {
-	t_point2d	current_position;
-	t_point2d	circle_extremes;
-	t_point2d	circle_center;
-	i32	r;
+	t_point3d	current_position;
+	t_point3d	circle_extremes;
+	t_point3d	circle_center;
+	i32			r;
 
 	current_position.y = sphere.y;
 	circle_extremes.x = round(sphere.x) + sphere.diameter;
@@ -209,9 +248,22 @@ void	sphere_2d_draw(t_sphere sphere, void *win, void *mlx)
 	}
 }
 
+void	bodys_draw(t_scene scene, void *win, void *mlx)
+{
+	u32	i;
+
+	i = 0;
+	while (i < scene.body_count)
+	{
+		sphere_2d_draw(scene.body[i].sphere, win, mlx);
+		print_body(scene.body);
+		i++;
+	}
+}
+
 int main(int argc, char **argv)
 {
-	t_body	bodies[MAX_BODY];
+	t_scene	scene;
 	void	*win;
 	void	*mlx;
 
@@ -222,13 +274,12 @@ int main(int argc, char **argv)
 		return (1);
 	}
 	win = mlx_new_window(mlx, 600, 400, "window");
-	(void)win;
-	ft_bzero(bodies, sizeof(bodies));
+	ft_bzero(&scene, sizeof(scene));
+	ft_bzero(scene.body, sizeof(scene.body));
 	if (argc == 2)
-		bodies_retrieve(argv[1], bodies);
-	sphere_2d_draw(bodies[0].sphere, win, mlx);
-	print_body(bodies);
-	mlx_key_hook(win, key_press, NULL);
+		bodies_retrieve(argv[1], &scene);
+	bodys_draw(scene, win, mlx);
+	mlx_key_hook(win, key_press, (void *[2]){mlx, win});
 	mlx_loop(mlx);
 	return (0);
 }

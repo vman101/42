@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 23:43:36 by vvobis            #+#    #+#             */
-/*   Updated: 2024/09/08 18:27:35 by victor           ###   ########.fr       */
+/*   Updated: 2024/09/10 12:17:58 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	*ft_calloc(size_t n, size_t s);
 int		ft_atoi(char const *s);
 char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
+void	ft_free(void *ptr_ptr);
 
 /*String Manip*/
 int		ft_toupper(int c);
