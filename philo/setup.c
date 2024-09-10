@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:10:06 by vvobis            #+#    #+#             */
-/*   Updated: 2024/09/08 16:28:31 by victor           ###   ########.fr       */
+/*   Updated: 2024/09/10 22:05:31 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ void	ft_free(void *ptr_ptr)
 	}
 }
 
-static void	fork_create(t_fork *fork)
+uint8_t	monitor_check(t_monitor *monitor)
 {
-	if (pthread_mutex_init(fork, NULL) != 0)
-	{
-		perror("fork %d mutex init");
-	}
+	uint8_t	res;
+
+	res = 0;
+	pthread_mutex_lock(&monitor->mutex);
+	res = monitor->go;
+	pthread_mutex_unlock(&monitor->mutex);
+	return (res);
 }
 
 void	monitor_create(t_monitor *monitor, t_parameters params)
 {
-	unsigned int	i;
-
-	i = 0;
 	memset(monitor, 0, sizeof(*monitor));
 	monitor->params = params;
 	monitor->fork = malloc(sizeof(*monitor->fork) * \
@@ -44,19 +44,21 @@ void	monitor_create(t_monitor *monitor, t_parameters params)
 	monitor->philosopher = malloc(sizeof(*monitor->philosopher) \
 			* params.philosopher_count);
 	if (!monitor->philosopher || !monitor->fork)
-		return ;
+		return (free(monitor->philosopher), free(monitor->fork));
 	if (pthread_mutex_init(&monitor->timestamp.mutex, NULL) != 0 \
-			|| pthread_mutex_init(&monitor->can_print, NULL))
+			|| pthread_mutex_init(&monitor->mutex, NULL))
 	{
 		printf("timestamp_mutex init failed\n");
 		return ;
 	}
 	monitor->timestamp.monitor = monitor;
-	while (i < params.philosopher_count)
+	while (monitor->valid_count < params.philosopher_count)
 	{
-		fork_create(&monitor->fork[i]);
-		philosopher_create(&monitor->philosopher[i], i, monitor);
-		i++;
+		if (pthread_mutex_init(&monitor->fork[monitor->valid_count], NULL) != 0)
+			return ;
+		philosopher_create(&monitor->philosopher[monitor->valid_count], \
+				monitor->valid_count, monitor);
+		monitor->valid_count++;
 	}
 }
 
@@ -64,12 +66,8 @@ void	philosopher_create(t_philosopher *philosopher, \
 							unsigned int identifier, t_monitor *monitor)
 {
 	memset(philosopher, 0, sizeof(*philosopher));
-	if (pthread_mutex_init(&philosopher->mutex, NULL) != 0)
-	{
-		printf("philosopher mutex_state_is_changing init failed");
-		return ;
-	}
 	philosopher->identifier = identifier;
+	philosopher->mutex = monitor->mutex;
 	philosopher->monitor = monitor;
 }
 
@@ -78,13 +76,15 @@ void	monitor_destroy(t_monitor *monitor)
 	unsigned int	i;
 
 	i = 0;
-	while (i < monitor->params.philosopher_count)
+	while (i < monitor->valid_count)
 	{
-		pthread_mutex_destroy(&monitor->fork[i]);
-		pthread_mutex_unlock(&monitor->philosopher[i].mutex);
 		pthread_mutex_destroy(&monitor->philosopher[i].mutex);
+		pthread_mutex_destroy(&monitor->fork[i]);
 		i++;
 	}
+	pthread_mutex_lock(&monitor->mutex);
+	pthread_mutex_unlock(&monitor->mutex);
+	pthread_mutex_destroy(&monitor->mutex);
 	ft_free((void **)&monitor->philosopher);
 	ft_free((void **)&monitor->fork);
 }

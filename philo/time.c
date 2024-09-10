@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 11:11:29 by victor            #+#    #+#             */
-/*   Updated: 2024/09/08 15:17:25 by victor           ###   ########.fr       */
+/*   Updated: 2024/09/10 22:20:36 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ void	*timestamp_routine(void	*time_ptr)
 
 	time = time_ptr;
 	monitor = time->monitor;
-	while (monitor->go == false)
-		usleep(100);
 	gettimeofday(&time_program_start, NULL);
-	while (monitor->go == true)
+	while (monitor_check(monitor) == 0)
+		usleep(100);
+	while (monitor_check(monitor) != 2)
 	{
 		pthread_mutex_lock(&time->mutex);
 		gettimeofday(&time_current, NULL);
 		time->timestamp = time_value_substract(time_current, \
 											time_program_start);
 		pthread_mutex_unlock(&time->mutex);
-		usleep(50);
+		usleep(10);
 	}
 	return (NULL);
 }
@@ -59,21 +59,14 @@ uint32_t	timestamp_request(t_time *time_stamp)
 	return (time_current);
 }
 
-bool	should_print(t_monitor *monitor)
-{
-	if (monitor->go == false)
-		return (false);
-	return (true);
-}
-
 void	print_message(	t_monitor *monitor, \
 						const char *message, \
 						uint32_t timestamp, \
 						uint32_t id)
 {
-	if (!should_print(monitor))
+	if (monitor_check(monitor) != 1)
 		return ;
-	pthread_mutex_lock(&monitor->can_print);
+	pthread_mutex_lock(&monitor->mutex);
 	printf(message, timestamp, id);
-	pthread_mutex_unlock(&monitor->can_print);
+	pthread_mutex_unlock(&monitor->mutex);
 }

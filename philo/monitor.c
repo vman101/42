@@ -6,74 +6,84 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 11:16:54 by victor            #+#    #+#             */
-/*   Updated: 2024/09/08 15:17:45 by victor           ###   ########.fr       */
+/*   Updated: 2024/09/10 22:27:24 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philosophers_are_ready(	t_philosopher *philosophers, \
-								uint32_t number_of_philosophers)
+void	philosophers_are_ready(t_philosopher *philosophers)
+{
+	bool		was_ready;
+	uint32_t	i;
+
+	i = 0;
+	while (i < philosophers->monitor->valid_count)
+	{
+		was_ready = false;
+		pthread_mutex_lock(&philosophers[i].mutex);
+		if (philosophers[i].is_ready == true)
+			was_ready = true;
+		pthread_mutex_unlock(&philosophers[i].mutex);
+		if (was_ready)
+			i++;
+		usleep(100);
+	}
+}
+
+void	monitor_set(t_monitor *monitor, uint8_t go)
+{
+	pthread_mutex_lock(&monitor->mutex);
+	monitor->go = go;
+	pthread_mutex_unlock(&monitor->mutex);
+}
+
+void	check_params(	t_monitor *monitor, \
+						uint32_t timestamp, \
+						t_philosopher *philosopher, \
+						t_parameters *params)
 {
 	uint32_t	i;
 
 	i = 0;
-	while (i < number_of_philosophers)
+	while (i < params->philosopher_count && monitor->go == true)
 	{
-		while (philosophers[i].is_ready != true)
-			usleep(200);
+		pthread_mutex_lock(&monitor->mutex);
+		if ((int)(timestamp - philosopher[i].time_last_meal) \
+				>= (int)params->time_to_die)
+		{
+			monitor->go = 2;
+			printf("%u %u died\n", timestamp, i + 1);
+		}
+		if (params->times_should_eat != -1 \
+			&& (int64_t)philosopher[i].times_eaten >= params->times_should_eat)
+			params->finished_eating++;
 		i++;
+		pthread_mutex_unlock(&monitor->mutex);
+		usleep(1);
 	}
 }
 
-void	check_params(	t_monitor *monitor, \
-						t_philosopher *philosopher, \
-						t_parameters *params)
-{
-	int32_t			timestamp;
-
-	pthread_mutex_lock(&philosopher->mutex);
-	timestamp = (int64_t)(timestamp_request(&monitor->timestamp));
-	if ((timestamp - philosopher->time_last_meal) > params->time_to_die)
-	{
-		monitor->go = false;
-		pthread_mutex_lock(&monitor->can_print);
-		printf("%u %u died\n", timestamp, philosopher->identifier);
-		pthread_mutex_unlock(&monitor->can_print);
-	}
-	if (params->times_should_eat != -1 \
-		&& (int64_t)philosopher->times_eaten >= params->times_should_eat)
-		params->finished_eating++;
-	pthread_mutex_unlock(&philosopher->mutex);
-}
-
-void	*monitor_loop(void *monitor_input)
+void	monitor_loop(t_monitor *monitor)
 {
 	uint32_t		i;
-	t_monitor		*monitor;
-	t_philosopher	*philosopher;
 	t_parameters	params;
 
-	monitor = monitor_input;
-	philosophers_are_ready(monitor->philosopher, \
-			monitor->params.philosopher_count);
-	monitor->go = true;
-	philosopher = monitor->philosopher;
 	params = monitor->params;
-	while (monitor->go)
+	if (monitor->valid_count != params.philosopher_count \
+			|| params.times_should_eat == 0)
+		return ;
+	monitor_set(monitor, 1);
+	while (monitor_check(monitor) != 2)
 	{
 		i = 0;
-		if (params.times_should_eat != -1 && \
-				(int64_t)params.finished_eating == params.philosopher_count)
-			monitor->go = false;
 		params.finished_eating = 0;
-		while (i < params.philosopher_count && monitor->go == true)
-		{
-			usleep(100);
-			check_params(monitor, &philosopher[i++], &params);
-		}
+		check_params(monitor, timestamp_request(&monitor->timestamp), \
+				monitor->philosopher, &params);
+		if (params.times_should_eat != -1 && \
+			(int64_t)params.finished_eating == params.philosopher_count)
+			monitor_set(monitor, 2);
 	}
-	return (NULL);
 }
 
 void	print_help(void)
@@ -82,24 +92,4 @@ void	print_help(void)
 			"<time_to_die> <time_to_eat> <time_to_sleep> " \
 			"[number_of_times_each_philosopher_must_eat]" \
 			"\nAccepted value range from [0..INT_MAX]\n");
-}
-
-void	cancel_threads(uint32_t i, t_monitor *monitor)
-{
-	uint32_t	j;
-
-	j = 0;
-	while (j < i)
-	{
-		if (monitor->philosopher[j].is_ready == true)
-			pthread_mutex_lock(&monitor->philosopher[j++].mutex);
-		else
-			usleep(100);
-	}
-	monitor->go = true;
-	usleep(100);
-	monitor->go = false;
-	j = 0;
-	while (j < i)
-		pthread_mutex_unlock(&monitor->philosopher[j++].mutex);
 }
