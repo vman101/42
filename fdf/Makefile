@@ -6,15 +6,15 @@
 #    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/16 13:02:01 by vvobis            #+#    #+#              #
-#    Updated: 2024/06/16 13:41:08 by vvobis           ###   ########.fr        #
+#    Updated: 2024/09/21 12:01:32 by victor           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := cc
 
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra
 
-LINK := -lXext -lX11 -lm -lmlx
+LINK :=  -lmlx -lXext -lX11 -lm
 
 NAME := fdf
 
