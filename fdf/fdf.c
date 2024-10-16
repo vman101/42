@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:39:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/06/16 13:18:38 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/09/21 12:16:04 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int	main(int argc, char **argv)
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	draw_menu(data);
 	img_clear_background(data, 0x000000);
+	t_point3d begin = {200, 200, 0, 0xffffff};
+	glyph_print(&begin, "Hello Anna", data);
 	mlx_key_hook(data->win, key_press, data);
 	mlx_hook(data->win, 17, 0, handle_close, data);
 	mlx_loop(data->mlx);
