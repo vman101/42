@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 11:10:05 by victor            #+#    #+#             */
-/*   Updated: 2024/09/10 22:27:08 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/10/05 15:49:49 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,22 @@ static void	grab_forks(	t_philosopher *philosopher, \
 						t_fork *fork[2], \
 						t_time *time)
 {
-	uint32_t	timestamp;
-
 	pthread_mutex_lock(fork[LEFT]);
+	usleep(10);
 	philosopher->left_grabbed = true;
-	print_message(monitor, "%u %u has taken a fork\n", \
+	pthread_mutex_lock(&monitor->mutex);
+	if (monitor->go != 2)
+		printf("%u %u has taken a fork\n", \
 			timestamp_request(time), *(uint32_t *)philosopher);
+	pthread_mutex_unlock(&monitor->mutex);
 	pthread_mutex_lock(fork[RIGHT]);
 	philosopher->right_grabbed = true;
 	pthread_mutex_lock(&monitor->mutex);
 	if (monitor->go != 2)
-	{
-		timestamp = timestamp_request(time);
-		printf("%u %u has taken a fork\n"\
-				"%u %u is eating\n", \
-			timestamp, *(uint32_t *)philosopher,
-			timestamp, *(uint32_t *)philosopher);
-	}
+		printf("%u %u has taken a fork\n" \
+				"%u %u is eating\n",
+			timestamp_request(time), *(uint32_t *)philosopher,
+		timestamp_request(time), *(uint32_t *)philosopher);
 	philosopher->times_eaten++;
 	philosopher->time_last_meal = timestamp_request(time);
 	pthread_mutex_unlock(&monitor->mutex);
@@ -96,7 +95,7 @@ void	*philosopher_routine_start(void *philosopher_input)
 	philosopher = philosopher_input;
 	monitor = philosopher->monitor;
 	if (philosopher->identifier % 2 == 0)
-		usleep(20);
+		usleep(10);
 	if (monitor->params.philosopher_count < 2)
 		return (single_philo(monitor), NULL);
 	set_forks(fork, monitor->fork, philosopher->identifier, \
@@ -105,7 +104,7 @@ void	*philosopher_routine_start(void *philosopher_input)
 	while (monitor_check(monitor) != 2)
 	{
 		routine(philosopher, monitor, fork);
-		usleep(50);
+		usleep(10);
 	}
 	return (NULL);
 }

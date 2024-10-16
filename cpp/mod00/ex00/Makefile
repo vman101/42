@@ -3,35 +3,34 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: victor </var/spool/mail/victor>            +#+  +:+       +#+         #
+#    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/08 16:30:33 by victor            #+#    #+#              #
-#    Updated: 2024/10/05 15:48:53 by vvobis           ###   ########.fr        #
+#    Created: 2024/10/16 17:46:34 by vvobis            #+#    #+#              #
+#    Updated: 2024/10/16 17:50:21 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC := cc
+CC := c++
 
-CFLAGS := -Werror -Wall -Wextra
+CFLAGS := -Werror -Wextra -Wall
 
-NAME := philo
+NAME := megaphone
 
-SRC := philo.c setup.c ft_atol.c time.c routine.c monitor.c
-
-OBJ := $(SRC:%.c=%.o)
+SRC := megaphone.cpp
+OBJ := $(SRC:.cpp=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $(OBJ)
+	$(CC) -o $@ $<
 
-%.o: %.c philo.h
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(OBJ)
+	rm -rf $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all

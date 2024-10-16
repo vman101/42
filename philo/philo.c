@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:49:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/09/10 22:26:56 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/10/05 15:28:17 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ void	main_loop(t_monitor *monitor, pthread_t **thread, t_parameters params)
 		monitor_loop(monitor);
 	usleep(100);
 	while (i > 0)
-		pthread_join((*thread)[i--], NULL);
+		if (pthread_join((*thread)[i--], NULL) != 0)
+			printf("Failed to join with thread %ld\n", i);
+
 }
 
 int	main(int argc, char **argv)

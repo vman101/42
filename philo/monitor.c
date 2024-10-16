@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 11:16:54 by victor            #+#    #+#             */
-/*   Updated: 2024/09/10 22:27:24 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/10/05 15:57:43 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	check_params(	t_monitor *monitor, \
 			params->finished_eating++;
 		i++;
 		pthread_mutex_unlock(&monitor->mutex);
-		usleep(1);
+		usleep(100);
 	}
 }
 
@@ -83,6 +83,7 @@ void	monitor_loop(t_monitor *monitor)
 		if (params.times_should_eat != -1 && \
 			(int64_t)params.finished_eating == params.philosopher_count)
 			monitor_set(monitor, 2);
+		usleep(100);
 	}
 }
 
