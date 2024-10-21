@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:32:21 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/21 16:56:02 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/10/21 18:25:30 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 Contact::Contact( void )
 {
+	std::cout << "Created contact" << std::endl;
 }
 
 Contact::~Contact( void )
@@ -69,6 +70,22 @@ std::string	Contact::LastNameGet( void ) const
 std::string	Contact::NickNameGet( void ) const
 {
 	return this->nick_name;
+}
+
+std::string	Contact::PrintFormat(std::string str)
+{
+	int len = str.length();
+	std::string formatted;
+	for (int i = 0; i < len; i++)
+	{
+		formatted.push_back(str[i]);
+		if (i == 8)
+		{
+			formatted.push_back('.');
+			break ;
+		}
+	}
+	return formatted;
 }
 
 void Contact::Display( void )

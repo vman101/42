@@ -6,11 +6,12 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 16:02:34 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/21 16:54:26 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/10/21 18:46:34 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"phonebook.hpp"
+#include	<cstdlib>
 #include	<iomanip>
 #include	<iostream>
 
@@ -28,10 +29,7 @@ Phonebook::~Phonebook()
 
 void	Phonebook::Add( void )
 {
-	Contact contact;
-
-	contact = contact.DefineNew();
-	this->contact[this->contact_cursor % MAX_CONTACT] = contact;
+	this->contact[this->contact_cursor % MAX_CONTACT] = Contact::DefineNew();
 	this->contact_cursor++;
 	this->contact_cursor %= MAX_CONTACT;
 	if (this->contact_count < MAX_CONTACT)
@@ -44,20 +42,28 @@ void	Phonebook::Display( void )
 	std::cout << "Phonebook entries:" << std::endl;
 	for (int i = 0; i < this->contact_count; i++) {
 		std::cout << i << " |";
-		std::cout << std::setw(10) << std::right << this->contact[i].FirstNameGet() << "|";
-		std::cout << std::setw(10) << std::right << this->contact[i].LastNameGet() << "|";
-		std::cout << std::setw(10) << std::right << this->contact[i].NickNameGet() << std::endl;
+		std::cout << std::setw(10) << std::right << this->contact[i].PrintFormat(this->contact[i].FirstNameGet()) << "|";
+		std::cout << std::setw(10) << std::right << this->contact[i].PrintFormat(this->contact[i].LastNameGet()) << "|";
+		std::cout << std::setw(10) << std::right << this->contact[i].PrintFormat(this->contact[i].NickNameGet()) << std::endl;
 	}
 }
 
 void	Phonebook::Search( void )
 {
-	int	index;
+	std::string	index;
 
 	if (this->contact_count > 0)
+	{
 		this->Display();
-	std::cout << "Enter index: " << std::endl;
-	std::cin >> index;
-	if (index >= 0 && index < 8)
-		this->contact[index].Display();
+		while (index.empty() || index.length() > 1 || (index[0] < '0' && index[1] > '9'))
+		{
+			std::cout << "Enter index: " << std::endl;
+			std::cin >> index;
+			if (index.length() > 1)
+				std::cout << "Invalid Index";
+		}
+		int index_num = 0;// = std::atoi(index.c_str());
+		if (index_num >= 0 && index_num < 8)
+			this->contact[index_num].Display();
+	}
 }
