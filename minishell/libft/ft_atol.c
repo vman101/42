@@ -1,21 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/07 17:48:41 by vvobis            #+#    #+#             */
-/*   Updated: 2024/07/31 10:01:48 by victor           ###   ########.fr       */
+/*   Created: 2024/04/10 10:49:04 by vvobis            #+#    #+#             */
+/*   Updated: 2024/08/26 21:00:15 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(const char *str, int fd)
+long	ft_atol(char const *s, uint8_t	*too_big)
 {
-	if (!str)
-		return ;
-	while (*str)
-		ft_putchar_fd(*str++, fd);
+	unsigned long long	nb;
+	char const			*tmp;
+
+	nb = 0;
+	while (is_space(*s))
+		s++;
+	tmp = s;
+	if (*tmp == '+' || *tmp == '-')
+		tmp++;
+	while (*tmp >= '0' && *tmp <= '9')
+	{
+		nb *= 10;
+		nb += (*tmp - '0');
+		tmp++;
+		if (nb > (uint64_t)LLONG_MAX + (*s == '-'))
+			return (*too_big == 1);
+	}
+	if (*s == '-')
+		nb = -nb;
+	return (nb);
 }

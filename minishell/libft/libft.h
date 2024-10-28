@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 23:43:36 by vvobis            #+#    #+#             */
-/*   Updated: 2024/07/06 18:22:00 by victor           ###   ########.fr       */
+/*   Updated: 2024/08/23 15:52:33 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdint.h>
 # include <limits.h>
 # include "ft_printf.h"
+# include <stdbool.h>
 
 typedef struct s_list
 {
@@ -37,6 +38,7 @@ int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 int		ft_isprint(int c);
 int		ft_isascii(int c);
+int		is_space(char const c);
 
 /*Memory Management*/
 int		ft_memcmp(void *s1, void const *s2, size_t n);
@@ -49,7 +51,9 @@ void	*ft_calloc(size_t n, size_t s);
 
 /*Info Conversion*/
 int		ft_atoi(char const *s);
+long	ft_atol(char const *s, uint8_t *too_big);
 char	*ft_itoa(int n);
+char	*ft_ltoa(long long n);
 char	**ft_split(char const *s, char c);
 
 /*String Manip*/
@@ -82,12 +86,12 @@ t_list	*ft_lstlast(t_list *lst);
 
 /*Output*/
 void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *str, int fd);
+void	ft_putstr_fd(const char *str, int fd);
 void	ft_putendl_fd(char *str, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 /* safe functions */
 
-void	ft_free(void **ptr);
+void	ft_free(void *ptr);
 
 #endif

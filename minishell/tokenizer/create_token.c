@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/07 17:48:41 by vvobis            #+#    #+#             */
-/*   Updated: 2024/07/31 10:01:48 by victor           ###   ########.fr       */
+/*   Created: 2024/07/20 19:47:21 by anarama           #+#    #+#             */
+/*   Updated: 2024/07/22 13:07:13 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_putstr_fd(const char *str, int fd)
+t_token	create_token(t_token_type token_type, const char *value)
 {
-	if (!str)
-		return ;
-	while (*str)
-		ft_putchar_fd(*str++, fd);
+	t_token	token;
+
+	token.token_type = token_type;
+	token.token_value = (char *)value;
+	return (token);
 }

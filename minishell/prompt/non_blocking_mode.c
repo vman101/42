@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   non_blocking_mode.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/07 17:48:41 by vvobis            #+#    #+#             */
-/*   Updated: 2024/07/31 10:01:48 by victor           ###   ########.fr       */
+/*   Created: 2024/08/02 17:14:46 by vvobis            #+#    #+#             */
+/*   Updated: 2024/08/02 17:16:33 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_putstr_fd(const char *str, int fd)
+void	blocking_mode_toggle(int flag)
 {
-	if (!str)
-		return ;
-	while (*str)
-		ft_putchar_fd(*str++, fd);
+	if (ioctl(0, FIONBIO, &flag) == -1)
+	{
+		perror("ioctl");
+		exit(1);
+	}
 }

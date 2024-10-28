@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 16:02:34 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/21 18:46:34 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/10/22 13:03:07 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,35 @@ void	Phonebook::Display( void )
 	}
 }
 
+int	is_space(char const c)
+{
+	if ((c >= 9 && c <= 13) || c == ' ')
+		return (1);
+	return (0);
+}
+
+int	ft_atoi(char const *s)
+{
+	int			nb;
+	char const	*tmp;
+
+	nb = 0;
+	while (is_space(*s))
+		s++;
+	tmp = s;
+	if (*tmp == '+' || *tmp == '-')
+		tmp++;
+	while (*tmp >= '0' && *tmp <= '9')
+	{
+		nb *= 10;
+		nb += (*tmp - '0');
+		tmp++;
+	}
+	if (*s == '-')
+		nb = -nb;
+	return (nb);
+}
+
 void	Phonebook::Search( void )
 {
 	std::string	index;
@@ -62,7 +91,7 @@ void	Phonebook::Search( void )
 			if (index.length() > 1)
 				std::cout << "Invalid Index";
 		}
-		int index_num = 0;// = std::atoi(index.c_str());
+		int index_num = ft_atoi(index.c_str());
 		if (index_num >= 0 && index_num < 8)
 			this->contact[index_num].Display();
 	}

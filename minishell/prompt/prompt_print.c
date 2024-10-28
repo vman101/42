@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   prompt_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/07 17:48:41 by vvobis            #+#    #+#             */
-/*   Updated: 2024/07/31 10:01:48 by victor           ###   ########.fr       */
+/*   Created: 2024/08/02 16:11:25 by vvobis            #+#    #+#             */
+/*   Updated: 2024/08/02 16:12:18 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_putstr_fd(const char *str, int fd)
+void	prompt_print_pwd(char *prompt)
 {
-	if (!str)
-		return ;
-	while (*str)
-		ft_putchar_fd(*str++, fd);
+	ft_putstr_fd(GREEN, 1);
+	ft_printf("[%s]$ ", prompt);
+	ft_putstr_fd(RESET, 1);
+}
+
+void	prompt_print_custom_string(char *string)
+{
+	ft_putstr_fd(string, 1);
 }

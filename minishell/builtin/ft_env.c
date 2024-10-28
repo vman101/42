@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/07 17:48:41 by vvobis            #+#    #+#             */
-/*   Updated: 2024/07/31 10:01:48 by victor           ###   ########.fr       */
+/*   Created: 2024/07/24 13:56:33 by vvobis            #+#    #+#             */
+/*   Updated: 2024/08/04 10:31:19 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_putstr_fd(const char *str, int fd)
+void	ft_env(const char **environment, int32_t *exit_status)
 {
-	if (!str)
-		return ;
-	while (*str)
-		ft_putchar_fd(*str++, fd);
+	if (!environment)
+		*exit_status = 1;
+	else
+	{
+		*exit_status = 0;
+		environment_print(environment);
+	}
 }
