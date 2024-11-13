@@ -6,13 +6,14 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:46:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/28 18:59:33 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/10/29 11:37:54 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 #include <iostream>
 #include <cmath>
+#include <ostream>
 
 Fixed::Fixed() : _value(0)
 {
@@ -24,7 +25,7 @@ Fixed::~Fixed()
 	std::cout << "Destructor called" << std::endl;
 }
 
-Fixed::Fixed(const Fixed &) : _value(0)
+Fixed::Fixed(const Fixed &to_copy) : _value(to_copy.getRawBits())
 {
 	std::cout << "Copy constructor called" << std::endl;
 }
@@ -37,10 +38,20 @@ Fixed::Fixed(const int num) : _value(num << this->fraction_count)
 Fixed::Fixed(const float value_new)
 {
 	std::cout << "Float constructor called" << std::endl;
-	this->_value = roundf(value_new) * (1 << this->fraction_count);
+	this->_value = roundf(value_new * (1 << this->fraction_count));
 }
 
-Fixed &Fixed::operator=(const Fixed &other)
+float	Fixed::toFloat( void ) const
+{
+	return ((float)this->_value / (1 << this->fraction_count));
+}
+
+int		Fixed::toInt( void ) const
+{
+	return ((float)this->_value / (1 << this->fraction_count));
+}
+
+Fixed	&Fixed::operator=(const Fixed &other)
 {
 	std::cout << "Copy operator called" << std::endl;
 	if (this != &other)
@@ -50,7 +61,13 @@ Fixed &Fixed::operator=(const Fixed &other)
 	return (*this);
 }
 
-int	Fixed::getRawBits()
+std::ostream &operator<<(std::ostream &out, const Fixed &other)
+{
+	out << other.toFloat();
+	return (out);
+}
+
+int			Fixed::getRawBits() const
 {
 	return this->_value;
 }

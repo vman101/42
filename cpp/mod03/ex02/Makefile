@@ -3,35 +3,37 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: victor </var/spool/mail/victor>            +#+  +:+       +#+         #
+#    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/08 16:30:33 by victor            #+#    #+#              #
-#    Updated: 2024/10/05 15:48:53 by vvobis           ###   ########.fr        #
+#    Created: 2024/10/29 17:30:21 by vvobis            #+#    #+#              #
+#    Updated: 2024/10/29 20:39:29 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC := cc
+CC := c++
+CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
 
-CFLAGS := -Werror -Wall -Wextra
+NAME := clap
 
-NAME := philo
+SRC := main.cpp ClapTrap.cpp ScavTrap.cpp FragTrap.cpp
 
-SRC := philo.c setup.c ft_atol.c time.c routine.c monitor.c
-
-OBJ := $(SRC:%.c=%.o)
+OBJ := $(SRC:%.cpp=%.o)
+DEP := $(SRC:%.cpp=%.d)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $(OBJ)
+$(NAME): $(OBJ) 
+	$(CC) $^ -o $@
 
-%.o: %.c philo.h
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f $(OBJ)
+	rm -rf $(OBJ) $(DEP)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all
+
+-include $(DEP)

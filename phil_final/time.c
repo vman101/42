@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 11:11:29 by victor            #+#    #+#             */
-/*   Updated: 2024/10/05 15:56:52 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/10/16 15:38:09 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,48 +25,11 @@ long	time_value_substract(	struct timeval time_minuend, \
 	return (time_minuend_total_value - time_substrahend_total_value);
 }
 
-void	*timestamp_routine(void	*time_ptr)
+uint32_t	timestamp_request(struct timeval time_start, t_monitor *monitor)
 {
-	t_time			*time;
 	struct timeval	time_current;
-	struct timeval	time_program_start;
-	t_monitor		*monitor;
 
-	time = time_ptr;
-	monitor = time->monitor;
-	gettimeofday(&time_program_start, NULL);
-	while (monitor_check(monitor) == 0)
-		usleep(100);
-	while (monitor_check(monitor) != 2)
-	{
-		pthread_mutex_lock(&time->mutex);
-		gettimeofday(&time_current, NULL);
-		time->timestamp = time_value_substract(time_current, \
-											time_program_start);
-		pthread_mutex_unlock(&time->mutex);
-		usleep(10);
-	}
-	return (NULL);
-}
-
-uint32_t	timestamp_request(t_time *time_stamp)
-{
-	uint32_t	time_current;
-
-	pthread_mutex_lock(&time_stamp->mutex);
-	time_current = time_stamp->timestamp;
-	pthread_mutex_unlock(&time_stamp->mutex);
-	return (time_current);
-}
-
-void	print_message(	t_monitor *monitor, \
-						const char *message, \
-						uint32_t timestamp, \
-						uint32_t id)
-{
-	if (monitor_check(monitor) != 1)
-		return ;
-	pthread_mutex_lock(&monitor->mutex);
-	printf(message, timestamp, id);
-	pthread_mutex_unlock(&monitor->mutex);
+	if (gettimeofday(&time_current, NULL) != 0)
+		monitor_set(monitor, 2);
+	return (time_value_substract(time_current, time_start));
 }
