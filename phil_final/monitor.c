@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 11:16:54 by victor            #+#    #+#             */
-/*   Updated: 2024/11/12 13:40:02 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/15 16:55:33 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	monitor_set(t_monitor *monitor, uint8_t go)
 	pthread_mutex_unlock(&monitor->mutex);
 }
 
-static void	check_params(	t_monitor *monitor, \
-						uint32_t timestamp, \
+void	check_params(	t_monitor *monitor, \
+						int64_t timestamp, \
 						t_philosopher *philosopher, \
 						t_parameters *params)
 {
@@ -28,16 +28,17 @@ static void	check_params(	t_monitor *monitor, \
 
 	i = 0;
 	pthread_mutex_lock(&monitor->mutex);
-	while (i < params->philosopher_count && monitor->go == true)
+	while (i < params->philosopher_count)
 	{
-		if ((int)(timestamp - philosopher[i].time_last_meal) \
-				>= (int)params->time_to_die)
+		timestamp = timestamp_request(monitor->start, monitor);
+		if ((int64_t)(timestamp - philosopher[i].time_last_meal) \
+				>= params->time_to_die && monitor->go != 2)
 		{
 			monitor->go = 2;
-			printf("%u %u died in mon\n", timestamp, i + 1);
+			printf("%lu %u died in mon\n", timestamp / 1000, i + 1);
 		}
 		if (params->times_should_eat != -1 \
-			&& (int64_t)philosopher[i].times_eaten >= params->times_should_eat)
+			&& philosopher[i].times_eaten >= params->times_should_eat)
 			params->finished_eating++;
 		i++;
 	}
@@ -46,17 +47,14 @@ static void	check_params(	t_monitor *monitor, \
 
 void	monitor_loop(t_monitor *monitor)
 {
-	uint32_t		i;
 	t_parameters	params;
 
 	params = monitor->params;
 	if (monitor->valid_count != params.philosopher_count \
 			|| params.times_should_eat == 0)
 		return ;
-	monitor_set(monitor, 1);
 	while (monitor_check(monitor) != 2)
 	{
-		i = 0;
 		params.finished_eating = 0;
 		check_params(monitor, timestamp_request(monitor->start, monitor), \
 				monitor->philosopher, &params);

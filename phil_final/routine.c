@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 11:10:05 by victor            #+#    #+#             */
-/*   Updated: 2024/11/13 17:11:22 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/15 16:49:35 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,16 @@ static void	grab_forks(	t_philosopher *philosopher, \
 		pick_up_fork(fork, philosopher->right_fork, monitor, philosopher);
 		pick_up_fork(fork, philosopher->left_fork, monitor, philosopher);
 	}
+	usleep(10);
 	pthread_mutex_lock(&monitor->mutex);
 	if (monitor->go != 2)
-		printf("%u %u is eating\n", \
-		timestamp_request(philosopher->start, monitor), \
+		printf("%lu %u is eating\n", \
+		timestamp_request(philosopher->start, monitor) / 1000, \
 		philosopher->identifier + 1);
 	philosopher->time_last_meal = timestamp_request(philosopher->start, \
 			monitor);
 	pthread_mutex_unlock(&monitor->mutex);
-	philosopher_sleep(philosopher, monitor, \
-			MILLI * monitor->params.time_to_eat);
-	pthread_mutex_lock(&monitor->mutex);
-	philosopher->times_eaten++;
-	pthread_mutex_unlock(&monitor->mutex);
+	philosopher_sleep(philosopher, monitor->params.time_to_eat);
 }
 
 static void	release_forks(	t_philosopher *philosopher, \
@@ -62,9 +59,17 @@ static void	release_forks(	t_philosopher *philosopher, \
 		pthread_mutex_unlock(&fork[philosopher->left_fork]);
 		pthread_mutex_unlock(&fork[philosopher->right_fork]);
 	}
-	print_message_check_death(philosopher, monitor, "is sleeping");
-	philosopher_sleep(philosopher, monitor, \
-			MILLI * monitor->params.time_to_sleep);
+	usleep(10);
+	pthread_mutex_lock(philosopher->mutex);
+	if (philosopher->monitor->go != 2)
+	{
+		printf("%lu %u died in phil\n", \
+				timestamp_request(philosopher->start, monitor) / 1000, \
+				philosopher->identifier + 1);
+	}
+	philosopher->times_eaten++;
+	pthread_mutex_unlock(philosopher->mutex);
+	philosopher_sleep(philosopher, philosopher->params.time_to_sleep);
 }
 
 static void	routine(t_philosopher *philosopher, \
@@ -83,16 +88,14 @@ void	*philosopher_routine_start(void *philosopher_input)
 
 	philosopher = philosopher_input;
 	monitor = philosopher->monitor;
-	philosopher->left_fork = philosopher->identifier;
-	philosopher->right_fork = (philosopher->identifier + 1) \
-								% monitor->params.philosopher_count;
 	if (philosopher->identifier % 2 != 0)
-		usleep(500);
+		usleep(1000);
 	if (monitor->params.philosopher_count < 2)
 		return (single_philo(monitor), NULL);
 	while (monitor_check(monitor) != 2)
 	{
 		routine(philosopher, monitor, monitor->fork);
+		usleep(10);
 	}
 	return (NULL);
 }

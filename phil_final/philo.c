@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:49:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/29 10:26:54 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/15 16:32:51 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	single_philo(t_monitor *monitor)
 	if (monitor->params.philosopher_count == 0)
 		return ;
 	pthread_mutex_lock(&monitor->mutex);
-	printf("%u %u has taken a fork\n", \
+	printf("%lu %u has taken a fork\n", \
 			timestamp_request(monitor->start, monitor), \
 			monitor->philosopher->identifier + 1);
 	pthread_mutex_unlock(&monitor->mutex);
@@ -58,9 +58,9 @@ static bool	parameters_setup(t_parameters *params, \
 		return (false);
 	too_big = 0;
 	params->philosopher_count = ft_atol(argv[0], &too_big);
-	params->time_to_die = ft_atol(argv[1], &too_big);
-	params->time_to_eat = ft_atol(argv[2], &too_big);
-	params->time_to_sleep = ft_atol(argv[3], &too_big);
+	params->time_to_die = ft_atol(argv[1], &too_big) * 1000;
+	params->time_to_eat = ft_atol(argv[2], &too_big) * 1000;
+	params->time_to_sleep = ft_atol(argv[3], &too_big) * 1000;
 	params->times_should_eat = -1;
 	params->finished_eating = 0;
 	if (argc > 5)
@@ -75,10 +75,17 @@ static void	main_loop(t_monitor *monitor, \
 						t_parameters params)
 {
 	int64_t			i;
+	struct timeval	time;
+	uint64_t		time_usec;
 
 	i = 0;
+	if (gettimeofday(&time, NULL) != 0)
+		return ;
+	time_usec = time.tv_sec * 1000000 + time.tv_usec;
+	monitor->start = time_usec;
 	while (i < params.philosopher_count)
 	{
+		monitor->philosopher[i].start = time_usec;
 		if (pthread_create(&(*thread)[i], NULL, philosopher_routine_start, \
 					&monitor->philosopher[i]) != 0)
 		{
@@ -106,7 +113,8 @@ int	main(int argc, char **argv)
 
 	thread = NULL;
 	if (parameters_setup(&params, argc, &argv[1]) \
-			&& params.philosopher_count > 0)
+			&& params.philosopher_count > 0 && (params.times_should_eat == -1 \
+				|| params.times_should_eat > 0))
 	{
 		monitor_create(&monitor, params);
 		thread = malloc(sizeof(*thread) * (params.philosopher_count));

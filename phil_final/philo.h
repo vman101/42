@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:45:09 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/13 16:47:15 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/15 16:24:46 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ typedef struct s_philosopher
 	int32_t				times_eaten;
 	uint32_t			time_last_meal;
 	struct s_monitor	*monitor;
-	struct timeval		start;
+	uint64_t			start;
+	pthread_mutex_t		*mutex;
+	t_parameters		params;
 	uint32_t			sleep_chunk;
 	int					left_fork;
 	int					right_fork;
@@ -58,7 +60,7 @@ typedef struct s_monitor
 	t_fork			*fork;
 	t_philosopher	*philosopher;
 	t_parameters	params;
-	struct timeval	start;
+	uint64_t		start;
 }	t_monitor;
 
 /* utils */
@@ -74,9 +76,9 @@ void		philosopher_create(	t_philosopher *philosopher, \
 void		monitor_destroy(t_monitor *monitor);
 
 /* time.c */
-uint32_t	timestamp_request(struct timeval time, t_monitor *monitor);
-long		time_value_substract(	struct timeval time_minuend, \
-									struct timeval time_substrahend);
+uint64_t	timestamp_request(uint64_t time, t_monitor *monitor);
+uint64_t		time_value_substract(	struct timeval time_minuend, \
+									uint64_t time_substrahend);
 uint8_t		monitor_check(t_monitor *monitor);
 void		monitor_set(t_monitor *monitor, uint8_t go);
 
@@ -89,7 +91,6 @@ void		monitor_loop(t_monitor *monitor_input);
 void		single_philo(t_monitor *monitor);
 
 void		philosopher_sleep(t_philosopher *philosopher, \
-								t_monitor *monitor, \
 								int64_t time_to_sleep);
 
 bool		print_message_check_death(t_philosopher *philosopher, \

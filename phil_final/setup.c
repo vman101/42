@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:10:06 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/13 17:12:32 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/15 16:43:51 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	monitor_create(t_monitor *monitor, t_parameters params)
 	memset(monitor, 0, sizeof(*monitor));
 	monitor->params = params;
 	monitor->fork = malloc(sizeof(*monitor->fork) * \
-			(params.philosopher_count + 1));
+			(params.philosopher_count));
 	monitor->philosopher = malloc(sizeof(*monitor->philosopher) \
 			* params.philosopher_count);
 	if (!monitor->philosopher || !monitor->fork)
@@ -50,8 +50,6 @@ void	monitor_create(t_monitor *monitor, t_parameters params)
 		printf("timestamp_mutex init failed\n");
 		return ;
 	}
-	if (gettimeofday(&monitor->start, NULL) != 0)
-		return ;
 	while (monitor->valid_count < params.philosopher_count)
 	{
 		if (pthread_mutex_init(&monitor->fork[monitor->valid_count], NULL) != 0)
@@ -68,7 +66,11 @@ void	philosopher_create(t_philosopher *philosopher, \
 	memset(philosopher, 0, sizeof(*philosopher));
 	philosopher->identifier = identifier;
 	philosopher->monitor = monitor;
-	philosopher->start = monitor->start;
+	philosopher->left_fork = philosopher->identifier;
+	philosopher->right_fork = (philosopher->identifier + 1) \
+								% monitor->params.philosopher_count;
+	philosopher->mutex = &monitor->mutex;
+	philosopher->params = monitor->params;
 	philosopher->sleep_chunk = 10000;
 }
 

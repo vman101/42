@@ -6,13 +6,13 @@
 #    By: victor </var/spool/mail/victor>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/08 16:30:33 by victor            #+#    #+#              #
-#    Updated: 2024/11/13 17:17:42 by vvobis           ###   ########.fr        #
+#    Updated: 2024/11/15 14:16:54 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := cc
 
-CFLAGS := -Wall -Wextra -Werror -O2
+CFLAGS := -Wall -Wextra -Werror -g3
 
 NAME := philo
 
