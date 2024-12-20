@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.hpp                                         :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 12:56:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 19:34:31 by vvobis           ###   ########.fr       */
+/*   Created: 2024/12/10 19:54:34 by vvobis            #+#    #+#             */
+/*   Updated: 2024/12/11 00:01:12 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ZOMBIE_HPP
-# define ZOMBIE_HPP
+#include "Dog.hpp"
+#include "Cat.hpp"
 
-# include <string>
-
-class Zombie
+int main()
 {
-	public:
-		Zombie( void );
-		Zombie(std::string name);
-		~Zombie( void );
+	Animal *animals[20];
 
-		void	announce( void );
-	private:
-		std::string name;
-};
+	for (unsigned int i = 0; i < sizeof(animals) / 8; i++)
+	{
+		if (i % 2)
+			animals[i] = new Cat();
+		else
+			animals[i] = new Dog();
+	}
 
-void	randomChump(std::string name);
-Zombie	*newZombie(std::string name);
-
-#endif
+	for (unsigned int i = 0; i < sizeof(animals) / 8; i++)
+	{
+		animals[i]->makeSound();
+		delete animals[i];
+	}
+}

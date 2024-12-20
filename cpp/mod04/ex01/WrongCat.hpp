@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.hpp                                         :+:      :+:    :+:   */
+/*   WrongCat.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 12:56:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 19:34:31 by vvobis           ###   ########.fr       */
+/*   Created: 2024/12/10 22:47:39 by vvobis            #+#    #+#             */
+/*   Updated: 2024/12/10 23:18:22 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ZOMBIE_HPP
-# define ZOMBIE_HPP
+#ifndef WRONGCAT_HPP
+# define WRONGCAT_HPP
 
-# include <string>
+#include "WrongAnimal.hpp"
 
-class Zombie
+class WrongCat : protected WrongAnimal
 {
-	public:
-		Zombie( void );
-		Zombie(std::string name);
-		~Zombie( void );
+public:
+	WrongCat();
+	~WrongCat();
 
-		void	announce( void );
-	private:
-		std::string name;
+	WrongCat(const WrongCat &);
+	WrongCat(const std::string &);
+	WrongCat &operator=(const WrongCat &);
+	void	makeSound( void ) const;
 };
 
-void	randomChump(std::string name);
-Zombie	*newZombie(std::string name);
-
-#endif
+#endif // WRONGCAT_HPP

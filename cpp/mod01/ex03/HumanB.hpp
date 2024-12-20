@@ -6,10 +6,12 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 19:58:47 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/23 11:36:31 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/12/10 19:36:06 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef HUMANB_HPP
+# define HUMANB_HPP
 #include <string>
 #include "Weapon.hpp"
 
@@ -25,3 +27,5 @@ class HumanB
 		Weapon *weapon;
 		std::string name;
 };
+
+#endif

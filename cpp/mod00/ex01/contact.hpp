@@ -6,9 +6,12 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 16:06:56 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/21 18:33:55 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/12/10 19:32:49 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef CONTACT_HPP
+# define CONTACT_HPP
 
 #include <string>
 
@@ -40,3 +43,5 @@ class Contact
 		std::string	phone_number;
 		std::string	darkest_secret;
 };
+
+#endif

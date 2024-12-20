@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.hpp                                         :+:      :+:    :+:   */
+/*   Brain.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 12:56:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 19:34:31 by vvobis           ###   ########.fr       */
+/*   Created: 2024/12/10 23:30:57 by vvobis            #+#    #+#             */
+/*   Updated: 2024/12/10 23:31:58 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ZOMBIE_HPP
-# define ZOMBIE_HPP
+#ifndef BRAIN_CPP
+# define BRAIN_CPP
 
-# include <string>
+#include <string>
 
-class Zombie
+class Brain
 {
-	public:
-		Zombie( void );
-		Zombie(std::string name);
-		~Zombie( void );
+public:
+	Brain();
+	~Brain();
 
-		void	announce( void );
-	private:
-		std::string name;
+	Brain(const Brain &);
+	Brain &operator=(const Brain &);
+
+private:
+	std::string ideas[100];
 };
 
-void	randomChump(std::string name);
-Zombie	*newZombie(std::string name);
-
-#endif
+#endif // BRAIN_CPP

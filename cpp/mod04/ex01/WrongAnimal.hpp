@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.hpp                                         :+:      :+:    :+:   */
+/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 12:56:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 19:34:31 by vvobis           ###   ########.fr       */
+/*   Created: 2024/12/10 22:06:18 by vvobis            #+#    #+#             */
+/*   Updated: 2024/12/10 23:13:12 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ZOMBIE_HPP
-# define ZOMBIE_HPP
+#ifndef WRONGANIMAL_HPP
+# define WRONGANIMAL_HPP
 
 # include <string>
 
-class Zombie
-{
-	public:
-		Zombie( void );
-		Zombie(std::string name);
-		~Zombie( void );
+class WrongAnimal {
+public:
+	WrongAnimal();
+	virtual ~WrongAnimal();
 
-		void	announce( void );
-	private:
-		std::string name;
+	WrongAnimal(const std::string &);
+	WrongAnimal(const WrongAnimal &);
+	WrongAnimal &operator=(const WrongAnimal &);
+
+	virtual void	makeSound( void ) const;
+	const std::string&	getType() const;
+
+protected:
+	std::string _type;
 };
 
-void	randomChump(std::string name);
-Zombie	*newZombie(std::string name);
-
-#endif
+#endif // !WRONGANIMAL_HPP

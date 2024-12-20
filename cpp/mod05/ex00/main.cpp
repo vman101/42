@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.hpp                                         :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 12:56:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 19:34:31 by vvobis           ###   ########.fr       */
+/*   Created: 2024/12/11 10:46:21 by vvobis            #+#    #+#             */
+/*   Updated: 2024/12/16 12:58:21 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ZOMBIE_HPP
-# define ZOMBIE_HPP
+#include <iostream>
+#include "Bureaucrat.hpp"
 
-# include <string>
-
-class Zombie
+int main ( void )
 {
-	public:
-		Zombie( void );
-		Zombie(std::string name);
-		~Zombie( void );
-
-		void	announce( void );
-	private:
-		std::string name;
-};
-
-void	randomChump(std::string name);
-Zombie	*newZombie(std::string name);
-
-#endif
+	try
+	{
+		Bureaucrat j("Jesus", 69);
+		Bureaucrat e("Emil", 0);
+	}
+	catch( std::exception &e )
+	{
+		std::cout << "gotcha" << std::endl;
+		std::cout << e.what() << std::endl;
+	}
+	return 0;
+}

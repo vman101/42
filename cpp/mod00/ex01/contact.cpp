@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:32:21 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/21 18:25:30 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/12/10 19:32:13 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ Contact::~Contact( void )
 {
 }
 
+bool	check_number(std::string number)
+{
+	for (unsigned int i = 0; i < number.length(); i++)
+	{
+		if (number[i] < '0' || number[i] > '9')
+			return (false);
+	}
+	return (true);
+}
+
 Contact	Contact::DefineNew( void )
 {
 	Contact contact;
@@ -32,8 +42,15 @@ Contact	Contact::DefineNew( void )
 	std::cin >> contact.last_name;
 	std::cout << "Nickname: ";
 	std::cin >> contact.nick_name;
-	std::cout << "Phone Number: ";
-	std::cin >> contact.phone_number;
+	while (1)
+	{
+		std::cout << "Phone Number: ";
+		std::cin >> contact.phone_number;
+		if (check_number(contact.phone_number))
+			break ;
+		else
+			std::cout << "Invalid Number, only digits are accepted" << std::endl;
+	}
 	std::cout << "Darkest Secret: ";
 	std::cin.ignore();
 	std::getline(std::cin, contact.darkest_secret);

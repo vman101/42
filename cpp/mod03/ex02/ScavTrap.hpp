@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:39:48 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/29 20:25:42 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/12/10 21:37:23 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "ClapTrap.hpp"
 
-class ScavTrap : public ClapTrap 
+class ScavTrap : public ClapTrap
 {
 	public:
 		ScavTrap();

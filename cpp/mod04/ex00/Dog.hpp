@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.hpp                                         :+:      :+:    :+:   */
+/*   Dog.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 12:56:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 19:34:31 by vvobis           ###   ########.fr       */
+/*   Created: 2024/12/10 21:54:29 by vvobis            #+#    #+#             */
+/*   Updated: 2024/12/10 22:38:09 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ZOMBIE_HPP
-# define ZOMBIE_HPP
+#ifndef DOG_HPP
+# define DOG_HPP
 
-# include <string>
+# include "Animal.hpp"
 
-class Zombie
+class Dog: public Animal
 {
 	public:
-		Zombie( void );
-		Zombie(std::string name);
-		~Zombie( void );
+		Dog();
+		~Dog();
 
-		void	announce( void );
-	private:
-		std::string name;
+		Dog(const Dog&);
+		Dog &operator=(const Dog& other);
+
+		void makeSound() const;
 };
 
-void	randomChump(std::string name);
-Zombie	*newZombie(std::string name);
-
-#endif
+#endif // !DOG_HPP
