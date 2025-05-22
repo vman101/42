@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 13:40:52 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/22 14:11:39 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/09 13:52:19 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 int main ( void )
 {
-	Zombie zomb("Jesus");
-	Zombie *dyn = newZombie("Judas");
+    Zombie zomb("");
+    Zombie *dyn = newZombie("");
+    Zombie test;
 
-	zomb.announce();
-	dyn->announce();
-	randomChump("Satan");
+    zomb.announce();
+    dyn->announce();
+    randomChump("Testing");
 
-	delete dyn;
-	return 0;
+    delete dyn;
+    return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:46:58 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/29 16:31:12 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/12 16:16:06 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <iostream>
 
 # define EPSILON 1
+# define FRACTION_COUNT 8
 
 class Fixed
 {
@@ -59,7 +60,7 @@ class Fixed
 		int		toInt( void ) const;
 
 	private:
-		static const int	fraction_count = 8;
+		static const int	fraction_count = FRACTION_COUNT;
 		int					_value;
 };
 

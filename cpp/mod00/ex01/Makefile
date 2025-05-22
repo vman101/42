@@ -6,13 +6,13 @@
 #    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:46:34 by vvobis            #+#    #+#              #
-#    Updated: 2024/10/21 18:48:33 by vvobis           ###   ########.fr        #
+#    Updated: 2025/03/05 12:54:11 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := c++
 
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -g -MP -MD
+CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
 
 NAME := phonebook
 

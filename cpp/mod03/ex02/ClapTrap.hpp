@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:46:01 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/29 20:18:21 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/08 14:07:48 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ class ClapTrap
 {
 	public:
 		ClapTrap();
-		ClapTrap(const char *);
+		ClapTrap(std::string);
 		ClapTrap(const ClapTrap &);
 		ClapTrap &operator=(const ClapTrap &);
 		~ClapTrap();

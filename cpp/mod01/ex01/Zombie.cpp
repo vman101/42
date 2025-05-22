@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 12:56:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/22 18:04:21 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/07 11:08:14 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,33 @@
 
 Zombie::Zombie()
 {
-
+    std::cout << "[nameless zombie] has been created" << std::endl;
 }
 
 Zombie::Zombie(std::string name) :
 	name(name)
 {
-	std::cout << this->name << " has been created" << std::endl;
+    if (this->name.empty()) {
+	    std::cout << "[nameless zombie] has been created" << std::endl;
+    } else {
+        std::cout << this->name << " has been created" << std::endl;
+    }
 }
 
 Zombie::~Zombie()
 {
-	std::cout << this->name << " has been destroyed" << std::endl;
+    if (this->name.empty()) {
+	    std::cout << "[nameless zombie] has been destroyed" << std::endl;
+    } else {
+        std::cout << this->name << " has been destroyed" << std::endl;
+    }
 }
 
-void	Zombie::announce( void ) const
+void	Zombie::announce( void )
 {
-	std::cout << this->name << ": BraiiiiiiinnnzzzZ..." << std::endl;
-}
-
-void	Zombie::name_set(std::string name)
-{
-	this->name = name;
+    if (this->name.empty()) {
+	    std::cout << "[nameless zombie]: BraiiiiiiinnnzzzZ..." << std::endl;
+    } else {
+    	std::cout << this->name << ": BraiiiiiiinnnzzzZ..." << std::endl;
+    }
 }

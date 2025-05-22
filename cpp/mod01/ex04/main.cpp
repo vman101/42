@@ -6,14 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:41:26 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/23 12:09:05 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/09 13:58:47 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <fstream>
 #include <sys/types.h>
-
 
 void	ocurrences_replace(std::string &line, std::string &to_replace, std::string &replacer)
 {

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:46:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/29 16:59:27 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/12 16:16:20 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 Fixed::Fixed() : _value(0)
 {
-	std::cout << "Default constructor called" << std::endl;
+    std::cout << "Default constructor called" << std::endl;
 }
 
 Fixed::~Fixed()
@@ -26,18 +26,18 @@ Fixed::~Fixed()
 
 Fixed::Fixed( const Fixed& other)
 {
-	_value = other._value;
+    _value = other._value;
 }
 
 Fixed::Fixed(const int num) : _value(num << this->fraction_count)
 {
-	std::cout << "Integer constructor called" << std::endl;
+    std::cout << "Integer constructor called" << std::endl;
 }
 
 Fixed::Fixed(const float value_new)
 {
-	std::cout << "Float constructor called" << std::endl;
-	this->_value = roundf(value_new * (1 << this->fraction_count));
+    std::cout << "Float constructor called" << std::endl;
+    this->_value = roundf(value_new * (1 << this->fraction_count));
 }
 
 float	Fixed::toFloat( void ) const

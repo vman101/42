@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   FragTrap.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 18:01:09 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/07 11:14:31 by vvobis           ###   ########.fr       */
+/*   Created: 2024/10/29 20:27:48 by vvobis            #+#    #+#             */
+/*   Updated: 2025/05/08 14:03:17 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
-#include "iostream"
+#ifndef FRAG_TRAP_HPP
+# define FRAG_TRAP_HPP
 
-int main( void )
+# include "ClapTrap.hpp"
+
+class FragTrap : virtual public ClapTrap
 {
-	Zombie *horde = zombieHorde(8, "TestZombie");
-	if (horde)
-	{
-		for (int i = 0; i < 8; i++)
-        {
-            horde[i].announce();
-            std::cout << i << "# announced itself" << std::endl;
-        }
-		delete[] horde;
-	}
-}
+	public:
+		FragTrap( void );
+		FragTrap(const char *);
+		FragTrap(const FragTrap &);
+		FragTrap &operator=(const FragTrap &);
+		~FragTrap( void );
+
+		void	highFivesGuys( void );
+	private:
+		
+};
+
+#endif // !FRAG_TRAP_HPP

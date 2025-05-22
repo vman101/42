@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:45:30 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/29 17:20:45 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/12 16:14:51 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	test_in_triangle()
 
 void	test_out_triangle()
 {
-	Point inside(100., 100.);
-	bool hit = bsp(Point(0., 0.), Point(10, 0.), Point(0., 10.), inside);
+	Point outside(100., 100.);
+	bool hit = bsp(Point(0., 0.), Point(10, 0.), Point(0., 10.), outside);
 
 	std::cout << "triangle hit = " << hit << std::endl;
 }

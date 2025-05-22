@@ -6,26 +6,35 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:32:06 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/29 20:38:19 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/09 12:19:11 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ClapTrap.hpp"
 #include <iostream>
 
-ClapTrap::ClapTrap(const char *name) : 
-	_name(name), 
+ClapTrap::ClapTrap() :
+	_name("default"),
 	_hit_points(10), 
-	_energy_points(10), 
+	_energy_points(10),
+	_attack_damage(0)
+{
+	std::cout << "Default ClapTrap constructor called" << std::endl;
+}
+
+ClapTrap::ClapTrap(std::string name) :
+	_name(name),
+	_hit_points(10),
+	_energy_points(10),
 	_attack_damage(0)
 {
 	std::cout << "Default ClapTrap constructor called" << std::endl;
 }
 
 ClapTrap::ClapTrap(const ClapTrap &other) :
-	_name(other._name), 
-	_hit_points(other._hit_points), 
-	_energy_points(other._energy_points), 
+	_name(other._name),
+	_hit_points(other._hit_points),
+	_energy_points(other._energy_points),
 	_attack_damage(other._attack_damage)
 {
 	std::cout << "Copy ClapTrap constructor called" << std::endl;
@@ -50,7 +59,7 @@ ClapTrap::~ClapTrap()
 
 void	ClapTrap::attack(const std::string &target)
 {
-	if (_hit_points <= 0)
+	if (this->_hit_points <= 0)
 		std::cout << "ClapTrap cant attack, it has no _hit_points left!" << std::endl;
 	else if (_energy_points)
 		std::cout << "ClapTrap cant attack, it has no _energy_points left!" << std::endl;

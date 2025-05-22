@@ -1,4 +1,4 @@
-main.o: main.cpp phonebook.hpp contact.hpp \
+ClapTrap.o: ClapTrap.cpp ClapTrap.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/string \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/x86_64-linux-gnu/c++/11/bits/c++config.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -124,9 +124,7 @@ main.o: main.cpp phonebook.hpp contact.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/istream.tcc
 
-phonebook.hpp:
-
-contact.hpp:
+ClapTrap.hpp:
 
 /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/string:
 

@@ -1,4 +1,4 @@
-phonebook.o: phonebook.cpp phonebook.hpp contact.hpp \
+ClapTrap.o: ClapTrap.cpp ClapTrap.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/string \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/x86_64-linux-gnu/c++/11/bits/c++config.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -100,28 +100,14 @@ phonebook.o: phonebook.cpp phonebook.hpp contact.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/alloc_traits.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/stl_construct.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_string.tcc \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/cstdlib \
-  /usr/include/stdlib.h /usr/include/x86_64-linux-gnu/bits/waitflags.h \
-  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
-  /usr/include/x86_64-linux-gnu/sys/types.h \
-  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h /usr/include/endian.h \
-  /usr/include/x86_64-linux-gnu/bits/byteswap.h \
-  /usr/include/x86_64-linux-gnu/bits/uintn-identity.h \
-  /usr/include/x86_64-linux-gnu/sys/select.h \
-  /usr/include/x86_64-linux-gnu/bits/select.h \
-  /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
-  /usr/include/alloca.h \
-  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/std_abs.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/iomanip \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/iostream \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ios \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/exception \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/ios_base.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_classes.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_classes.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/stdexcept \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/exception \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/iostream \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ios \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/streambuf \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/streambuf.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_ios.h \
@@ -138,9 +124,7 @@ phonebook.o: phonebook.cpp phonebook.hpp contact.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/istream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/istream.tcc
 
-phonebook.hpp:
-
-contact.hpp:
+ClapTrap.hpp:
 
 /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/string:
 
@@ -356,37 +340,13 @@ contact.hpp:
 
 /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/basic_string.tcc:
 
-/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/cstdlib:
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/iostream:
 
-/usr/include/stdlib.h:
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream:
 
-/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ios:
 
-/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
-
-/usr/include/x86_64-linux-gnu/sys/types.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
-
-/usr/include/endian.h:
-
-/usr/include/x86_64-linux-gnu/bits/byteswap.h:
-
-/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
-
-/usr/include/x86_64-linux-gnu/sys/select.h:
-
-/usr/include/x86_64-linux-gnu/bits/select.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
-
-/usr/include/alloca.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/std_abs.h:
-
-/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/iomanip:
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/exception:
 
 /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/ios_base.h:
 
@@ -395,14 +355,6 @@ contact.hpp:
 /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/locale_classes.tcc:
 
 /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/stdexcept:
-
-/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/exception:
-
-/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/iostream:
-
-/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream:
-
-/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ios:
 
 /usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/streambuf:
 

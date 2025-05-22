@@ -5,24 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 18:01:09 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/07 11:14:31 by vvobis           ###   ########.fr       */
+/*   Created: 2024/10/29 17:30:44 by vvobis            #+#    #+#             */
+/*   Updated: 2025/05/08 14:17:37 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
-#include "iostream"
+#include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
+#include "FragTrap.hpp"
+#include "DiamondTrap.hpp"
 
-int main( void )
+int main()
 {
-	Zombie *horde = zombieHorde(8, "TestZombie");
-	if (horde)
-	{
-		for (int i = 0; i < 8; i++)
-        {
-            horde[i].announce();
-            std::cout << i << "# announced itself" << std::endl;
-        }
-		delete[] horde;
-	}
+	ClapTrap jesus("Jesus");
+
+	jesus.attack("Satan");
+	jesus.takeDamage(5);
+	jesus.beRepaired(15);
+	ScavTrap satan("Satan");
+	satan.attack("Jesus");
+	satan.guardGate();
+    DiamondTrap dia("test");
+    dia.whoAmi();
+    dia.attack("me");
 }

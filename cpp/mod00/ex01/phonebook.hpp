@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 15:40:37 by vvobis            #+#    #+#             */
-/*   Updated: 2024/10/21 18:49:07 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/07 17:00:40 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ class Phonebook
 	private:
 		int		contact_cursor;
 		int		contact_count;
-		Contact	contact[8];
+		Contact	contact[MAX_CONTACT];
 };
