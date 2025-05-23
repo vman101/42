@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:39:56 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/08 14:24:19 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/23 14:57:53 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,63 @@
 #include "ClapTrap.hpp"
 #include <iostream>
 
-ScavTrap::ScavTrap() : ClapTrap()
+#define SCAVTRAP_DEF_HP 100
+#define SCAVTRAP_DEF_EP 50
+#define SCAVTRAP_DEF_ATK 20
+
+ScavTrap::ScavTrap() :
+    ClapTrap()
 {
-	std::cout << "ScavTrap Default Constructor Called" << std::endl;
-    _name = "default";
-	_hit_points = 100;
-	_energy_points = 50;
-	_attack_damage = 20;
+    std::cout << "ScavTrap Default Constructor Called" << std::endl;
+    this->_hit_points = SCAVTRAP_DEF_HP;
+    this->_energy_points = SCAVTRAP_DEF_EP;
+    this->_attack_damage = SCAVTRAP_DEF_ATK;
 }
 
-ScavTrap::ScavTrap(const char *name) : 
-	ClapTrap(name)
+ScavTrap::ScavTrap(const ScavTrap& other) :
+    ClapTrap(other._name)
 {
-	std::cout << "ScavTrap Name Constructor Called" << std::endl;
-	_hit_points = 100;
-	_energy_points = 50;
-	_attack_damage = 20;
+    std::cout << "ScavTrap Copy Constructor Called" << std::endl;
+    this->_hit_points = other._hit_points;
+    this->_energy_points = other._hit_points;
+    this->_attack_damage = other._attack_damage;
+}
+
+ScavTrap::ScavTrap(const char *name) :
+    ClapTrap(name)
+{
+    std::cout << "ScavTrap Name Constructor Called" << std::endl;
+    this->_hit_points = SCAVTRAP_DEF_HP;
+    this->_energy_points = SCAVTRAP_DEF_EP;
+    this->_attack_damage = SCAVTRAP_DEF_ATK;
+}
+
+ScavTrap &ScavTrap::operator=(const ScavTrap &other)
+{
+    if (this != &other)
+    {
+        this->_name = other._name;
+        this->_hit_points = other._hit_points;
+        this->_energy_points = other._energy_points;
+        this->_attack_damage = other._attack_damage;
+    }
+    std::cout << "Copy Assignment ScavTrap constructor called" << std::endl;
+    return (*this);
 }
 
 ScavTrap::~ScavTrap()
 {
-	std::cout << "ScavTrap Destructor Called" << std::endl;
-}	
-
-void	ScavTrap::attack(const std::string &target)
-{
-	std::cout	<< "ScavTrap " << _name << " attacks " << target
-				<< ", dealing " << _attack_damage << " points of damage"
-				<< std::endl;
+    std::cout << "ScavTrap Destructor Called" << std::endl;
 }
 
-void	ScavTrap::guardGate( void )
+void    ScavTrap::attack(const std::string &target)
 {
-	std::cout << "ScavTrap is now in Gate Keeper Mode" << std::endl;
+    std::cout   << "ScavTrap " << this->_name << " attacks " << target
+                << ", dealing " << this->_attack_damage << " points of damage!"
+                << std::endl;
+}
+
+void    ScavTrap::guardGate( void )
+{
+    std::cout << "ScavTrap is now in Gate Keeper Mode" << std::endl;
 }

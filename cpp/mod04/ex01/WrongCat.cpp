@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 23:10:13 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 23:18:49 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/23 16:54:06 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,33 @@
 
 WrongCat::WrongCat(): WrongAnimal()
 {
-	_type = "WrongCat";
-	std::cout << "WrongCat constructor called" << std::endl;
+    _type = "WrongCat";
+    std::cout << "WrongCat constructor called" << std::endl;
 }
 
 WrongCat::~WrongCat()
 {
-	std::cout << "WrongCat destructor called" << std::endl;
+    std::cout << "WrongCat destructor called" << std::endl;
 }
 
 WrongCat::WrongCat(const std::string& type)
 {
-	this->_type = type;
-	std::cout << "WrongCat string constructor called" << std::endl;
+    this->_type = type;
+    std::cout << "WrongCat string constructor called" << std::endl;
 }
 
 WrongCat::WrongCat(const WrongCat& other): WrongAnimal(other._type)
 {
-	std::cout << "WrongCat copy constructor called" << std::endl;
+    std::cout << "WrongCat copy constructor called" << std::endl;
 }
 
-void	WrongCat::makeSound( void ) const
+void    WrongCat::makeSound( void ) const
 {
-	std::cout << "Hello, I am a WrongCat, nice to meet you." << std::endl;
+    std::cout << "Hello, I am a WrongCat, nice to meet you." << std::endl;
 }
 
 WrongCat &WrongCat::operator=(const WrongCat& other)
 {
-	_type = other._type;
-	return (*this);
+    _type = other._type;
+    return (*this);
 }

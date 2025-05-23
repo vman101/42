@@ -6,12 +6,12 @@
 #    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 17:30:21 by vvobis            #+#    #+#              #
-#    Updated: 2025/05/08 14:12:48 by vvobis           ###   ########.fr        #
+#    Updated: 2025/05/23 15:28:58 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := c++
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -Wshadow
+CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -Wshadow -Wno-shadow
 
 NAME := clap
 
@@ -22,7 +22,7 @@ DEP := $(SRC:%.cpp=%.d)
 
 all: $(NAME)
 
-$(NAME): $(OBJ) 
+$(NAME): $(OBJ)
 	$(CC) $^ -o $@
 
 %.o: %.cpp

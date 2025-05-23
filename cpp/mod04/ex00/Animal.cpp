@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 21:41:41 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 23:02:13 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/23 16:54:03 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,44 @@
 
 Animal::Animal(): _type("Unidentified Animal")
 {
-	std::cout << "Animal constructor called" << std::endl;
+    std::cout << "Animal constructor called" << std::endl;
 }
 
 Animal::~Animal()
 {
-	std::cout << "Animal destructor called" << std::endl;
+    std::cout << "Animal destructor called" << std::endl;
 }
 
-Animal::Animal(std::string &type) : _type(type)
+Animal::Animal(const char *type) : _type(type)
 {
-	std::cout << "Animal string constructor called" << std::endl;
+    std::cout << "Animal string constructor called" << std::endl;
+}
+
+Animal::Animal(std::string type) : _type(type)
+{
+    std::cout << "Animal string constructor called" << std::endl;
 }
 
 Animal::Animal(const Animal& other): _type(other._type)
 {
-	std::cout << "Animal copy constructor called" << std::endl;
+    std::cout << "Animal copy constructor called" << std::endl;
 }
 
 Animal &Animal::operator=(const Animal& other)
 {
-	if (this != &other)
-	{
-		_type = other._type;
-	}
-	return (*this);
+    if (this != &other)
+    {
+        _type = other._type;
+    }
+    return (*this);
 }
 
-void	Animal::makeSound( void ) const
+void    Animal::makeSound( void ) const
 {
-	std::cout << "U silly, generic animals dont make sounds" << std::endl;
+    std::cout << "U silly, generic animals dont make sounds" << std::endl;
 }
 
 const std::string& Animal::getType() const
 {
-	return _type;
+    return _type;
 }

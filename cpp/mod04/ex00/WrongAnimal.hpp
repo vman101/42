@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 22:06:18 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 23:13:12 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/23 16:54:03 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@
 
 class WrongAnimal {
 public:
-	WrongAnimal();
-	virtual ~WrongAnimal();
+    WrongAnimal();
+    ~WrongAnimal();
 
-	WrongAnimal(const std::string &);
-	WrongAnimal(const WrongAnimal &);
-	WrongAnimal &operator=(const WrongAnimal &);
+    WrongAnimal(const std::string &);
+    WrongAnimal(const WrongAnimal &);
+    WrongAnimal &operator=(const WrongAnimal &);
 
-	virtual void	makeSound( void ) const;
-	const std::string&	getType() const;
+    void    makeSound( void ) const;
+    const std::string&    getType() const;
 
 protected:
-	std::string _type;
+    std::string _type;
 };
 
 #endif // !WRONGANIMAL_HPP

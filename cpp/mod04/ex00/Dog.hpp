@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 21:54:29 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 22:38:09 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/23 16:42:35 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 
 class Dog: public Animal
 {
-	public:
-		Dog();
-		~Dog();
+public:
+    Dog();
+    ~Dog();
 
-		Dog(const Dog&);
-		Dog &operator=(const Dog& other);
+    Dog(const Dog&);
+    Dog &operator=(const Dog& other);
 
-		void makeSound() const;
+    void makeSound() const;
 };
 
 #endif // !DOG_HPP

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 22:47:39 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 23:18:22 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/23 16:39:12 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 
 #include "WrongAnimal.hpp"
 
-class WrongCat : protected WrongAnimal
+class WrongCat : public WrongAnimal
 {
 public:
-	WrongCat();
-	~WrongCat();
+    WrongCat();
+    ~WrongCat();
 
-	WrongCat(const WrongCat &);
-	WrongCat(const std::string &);
-	WrongCat &operator=(const WrongCat &);
-	void	makeSound( void ) const;
+    WrongCat(const WrongCat &);
+    WrongCat(const std::string &);
+    WrongCat &operator=(const WrongCat &);
+    void    makeSound( void ) const;
 };
 
 #endif // WRONGCAT_HPP

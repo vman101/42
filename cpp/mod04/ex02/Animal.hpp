@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 19:56:40 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/11 00:04:56 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/23 19:07:58 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@
 
 class Animal
 {
-	public:
-		Animal();
-		virtual ~Animal();
+public:
+    Animal();
+    virtual ~Animal();
 
-		Animal(const Animal&);
-		Animal(std::string &type);
-		Animal &operator=(const Animal&);
+    Animal(const Animal&);
+    Animal(std::string &type);
+    Animal &operator=(const Animal&);
 
-		virtual void makeSound( void ) const = 0;
-		const std::string& getType( void ) const;
+    virtual void makeSound( void ) const = 0;
+    const std::string& getType( void ) const;
 
-	protected:
-		std::string _type;
+protected:
+    std::string _type;
 };
 
 #endif

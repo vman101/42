@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:52:28 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/08 14:20:58 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/23 15:22:54 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ public:
     DiamondTrap &operator=(const DiamondTrap &);
     ~DiamondTrap();
 
-    void whoAmi(void);
+    void whoAmI(void);
     void attack(const std::string& target);
 
 private:

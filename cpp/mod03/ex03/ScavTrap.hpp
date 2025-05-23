@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:39:48 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/08 14:03:23 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/23 15:14:28 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define SCAV_TRAP_HPP
 
 # include "ClapTrap.hpp"
+
+# define SCAVTRAP_DEF_HP 100
+# define SCAVTRAP_DEF_EP 50
+# define SCAVTRAP_DEF_ATK 20
 
 class ScavTrap : virtual public ClapTrap
 {
