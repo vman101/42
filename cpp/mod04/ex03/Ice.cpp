@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:00:33 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 18:09:59 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/26 19:13:37 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,12 @@ Ice &Ice::operator=(const Ice& other)
         this->_type = other._type;
     }
     return (*this);
+}
+
+AMateria *Ice::clone() const {
+    return new Ice();
+}
+
+void Ice::use(ICharacter &target) {
+    std::cout << "* shoots an ice bold at " << target.getName() << " *" << std::endl;
 }

@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:10:22 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 18:13:10 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/26 19:15:42 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,12 @@ Cure::Cure(const Cure& other) : AMateria("cure")
 Cure &Cure::operator=(const Cure& other)
 {
     return (*this);
+}
+
+AMateria *Cure::clone() const {
+    return new Cure();
+}
+
+void Cure::use(ICharacter &target) {
+    std::cout << "* heals " << target.getName() << "'s wounds *" << std::endl;
 }

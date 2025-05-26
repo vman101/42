@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:59:05 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 18:01:22 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/26 19:14:33 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ public:
 
     Cure(const Cure &);
     Cure &operator=(const Cure &);
+
+    AMateria *clone() const;
+    void use(ICharacter &target);
 
 private:
 };

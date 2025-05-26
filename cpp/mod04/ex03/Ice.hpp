@@ -8,6 +8,8 @@ public:
     Ice(const Ice &);
     Ice &operator=(const Ice &);
 
+    AMateria *clone() const;
+    void use(ICharacter &target);
 private:
 };
 
