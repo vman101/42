@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 21:48:36 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/23 19:17:35 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/26 12:46:07 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ Cat::~Cat()
     std::cout << "Cat destuctor called" << std::endl;
 }
 
-Cat::Cat(const Cat& other): Animal(other._type)
+Cat::Cat(const Cat& other):
+    Animal(other._type),
+    brain(new Brain(*other.brain))
 {
     std::cout << "Cat copy destuctor called" << std::endl;
 }
@@ -48,6 +50,6 @@ void    Cat::makeSound( void ) const
     std::cout << "Meowww" << std::endl;
 }
 
-Brain& Cat::getBrain() {
-    return *this->brain;
+Brain *Cat::getBrain() const {
+    return this->brain;
 }

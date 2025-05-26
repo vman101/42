@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 20:00:22 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/23 17:15:22 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/26 12:40:30 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ public:
     Cat &operator=(const Cat&);
 
     void makeSound( void ) const;
-    Brain& getBrain();
+    Brain *getBrain() const;
 private:
     Brain *brain;
 };

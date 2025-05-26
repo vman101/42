@@ -6,11 +6,12 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 21:41:41 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/23 16:54:03 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/26 12:35:04 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Animal.hpp"
+#include "Brain.hpp"
 #include <iostream>
 
 Animal::Animal(): _type("Unidentified Animal")
@@ -55,4 +56,8 @@ void    Animal::makeSound( void ) const
 const std::string& Animal::getType() const
 {
     return _type;
+}
+
+Brain *Animal::getBrain( void ) const {
+    return new Brain();
 }

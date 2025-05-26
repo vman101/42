@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 21:54:29 by vvobis            #+#    #+#             */
-/*   Updated: 2024/12/10 23:36:09 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/26 14:37:29 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,21 @@
 # define DOG_HPP
 
 #include "Brain.hpp"
-# include "Animal.hpp"
+# include "AAnimal.hpp"
 
-class Dog: public Animal
+class Dog: public AAnimal
 {
 public:
-	Dog();
-	~Dog();
+    Dog();
+    ~Dog();
 
-	Dog(const Dog&);
-	Dog &operator=(const Dog& other);
+    Dog(const Dog&);
+    Dog &operator=(const Dog& other);
 
-	void makeSound() const;
+    void makeSound() const;
+    Brain *getBrain() const;
 private:
-	Brain *brain;
+    Brain *brain;
 };
 
 #endif // !DOG_HPP
