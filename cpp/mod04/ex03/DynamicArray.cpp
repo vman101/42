@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Vector.cpp                                         :+:      :+:    :+:   */
+/*   DynamicArray.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,30 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Vector.hpp"
+#include "DynamicArray.hpp"
 #include <iostream>
 #include "AMateria.hpp"
 #include "Cure.hpp"
 #include "Ice.hpp"
 
-Vector::Vector() :
+DynamicArray::DynamicArray() :
     _members(new AMateria*[VECTOR_DEFAULT_CAP]),
     _count(0),
     _cap(VECTOR_DEFAULT_CAP)
 {
-    std::cout << "Vector constructor called" << std::endl;
+    std::cout << "DynamicArray constructor called" << std::endl;
 }
 
-Vector::~Vector()
+DynamicArray::~DynamicArray()
 {
-    std::cout << "Vector destructor called" << std::endl;
+    std::cout << "DynamicArray destructor called" << std::endl;
     for (int i = 0; i < this->_count; i++) {
             delete this->_members[i];
     }
     delete[] this->_members;
 }
 
-Vector::Vector(const Vector& other) :
+DynamicArray::DynamicArray(const DynamicArray& other) :
     _count(other._count),
     _cap(other._cap)
 {
@@ -45,10 +45,10 @@ Vector::Vector(const Vector& other) :
             this->_members[i] = other._members[i]->clone();
         }
     }
-    std::cout << "Vector copy constructor called" << std::endl;
+    std::cout << "DynamicArray copy constructor called" << std::endl;
 }
 
-Vector &Vector::operator=(const Vector& other)
+DynamicArray &DynamicArray::operator=(const DynamicArray& other)
 {
     for (int i = 0; i < this->_count; i++) {
         delete this->_members[i];
@@ -66,12 +66,12 @@ Vector &Vector::operator=(const Vector& other)
         }
         this->_cap = other._cap;
         this->_count = other._count;
-        std::cout << "Vector assignment constructor called" << std::endl;
+        std::cout << "DynamicArray assignment constructor called" << std::endl;
     }
     return (*this);
 }
 
-void Vector::push_unique(AMateria *new_mem) {
+void DynamicArray::push_unique(AMateria *new_mem) {
     for (int i = 0; i < this->_count; i++) {
         if (this->_members[i] == new_mem) {
             return ;
@@ -80,7 +80,7 @@ void Vector::push_unique(AMateria *new_mem) {
     this->push(new_mem);
 }
 
-void Vector::push(AMateria *new_mem) {
+void DynamicArray::push(AMateria *new_mem) {
     if (this->_count == this->_cap) {
         this->_cap += VECTOR_DEFAULT_CAP;
         AMateria** new_mat = new AMateria*[this->_cap];

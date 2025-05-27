@@ -15,7 +15,7 @@
 
 #include "AMateria.hpp"
 #include "IMateriaSource.hpp"
-#include "Vector.hpp"
+#include "DynamicArray.hpp"
 
 #define MATERIA_BUFFER_SIZE 4
 
@@ -31,7 +31,7 @@ public:
     void learnMateria(AMateria*);
     AMateria* createMateria(std::string const & type);
 
-    static Vector   _memory_collector;
+    static DynamicArray   _memory_collector;
 
 private:
     AMateria*       _materia_buffer[MATERIA_BUFFER_SIZE];

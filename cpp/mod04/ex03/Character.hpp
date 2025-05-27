@@ -18,7 +18,7 @@
 #include "MateriaSource.hpp"
 #include <sys/types.h>
 #include "ICharacter.hpp"
-#include "Vector.hpp"
+#include "DynamicArray.hpp"
 
 class Character : public ICharacter {
 public:
@@ -37,7 +37,7 @@ private:
     AMateria    *_materia_inventory[MATERIA_BUFFER_SIZE];
     int         _materia_index;
 
-    Vector      _memory_collector;
+    DynamicArray      _memory_collector;
 
 };
 

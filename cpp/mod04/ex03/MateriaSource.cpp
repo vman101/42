@@ -1,11 +1,11 @@
 #include "MateriaSource.hpp"
 #include "AMateria.hpp"
 #include "IMateriaSource.hpp"
-#include "Vector.hpp"
+#include "DynamicArray.hpp"
 
 #include <iostream>
 
-Vector MateriaSource::_memory_collector = Vector();
+DynamicArray MateriaSource::_memory_collector = DynamicArray();
 
 MateriaSource::MateriaSource() :
     IMateriaSource(),

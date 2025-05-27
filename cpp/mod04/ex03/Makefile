@@ -15,7 +15,7 @@ CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -Wshadow
 
 NAME := amateria
 
-SRC := AMateria.cpp Ice.cpp Cure.cpp main.cpp MateriaSource.cpp Character.cpp Vector.cpp IMateriaSource.cpp
+SRC := AMateria.cpp Ice.cpp Cure.cpp main.cpp MateriaSource.cpp Character.cpp DynamicArray.cpp IMateriaSource.cpp
 
 OBJ := $(SRC:%.cpp=%.o)
 DEP := $(SRC:%.cpp=%.d)
