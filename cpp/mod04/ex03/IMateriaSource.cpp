@@ -1,34 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
+/*   IMateriaSource.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 22:06:18 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/27 16:01:57 by vvobis           ###   ########.fr       */
+/*   Created: 2025/05/27 15:26:02 by vvobis            #+#    #+#             */
+/*   Updated: 2025/05/27 15:28:57 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WRONGANIMAL_HPP
-# define WRONGANIMAL_HPP
+#include "IMateriaSource.hpp"
+#include <iostream>
 
-# include <string>
-
-class WrongAnimal {
-public:
-	WrongAnimal();
-	~WrongAnimal();
-
-	WrongAnimal(const std::string &);
-	WrongAnimal(const WrongAnimal &);
-	WrongAnimal &operator=(const WrongAnimal &);
-
-	void	makeSound( void ) const;
-	const std::string&	getType() const;
-
-protected:
-	std::string _type;
-};
-
-#endif // !WRONGANIMAL_HPP
+IMateriaSource::~IMateriaSource() {
+    std::cout << "IMateria Destructor called" << std::endl;
+}

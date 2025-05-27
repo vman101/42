@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:00:33 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 19:13:37 by victor           ###   ########.fr       */
+/*   Updated: 2025/05/27 15:15:17 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "AMateria.hpp"
 #include <iostream>
 
+#include "ICharacter.hpp"
 
 Ice::Ice() :
     AMateria("ice")
@@ -27,16 +28,15 @@ Ice::~Ice()
 }
 
 Ice::Ice(const Ice& other) :
-    AMateria(other._type)
+    AMateria("ice")
 {
+    (void)other;
     std::cout << "Ice copy constructor called" << std::endl;
 }
 
 Ice &Ice::operator=(const Ice& other)
 {
-    if (this != &other) {
-        this->_type = other._type;
-    }
+    (void)other;
     return (*this);
 }
 

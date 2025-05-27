@@ -5,24 +5,24 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/12/10 19:53:01 by vvobis            #+#    #+#              #
-#    Updated: 2025/05/27 15:35:27 by vvobis           ###   ########.fr        #
+#    Created: 2025/05/27 09:46:37 by vvobis            #+#    #+#              #
+#    Updated: 2025/05/27 16:09:55 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := c++
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -g
+CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -Wshadow
 
-NAME := animals
+NAME := amateria
 
-SRC := main.cpp Animal.cpp Cat.cpp Dog.cpp WrongAnimal.cpp WrongCat.cpp
+SRC := AMateria.cpp Ice.cpp Cure.cpp main.cpp MateriaSource.cpp Character.cpp Vector.cpp IMateriaSource.cpp
 
 OBJ := $(SRC:%.cpp=%.o)
 DEP := $(SRC:%.cpp=%.d)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) 
 	$(CC) $^ -o $@
 
 %.o: %.cpp

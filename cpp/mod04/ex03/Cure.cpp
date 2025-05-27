@@ -6,12 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:10:22 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 19:15:42 by victor           ###   ########.fr       */
+/*   Updated: 2025/05/27 09:51:12 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cure.hpp"
 #include "AMateria.hpp"
+#include "ICharacter.hpp"
 
 #include <iostream>
 
@@ -35,6 +36,13 @@ Cure::Cure(const Cure& other) : AMateria("cure")
 
 Cure &Cure::operator=(const Cure& other)
 {
+    if (this != &other) {
+        if (other._type == "cure") {
+            this->_type = "cure";
+        } else {
+            throw std::invalid_argument("Tried to create Materia of type cure from type " + other._type + "\n");
+        }
+    }
     return (*this);
 }
 

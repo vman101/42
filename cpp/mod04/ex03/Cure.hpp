@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:59:05 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 19:14:33 by victor           ###   ########.fr       */
+/*   Updated: 2025/05/27 09:55:21 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CURE_HPP
 
 #include "AMateria.hpp"
-class Cure : AMateria
+class Cure : public AMateria
 {
 public:
     Cure();

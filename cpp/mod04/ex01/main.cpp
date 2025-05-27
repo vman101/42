@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 19:54:34 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 12:56:15 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/27 16:07:28 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <iostream>
 #include <ostream>
 
-#define ANIMAL_COUNT 20
+#define ANIMAL_COUNT 10
 
 int main()
 {

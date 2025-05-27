@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
+/*   Vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 22:06:18 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/27 16:01:57 by vvobis           ###   ########.fr       */
+/*   Created: 2025/05/27 12:34:37 by vvobis            #+#    #+#             */
+/*   Updated: 2025/05/27 15:05:11 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WRONGANIMAL_HPP
-# define WRONGANIMAL_HPP
+#ifndef VECTOR_HPP
+# define VECTOR_HPP
 
-# include <string>
+#include "AMateria.hpp"
+#define VECTOR_DEFAULT_CAP 32
 
-class WrongAnimal {
+class Vector
+{
 public:
-	WrongAnimal();
-	~WrongAnimal();
+    Vector();
+    ~Vector();
+    Vector(const Vector &);
+    Vector &operator=(const Vector &);
 
-	WrongAnimal(const std::string &);
-	WrongAnimal(const WrongAnimal &);
-	WrongAnimal &operator=(const WrongAnimal &);
+    void push(AMateria *);
+    void push_unique(AMateria *);
 
-	void	makeSound( void ) const;
-	const std::string&	getType() const;
-
-protected:
-	std::string _type;
+private:
+    AMateria        **_members;
+    int    _count;
+    int    _cap;
 };
 
-#endif // !WRONGANIMAL_HPP
+#endif // VECTOR_HPP

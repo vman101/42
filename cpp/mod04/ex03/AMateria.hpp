@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:46:09 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 18:04:06 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/27 10:08:07 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ protected:
 
 public:
     AMateria();
-    ~AMateria();
+    virtual ~AMateria();
     AMateria(const AMateria& other);
     AMateria& operator=(const AMateria& other);
     AMateria(std::string const & type);

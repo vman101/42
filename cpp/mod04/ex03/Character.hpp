@@ -6,26 +6,39 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:18:25 by victor            #+#    #+#             */
-/*   Updated: 2025/05/26 19:23:24 by victor           ###   ########.fr       */
+/*   Updated: 2025/05/27 13:41:11 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#include "ICharacter.hpp"
 #ifndef CHARACTER_HPP
 # define CHARACTER_HPP
 
-class Character : public ICharacter{
+#include "AMateria.hpp"
+#include "MateriaSource.hpp"
+#include <sys/types.h>
+#include "ICharacter.hpp"
+#include "Vector.hpp"
+
+class Character : public ICharacter {
 public:
     Character();
-    Character(Character &);
+    Character(const std::string &name);
     Character(const Character &);
-    Character &operator=(Character &);
+    Character &operator=(Character const &);
     ~Character();
 
     std::string const &getName() const;
-
+    void equip(AMateria* m);
+    void unequip(int idx);
+    void use(int idx, ICharacter& target);
 private:
+    std::string _name;
+    AMateria    *_materia_inventory[MATERIA_BUFFER_SIZE];
+    int         _materia_index;
+
+    Vector      _memory_collector;
+
 };
 
 #endif // !CHARACTER_HPP
