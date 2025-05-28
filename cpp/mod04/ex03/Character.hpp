@@ -6,7 +6,7 @@
 /*   By: victor </var/spool/mail/victor>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:18:25 by victor            #+#    #+#             */
-/*   Updated: 2025/05/27 13:41:11 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/28 11:13:14 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "MateriaSource.hpp"
 #include <sys/types.h>
 #include "ICharacter.hpp"
-#include "DynamicArray.hpp"
 
 class Character : public ICharacter {
 public:
@@ -37,7 +36,7 @@ private:
     AMateria    *_materia_inventory[MATERIA_BUFFER_SIZE];
     int         _materia_index;
 
-    DynamicArray      _memory_collector;
+    /*DynamicArray      _memory_collector;*/
 
 };
 

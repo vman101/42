@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 20:00:22 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 14:37:52 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/28 10:27:14 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ public:
     Cat(const Cat&);
     Cat &operator=(const Cat&);
 
-    void makeSound( void ) const;
+    virtual void makeSound( void ) const;
     Brain *getBrain() const;
 private:
     Brain *brain;

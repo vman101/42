@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:04:23 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/27 12:37:16 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:31:35 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 #include "ICharacter.hpp"
 
 #include <iostream>
+#include <new>
+
+DynamicArray AMateria::_memory_collector = DynamicArray();
 
 AMateria::AMateria() :
-    _type("undefined")
+    _type("default")
 {
     std::cout << "AMateria constructor called" << std::endl;
 }
@@ -44,6 +47,17 @@ AMateria &AMateria::operator=(const AMateria& other)
         this->_type = other._type;
     }
     return (*this);
+}
+
+void *AMateria::operator new(size_t size) {
+    void *tmp = ::operator new(size);
+    _memory_collector.push_unique(tmp);
+    return tmp;
+}
+
+void AMateria::operator delete(void *member) {
+    _memory_collector.remove(member);
+    ::operator delete(member);
 }
 
 std::string const& AMateria::getType() const {

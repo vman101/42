@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 21:54:29 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 14:37:29 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/27 19:16:39 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ public:
     Dog(const Dog&);
     Dog &operator=(const Dog& other);
 
-    void makeSound() const;
+    virtual void makeSound() const;
     Brain *getBrain() const;
 private:
     Brain *brain;

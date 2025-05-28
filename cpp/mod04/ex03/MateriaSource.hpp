@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:59:44 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/27 15:04:09 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/28 11:01:20 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ public:
     void learnMateria(AMateria*);
     AMateria* createMateria(std::string const & type);
 
-    static DynamicArray   _memory_collector;
 
 private:
     AMateria*       _materia_buffer[MATERIA_BUFFER_SIZE];
     unsigned int    _materia_count;
 
+    /*static DynamicArray   _memory_collector;*/
 };
 
 #endif // !MATERIASOURCE_HPP

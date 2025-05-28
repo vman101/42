@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 19:54:34 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 14:40:24 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/27 19:15:57 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <iostream>
 #include <ostream>
 
-#define ANIMAL_COUNT 20
+#define ANIMAL_COUNT 10
 
 int main()
 {
@@ -51,17 +51,17 @@ int main()
 
     for (unsigned int i = 0; i < ANIMAL_COUNT; i += 2) {
         std::cout << "This " << animals[i]->getType() << " thinks ";
-        Brain *c = animals[i]->getBrain();
+        Brain *c = dynamic_cast<Dog*>(animals[i])->getBrain();
         std::cout << c->expressIdea(0) << std::endl;
         std::cout << "This " << animals[i + 1]->getType() << " thinks ";
-        Brain *d = animals[i + 1]->getBrain();
+        Brain *d = dynamic_cast<Cat*>(animals[i + 1])->getBrain();
         std::cout << d->expressIdea(0) << std::endl;
     }
 
     for (unsigned int i = 0; i < ANIMAL_COUNT; i += 2)
     {
-        Brain *c = animals[i]->getBrain();
-        Brain *d = animals[i + 1]->getBrain();
+        Brain *c = dynamic_cast<Dog*>(animals[i])->getBrain();
+        Brain *d = dynamic_cast<Cat*>(animals[i + 1])->getBrain();
         Brain t(*d);
         *d = *c;
         *c = t;
@@ -69,10 +69,10 @@ int main()
 
     for (unsigned int i = 0; i < ANIMAL_COUNT; i += 2) {
         std::cout << "This " << animals[i]->getType() << " thinks ";
-        Brain* c = animals[i]->getBrain();
+        Brain* c = dynamic_cast<Dog*>(animals[i])->getBrain();
         std::cout << c->expressIdea(0) << std::endl;
         std::cout << "This " << animals[i + 1]->getType() << " thinks ";
-        Brain *d = animals[i + 1]->getBrain();
+        Brain *d = dynamic_cast<Cat*>(animals[i + 1])->getBrain();
         std::cout << d->expressIdea(0) << std::endl;
     }
 
@@ -84,10 +84,9 @@ int main()
 
     for (unsigned int i = 0; i < ANIMAL_COUNT; i += 2) {
         std::cout << "This " << animals[i + 1]->getType() << " thinks ";
-        Brain *d = animals[i + 1]->getBrain();
+        Brain *d = dynamic_cast<Cat*>(animals[i + 1])->getBrain();
         std::cout << d->expressIdea(0) << std::endl;
     }
-
     for (unsigned int i = 0; i < ANIMAL_COUNT; i += 2)
     {
         animals[i + 1]->makeSound();

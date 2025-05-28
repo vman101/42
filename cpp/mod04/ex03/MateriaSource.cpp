@@ -5,8 +5,6 @@
 
 #include <iostream>
 
-DynamicArray MateriaSource::_memory_collector = DynamicArray();
-
 MateriaSource::MateriaSource() :
     IMateriaSource(),
     _materia_count(0)
@@ -20,10 +18,6 @@ MateriaSource::MateriaSource() :
 
 MateriaSource::~MateriaSource()
 {
-    for (unsigned int i = 0; i < MATERIA_BUFFER_SIZE; i++) {
-        if (this->_materia_buffer[i])
-            delete this->_materia_buffer[i];
-    }
     std::cout << "MateriaSource destructor called" << std::endl;
 }
 
@@ -32,6 +26,7 @@ MateriaSource::MateriaSource(const MateriaSource& other) :
     _materia_count(other._materia_count)
 {
     for (unsigned int i = 0; i < MATERIA_BUFFER_SIZE; i++) {
+        /*this->_materia_buffer[i].delete_me();*/
         this->_materia_buffer[i] = NULL;
     }
 
@@ -50,8 +45,6 @@ MateriaSource &MateriaSource::operator=(const MateriaSource& other)
     if (this != &other) {
         this->_materia_count = other._materia_count;
         for (unsigned int i = 0; i < MATERIA_BUFFER_SIZE; i++) {
-            if (this->_materia_buffer[i])
-                delete this->_materia_buffer[i];
             if (other._materia_buffer[i]) {
                 this->_materia_buffer[i] = other._materia_buffer[i]->clone();
             } else {
@@ -74,12 +67,10 @@ AMateria *MateriaSource::createMateria(std::string const & type) {
 void MateriaSource::learnMateria(AMateria* new_materia) {
     if (this->_materia_count == MATERIA_BUFFER_SIZE) {
         std::cout << "This MaterialSource has no more Slots left" << std::endl;
-        this->_memory_collector.push_unique(new_materia);
     } else if (!new_materia){
         std::cout << "This Material is NULL" << std::endl;
     } else {
         this->_materia_buffer[this->_materia_count] = new_materia->clone();
         this->_materia_count++;
-        this->_memory_collector.push_unique(new_materia);
     }
 }

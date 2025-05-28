@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 21:41:41 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 12:35:04 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/27 19:12:17 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,4 @@ void    Animal::makeSound( void ) const
 const std::string& Animal::getType() const
 {
     return _type;
-}
-
-Brain *Animal::getBrain( void ) const {
-    return new Brain();
 }

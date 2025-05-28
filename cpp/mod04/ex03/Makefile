@@ -6,12 +6,12 @@
 #    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/27 09:46:37 by vvobis            #+#    #+#              #
-#    Updated: 2025/05/27 16:09:55 by vvobis           ###   ########.fr        #
+#    Updated: 2025/05/28 12:33:42 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := c++
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -Wshadow
+CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
 
 NAME := amateria
 

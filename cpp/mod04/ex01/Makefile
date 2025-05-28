@@ -6,12 +6,12 @@
 #    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/10 19:53:01 by vvobis            #+#    #+#              #
-#    Updated: 2024/12/10 23:59:48 by vvobis           ###   ########.fr        #
+#    Updated: 2025/05/28 10:26:23 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := c++
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -g3
+CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
 
 NAME := animals
 

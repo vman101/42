@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:46:09 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/27 10:08:07 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:04:22 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,23 @@
 # define AMATERIA_HPP
 
 # include <string>
+# include "DynamicArray.hpp"
 
 class ICharacter;
 
 class AMateria
 {
 protected:
-    std::string _type;
+    std::string     _type;
+    static DynamicArray   _memory_collector;
 
 public:
     AMateria();
     virtual ~AMateria();
     AMateria(const AMateria& other);
     AMateria& operator=(const AMateria& other);
+    void *operator new(size_t);
+    void operator delete(void *);
     AMateria(std::string const & type);
 
     std::string const & getType() const; //Returns the materia type

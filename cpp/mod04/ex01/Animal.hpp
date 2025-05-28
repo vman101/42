@@ -6,14 +6,13 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 19:56:40 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/26 12:35:15 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/27 19:11:53 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ANIMAL_HPP
 # define ANIMAL_HPP
 
-#include "Brain.hpp"
 #include <string>
 
 class Animal
@@ -29,7 +28,6 @@ public:
 
     virtual void makeSound( void ) const;
     const std::string& getType( void ) const;
-    virtual Brain* getBrain(void) const;
 
 
 protected:

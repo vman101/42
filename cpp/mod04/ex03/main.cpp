@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:53:57 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/27 16:16:50 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:32:50 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,22 @@ void test_materia() {
         AMateria *ice = new Ice();
         delete ice;
         ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
+        ice = new Cure();
         delete ice;
+        ice = new Cure();
     }
 }
 
@@ -51,10 +66,8 @@ void test_materia_source() {
         src->createMateria("ice");
         src->createMateria("");
         src->learnMateria(new Ice());
-        AMateria *ice = src->createMateria("ice");
         src->createMateria("cure");
         src->createMateria("");
-        delete ice;
         delete src;
     }
     {
@@ -81,7 +94,6 @@ void test_materia_source() {
         delete src;
 
         tmp = free.createMateria("ice");
-        delete tmp;
     }
 }
 
@@ -136,5 +148,6 @@ int main()
     delete me;
 
     test_subject();
+
     return 0;
 }

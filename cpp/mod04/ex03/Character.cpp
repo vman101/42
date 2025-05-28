@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:33:48 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/27 14:24:58 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/28 11:32:32 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ Character::Character() :
 
 Character::~Character()
 {
-    for (int i = 0; i < MATERIA_BUFFER_SIZE; i++) {
-        if (this->_materia_inventory[i]) {
-            delete this->_materia_inventory[i];
-        }
-    }
     std::cout << "Character destructor called" << std::endl;
 }
 
@@ -81,13 +76,11 @@ std::string const &Character::getName() const {
     return this->_name;
 }
 
-
 void Character::equip(AMateria* m) {
     if (!m) {
         std::cout << "[EQUIP_ERROR] Materia is NULL" << std::endl;
     } else if (this->_materia_index == MATERIA_BUFFER_SIZE) {
         std::cout << "[EQUIP_ERROR] Character " << this->_name << " has no free slots left" << std::endl;
-        this->_memory_collector.push(m);
     } else {
         for (int i = 0; i < MATERIA_BUFFER_SIZE; i++) {
             if (this->_materia_inventory[i] == m) {
@@ -110,7 +103,6 @@ void Character::unequip(int idx) {
         std::cout << "[UNEQUIP_ERROR] Slot " << idx << " on Character " << this->_name << " is not used" << std::endl;
     } else {
         this->_materia_index--;
-        this->_memory_collector.push(this->_materia_inventory[idx]);
         this->_materia_inventory[idx] = NULL;
     }
 }
