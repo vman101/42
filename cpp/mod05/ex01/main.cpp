@@ -6,65 +6,57 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 10:46:21 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 14:27:48 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/06/17 11:24:59 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 int main ( void )
 {
     try
     {
-        Bureaucrat j("Jesus", 69);
-        Bureaucrat e("Emil", 1);
-        std::cout << j << std::endl;
-        std::cout << e << std::endl;
+        Form f("Some form", 0, 0);
     }
     catch( std::exception &e )
     {
-        std::cout << "[EXCEPTION] ";
-        std::cout << e.what() << std::endl;
+        std::cout << "[EXCEPTION] caught: " << e.what() << std::endl;
     }
 
     try
     {
-        Bureaucrat j("Jesus", -1);
-        Bureaucrat e("Emil", -15);
+        Form f("Some form", 155, 155);
+        Bureaucrat me("I", 49);
+        me.signForm(f);
     }
     catch( std::exception &e )
     {
-        std::cout << "[EXCEPTION] ";
-        std::cout << e.what() << std::endl;
+        std::cout << "[EXCEPTION] caught: " << e.what() << std::endl;
     }
 
     try
     {
-        Bureaucrat j("Jesus", 150);
-        Bureaucrat e("Emil", 149);
-        e.decGrade();
-        std::cout << e << std::endl;
-        j.decGrade();
+        Form f("Some form", 50, 50);
+        Bureaucrat me("I", 49);
+        me.signForm(f);
     }
     catch( std::exception &e )
     {
-        std::cout << "[EXCEPTION] ";
-        std::cout << e.what() << std::endl;
+        std::cout << "[EXCEPTION] caught: " << e.what() << std::endl;
     }
 
     try
     {
-        Bureaucrat j("Jesus", 1);
-        Bureaucrat e("Emil", 2);
-        e.incGrade();
-        std::cout << e << std::endl;
-        j.incGrade();
+        Form f("Some form", 50, 50);
+        Bureaucrat me("I", 51);
+        me.signForm(f);
     }
     catch( std::exception &e )
     {
-        std::cout << "[EXCEPTION] ";
-        std::cout << e.what() << std::endl;
+        std::cout << "[EXCEPTION] caught: " << e.what() << std::endl;
     }
+
     return 0;
 }

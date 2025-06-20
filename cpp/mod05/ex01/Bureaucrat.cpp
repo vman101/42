@@ -6,10 +6,12 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 10:56:31 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 14:19:50 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/06/17 11:32:35 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
+#include <exception>
 #include <iostream>
 
 Bureaucrat::Bureaucrat(): _name("Undefined"), _grade(0)
@@ -24,6 +26,7 @@ Bureaucrat::~Bureaucrat()
 
 Bureaucrat::Bureaucrat(const std::string &name, int grade): _name(name), _grade(grade)
 {
+    std::cout << "Bureaucrat paramter constructor called" << std::endl;
     if (grade > 150)
     {
         throw (Bureaucrat::GradeTooLowException());
@@ -32,7 +35,6 @@ Bureaucrat::Bureaucrat(const std::string &name, int grade): _name(name), _grade(
     {
         throw (Bureaucrat::GradeTooHighException());
     }
-    std::cout << "Bureaucrat paramter constructor called" << std::endl;
 }
 
 Bureaucrat::Bureaucrat(const Bureaucrat& other): _name(other.getName()), _grade(other.getGrade())
@@ -92,15 +94,29 @@ std::ostream& operator<<(std::ostream &out, const Bureaucrat &b)
 
 const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
-    return "Grade is too low!";
+    return "[Bureaucrat] Grade is too low!";
 }
 
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
-    return "Grade is too high!";
+    return "[Bureaucrat] Grade is too high!";
 }
 
 int    Bureaucrat::getGrade( void ) const
 {
     return (this->_grade);
+}
+
+void    Bureaucrat::signForm(Form &form) const {
+    try {
+        form.beSigned(*this);
+    } catch ( std::exception &e) {
+        std::cout
+            << this->getName() << " couldnt sign "
+            << form.getName() << " because "
+            << e.what() << std::endl;
+        throw;
+    }
+
+    std::cout << this->getName() << " signed " << form.getName() << std::endl;
 }

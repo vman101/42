@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 10:50:06 by vvobis            #+#    #+#             */
-/*   Updated: 2025/06/05 18:29:22 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/06/17 10:54:43 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include <exception>
 #include <string>
+
+class Form;
 
 class Bureaucrat
 {
@@ -40,6 +42,8 @@ public:
     int                 getGrade( void ) const;
     void                incGrade( void );
     void                decGrade( void );
+
+    void                signForm(Form &) const ;
 
 private:
     const std::string   _name;
