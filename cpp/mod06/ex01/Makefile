@@ -3,26 +3,26 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: vvobis <victorvobis@web.de>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/27 09:46:37 by vvobis            #+#    #+#              #
-#    Updated: 2025/05/28 12:41:27 by vvobis           ###   ########.fr        #
+#    Created: 2025/06/23 17:37:21 by vvobis            #+#    #+#              #
+#    Updated: 2025/06/23 17:39:44 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC := g++
+CC := c++
 CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
 
-NAME := amateria
+NAME := serde
 
-SRC := AMateria.cpp Ice.cpp Cure.cpp main.cpp MateriaSource.cpp Character.cpp DynamicArray.cpp IMateriaSource.cpp
+SRC := main.cpp Serializer.cpp Data.cpp
 
 OBJ := $(SRC:%.cpp=%.o)
 DEP := $(SRC:%.cpp=%.d)
 
 all: $(NAME)
 
-$(NAME): $(OBJ) 
+$(NAME): $(OBJ)
 	$(CC) $^ -o $@
 
 %.o: %.cpp

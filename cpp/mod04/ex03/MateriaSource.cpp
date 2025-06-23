@@ -58,6 +58,7 @@ MateriaSource &MateriaSource::operator=(const MateriaSource& other)
 AMateria *MateriaSource::createMateria(std::string const & type) {
     for (unsigned int i = 0; i < MATERIA_BUFFER_SIZE; i++) {
         if (this->_materia_buffer[i] && this->_materia_buffer[i]->getType() == type) {
+            std::cout << "[MATERIA_CREATE] Created Materia " << this->_materia_buffer[i]->getType() << std::endl;
             return this->_materia_buffer[i]->clone();
         }
     }
@@ -66,11 +67,14 @@ AMateria *MateriaSource::createMateria(std::string const & type) {
 
 void MateriaSource::learnMateria(AMateria* new_materia) {
     if (this->_materia_count == MATERIA_BUFFER_SIZE) {
-        std::cout << "This MaterialSource has no more Slots left" << std::endl;
+        std::cout << "[MATERIA_LEARN_ERROR] This MaterialSource has no more Slots left" << std::endl;
     } else if (!new_materia){
-        std::cout << "This Material is NULL" << std::endl;
+        std::cout << "[MATERIA_LEARN_ERROR] This Material is NULL" << std::endl;
     } else {
         this->_materia_buffer[this->_materia_count] = new_materia->clone();
+        std::cout << "[MATERIA_LEARN] Learned Materia "
+            << this->_materia_buffer[_materia_count]->getType()
+            << std::endl;
         this->_materia_count++;
     }
 }

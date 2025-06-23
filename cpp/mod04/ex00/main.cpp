@@ -6,17 +6,18 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 19:54:34 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/27 15:51:52 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/06/04 11:44:56 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "Dog.hpp"
 #include "Cat.hpp"
 #include <iostream>
 #include <ostream>
+#include "WrongAnimal.hpp"
+#include "WrongCat.hpp"
 
-#define ANIMAL_COUNT 20
+#define ANIMAL_COUNT 2
 
 int main()
 {
@@ -54,26 +55,15 @@ int main()
         animals[i + 1]->makeSound();
     }
 
-    for (unsigned int i = 0; i < ANIMAL_COUNT; i += 2)
-    {
-        std::cout << "This " << animals[i]->getType() << " says ";
-        animals[i]->makeSound();
-        std::cout << "This " << animals[i + 1]->getType() << " says ";
-        animals[i + 1]->makeSound();
-        Animal tmp = *animals[i];
-        *animals[i] = *animals[i + 1];
-        *animals[i + 1] = tmp;
-    }
+    WrongAnimal w_cat = WrongCat();
+    WrongAnimal w_ani = WrongAnimal();
 
-    std::cout << std::endl << "==== Animals Swapped ====" << std::endl << std::endl;
+    std::cout << "This wrongcat says ";
+    w_cat.makeSound();
+    std::cout << "This wronganimal says ";
+    w_ani.makeSound();
 
-    for (unsigned int i = 0; i < ANIMAL_COUNT; i += 2)
-    {
-        std::cout << "This " << animals[i]->getType() << " says ";
-        animals[i]->makeSound();
+    for (int i = 0; i < ANIMAL_COUNT; i++) {
         delete animals[i];
-        std::cout << "This " << animals[i + 1]->getType() << " says ";
-        animals[i + 1]->makeSound();
-        delete animals[i + 1];
     }
 }

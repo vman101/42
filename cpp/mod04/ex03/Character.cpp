@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Character.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 10:33:48 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 11:32:32 by vvobis           ###   ########.fr       */
+/*   Created: 2025/05/28 15:55:55 by vvobis            #+#    #+#             */
+/*   Updated: 2025/05/28 16:07:11 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Character.hpp"
-#include "ICharacter.hpp"
-#include "MateriaSource.hpp"
 #include <iostream>
-#include <sys/types.h>
 
 Character::Character() :
     ICharacter(),
@@ -29,6 +26,9 @@ Character::Character() :
 
 Character::~Character()
 {
+    for (uint i = 0; i < MATERIA_BUFFER_SIZE; i++) {
+        delete this->_materia_inventory[i];
+    }
     std::cout << "Character destructor called" << std::endl;
 }
 
@@ -49,7 +49,10 @@ Character::Character(const Character& other) :
 Character &Character::operator=(const Character& other)
 {
     if (this != &other) {
+        this->_name = other._name;
         for (uint i = 0; i < MATERIA_BUFFER_SIZE; i++) {
+            if (this->_materia_inventory[i])
+                delete this->_materia_inventory[i];
             if (other._materia_inventory[i])
                 this->_materia_inventory[i] = other._materia_inventory[i]->clone();
             else {
@@ -58,6 +61,7 @@ Character &Character::operator=(const Character& other)
         }
         this->_materia_index = other._materia_index;
     }
+    std::cout << "Character assignment operator called" << std::endl;
     return (*this);
 }
 
@@ -91,6 +95,10 @@ void Character::equip(AMateria* m) {
         for (int i = 0; i < MATERIA_BUFFER_SIZE; i++) {
             if (this->_materia_inventory[i] == NULL) {
                 this->_materia_inventory[i] = m;
+                std::cout << "[EQUIP] Character " << this->_name
+                    << " equipped " << m->getType()
+                    << " in Slot " << i
+                    << std::endl;
                 this->_materia_index++;
                 return ;
             }
@@ -99,10 +107,14 @@ void Character::equip(AMateria* m) {
 }
 
 void Character::unequip(int idx) {
-    if (idx > MATERIA_BUFFER_SIZE || idx > this->_materia_index || idx < 0) {
+    if (idx > MATERIA_BUFFER_SIZE || idx >= this->_materia_index || idx < 0) {
         std::cout << "[UNEQUIP_ERROR] Slot " << idx << " on Character " << this->_name << " is not used" << std::endl;
     } else {
         this->_materia_index--;
+        std::cout << "[UNEQUIP] Character" << this->_name
+            << "unequipped " << this->_materia_inventory[idx]->getType()
+            << " from Slot " << idx
+            << std::endl;
         this->_materia_inventory[idx] = NULL;
     }
 }

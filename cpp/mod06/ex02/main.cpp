@@ -1,18 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IMateriaSource.cpp                                 :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 15:26:02 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 12:41:16 by vvobis           ###   ########.fr       */
+/*   Created: 2025/06/23 18:15:13 by vvobis            #+#    #+#             */
+/*   Updated: 2025/06/23 18:15:27 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "IMateriaSource.hpp"
-#include <iostream>
-
-IMateriaSource::~IMateriaSource() {
-    std::cout << "IMateriaSource Destructor called" << std::endl;
-}
+int main() {}

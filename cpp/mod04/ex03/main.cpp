@@ -6,10 +6,11 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:53:57 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 12:32:50 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/05/28 13:39:28 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ICharacter.hpp"
 #include "Ice.hpp"
 #include "Cure.hpp"
 #include "Character.hpp"
@@ -122,6 +123,7 @@ void test_subject() {
     src->learnMateria(new Ice());
     src->learnMateria(new Cure());
     ICharacter* me = new Character("me");
+
     AMateria* tmp;
     tmp = src->createMateria("ice");
     me->equip(tmp);

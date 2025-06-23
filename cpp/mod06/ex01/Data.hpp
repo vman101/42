@@ -1,18 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IMateriaSource.cpp                                 :+:      :+:    :+:   */
+/*   Data.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 15:26:02 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 12:41:16 by vvobis           ###   ########.fr       */
+/*   Created: 2025/06/23 17:43:35 by vvobis            #+#    #+#             */
+/*   Updated: 2025/06/23 17:44:23 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "IMateriaSource.hpp"
-#include <iostream>
+#ifndef DATA_HPP
+# define DATA_HPP
 
-IMateriaSource::~IMateriaSource() {
-    std::cout << "IMateriaSource Destructor called" << std::endl;
-}
+class Data
+{
+public:
+    Data();
+    ~Data();
+
+    Data(const Data &);
+    Data &operator=(const Data &);
+
+    int getData();
+
+private:
+    int _data;
+};
+
+#endif // DATA_HPP

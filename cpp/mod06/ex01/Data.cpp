@@ -1,18 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IMateriaSource.cpp                                 :+:      :+:    :+:   */
+/*   Data.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 15:26:02 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 12:41:16 by vvobis           ###   ########.fr       */
+/*   Created: 2025/06/23 17:44:27 by vvobis            #+#    #+#             */
+/*   Updated: 2025/06/23 18:07:44 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "IMateriaSource.hpp"
+#include "Data.hpp"
 #include <iostream>
 
-IMateriaSource::~IMateriaSource() {
-    std::cout << "IMateriaSource Destructor called" << std::endl;
+Data::Data() :
+    _data(42) {}
+
+Data::~Data() {}
+
+Data::Data(const Data& other) { (void)other; }
+
+Data &Data::operator=(const Data& other)
+{
+    (void)other;
+    return (*this);
+}
+
+int Data::getData() {
+    return this->_data;
 }

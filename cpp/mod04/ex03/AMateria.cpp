@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   AMateria.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 18:04:23 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 12:31:35 by vvobis           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "AMateria.hpp"
 #include "ICharacter.hpp"
 
@@ -57,6 +45,8 @@ void *AMateria::operator new(size_t size) {
 
 void AMateria::operator delete(void *member) {
     _memory_collector.remove(member);
+    /*AMateria *tmp = static_cast<AMateria *>(member);*/
+    /*tmp->~AMateria();*/
     ::operator delete(member);
 }
 

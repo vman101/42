@@ -3,19 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: vvobis <victorvobis@web.de>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/27 09:46:37 by vvobis            #+#    #+#              #
-#    Updated: 2025/05/28 12:41:27 by vvobis           ###   ########.fr        #
+#    Created: 2025/06/23 11:46:28 by vvobis            #+#    #+#              #
+#    Updated: 2025/06/23 15:38:40 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC := g++
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
+CC := c++
+CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -g
 
-NAME := amateria
+NAME := convert
 
-SRC := AMateria.cpp Ice.cpp Cure.cpp main.cpp MateriaSource.cpp Character.cpp DynamicArray.cpp IMateriaSource.cpp
+SRC := main.cpp ScalarConverter.cpp utils.cpp
 
 OBJ := $(SRC:%.cpp=%.o)
 DEP := $(SRC:%.cpp=%.d)

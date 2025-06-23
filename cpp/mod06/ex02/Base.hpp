@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IMateriaSource.cpp                                 :+:      :+:    :+:   */
+/*   Base.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 15:26:02 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 12:41:16 by vvobis           ###   ########.fr       */
+/*   Created: 2025/06/23 18:15:52 by vvobis            #+#    #+#             */
+/*   Updated: 2025/06/23 18:16:01 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "IMateriaSource.hpp"
-#include <iostream>
+#ifndef BASE_HPP
+# define BASE_HPP
 
-IMateriaSource::~IMateriaSource() {
-    std::cout << "IMateriaSource Destructor called" << std::endl;
-}
+#endif // BASE_HPP
