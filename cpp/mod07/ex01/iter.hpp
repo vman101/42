@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Base.hpp                                           :+:      :+:    :+:   */
+/*   iter.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 18:15:52 by vvobis            #+#    #+#             */
-/*   Updated: 2025/06/24 12:00:55 by vvobis           ###   ########.fr       */
+/*   Created: 2025/06/24 12:36:43 by vvobis            #+#    #+#             */
+/*   Updated: 2025/06/24 14:18:21 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BASE_HPP
-# define BASE_HPP
+#ifndef ITER_HPP
+# define ITER_HPP
 
-class Base
-{
-public:
-    virtual ~Base();
+template <typename A, typename L, typename F>
+void iter(A &a, L l, F f) {
+    for (int i = 0; i < l; i++) {
+        f(a[i]);
+    }
+}
 
-private:
-};
+template <typename A, typename L, typename F>
+void iter(A const &a, L l, F const f) {
+    for (int i = 0; i < l; i++) {
+        f(a[i]);
+    }
+}
 
-Base    *generate(void);
-void    identify(Base *p);
-void    identify(Base &p);
-
-#endif // BASE_HPP
+#endif // ITER_HPP

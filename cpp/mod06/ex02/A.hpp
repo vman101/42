@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Base.hpp                                           :+:      :+:    :+:   */
+/*   A.hpp                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 18:15:52 by vvobis            #+#    #+#             */
-/*   Updated: 2025/06/24 12:00:55 by vvobis           ###   ########.fr       */
+/*   Created: 2025/06/24 11:40:26 by vvobis            #+#    #+#             */
+/*   Updated: 2025/06/24 11:41:09 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BASE_HPP
-# define BASE_HPP
+#ifndef A_HPP
+# define A_HPP
 
-class Base
+# include "Base.hpp"
+
+class A : public Base
 {
 public:
-    virtual ~Base();
-
 private:
 };
 
-Base    *generate(void);
-void    identify(Base *p);
-void    identify(Base &p);
-
-#endif // BASE_HPP
+#endif // A_HPP

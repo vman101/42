@@ -6,14 +6,14 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:35:11 by vvobis            #+#    #+#             */
-/*   Updated: 2025/05/28 12:29:24 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/06/24 17:29:17 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "DynamicArray.hpp"
 #include <cstring>
 #include <iostream>
-#include "Ice.hpp"
+#include "AMateria.hpp"
 
 DynamicArray::DynamicArray() :
     _members(new void*[VECTOR_DEFAULT_CAP]),

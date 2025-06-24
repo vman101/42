@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Base.hpp                                           :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 18:15:52 by vvobis            #+#    #+#             */
-/*   Updated: 2025/06/24 12:00:55 by vvobis           ###   ########.fr       */
+/*   Created: 2025/06/24 12:46:43 by vvobis            #+#    #+#             */
+/*   Updated: 2025/06/24 14:18:07 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BASE_HPP
-# define BASE_HPP
+#include <string>
+#include "iter.hpp"
+#include <iostream>
 
-class Base
-{
-public:
-    virtual ~Base();
+void inc_one(const std::string &c) {
+    c[0];
+}
 
-private:
-};
-
-Base    *generate(void);
-void    identify(Base *p);
-void    identify(Base &p);
-
-#endif // BASE_HPP
+int main() {
+    const std::string s[3] = {"A", "B", "C"};
+    iter(s, 3, inc_one);
+    for (int i = 0; i < 3; i++) {
+        std::cout << s[i] << std::endl;
+    }
+}

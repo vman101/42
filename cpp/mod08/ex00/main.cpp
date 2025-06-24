@@ -5,21 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 18:15:13 by vvobis            #+#    #+#             */
-/*   Updated: 2025/06/24 12:05:03 by vvobis           ###   ########.fr       */
+/*   Created: 2025/06/24 15:10:23 by vvobis            #+#    #+#             */
+/*   Updated: 2025/06/24 15:25:38 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Base.hpp"
+#include "easyfind.hpp"
+#include <exception>
+#include <list>
 #include <iostream>
 
-#define GEN_MAX 20
-
 int main() {
-    for (int i = 0; i < GEN_MAX; i++) {
-        std::cout << "---------- Iter #" << i << " -----------" << std::endl;
-        Base *b = generate();
-        identify(b);
-        identify(*b);
+    std::list<int> v;
+    v.push_back(2);
+    v.push_back(3);
+    v.push_back(4);
+
+    try {
+        int i = easyfind(v, 2);
+        std::cout << "Found member " << i << std::endl;
+    } catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        int i = easyfind(v, 6);
+        std::cout << i << std::endl;
+    } catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
     }
 }
