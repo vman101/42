@@ -6,7 +6,7 @@
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:48:10 by vvobis            #+#    #+#             */
-/*   Updated: 2025/08/07 18:04:40 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/08/07 20:46:44 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ Number &Number::operator=(const Number& other)
         this->_value = other._value;
     return (*this);
 }
-
 
 AElement *Number::getA() {
     return this;

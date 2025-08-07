@@ -6,7 +6,7 @@
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:35:35 by vvobis            #+#    #+#             */
-/*   Updated: 2025/08/07 18:05:15 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/08/07 20:47:46 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ Pair &Pair::operator=(const Pair& other)
 }
 
 AElement *Pair::getA( void ) {
-    return _pair.second->getA();
+    return this->_pair.second;
 }
 
 AElement *Pair::getB( void ) {
-    return this->_pair.first->getA();
+    return this->_pair.first;
 }
 
 int Pair::getValue() {

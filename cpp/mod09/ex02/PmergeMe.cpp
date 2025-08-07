@@ -6,7 +6,7 @@
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 14:53:35 by vvobis            #+#    #+#             */
-/*   Updated: 2025/08/07 19:23:26 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/08/07 20:49:40 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,14 @@ void    PmergeMe::solve(std::vector<AElement *> &v) {
     std::vector<AElement *> odds;
 
     uint32_t size = v.size();
+    printSeq(v, YELLOW);
 
     if (size % 2 != 0) {
         AElement *end = v.back();
         odds.push_back(end);
     }
 
-    for (uint32_t i = 0; i < size; i += 2) {
+    for (uint32_t i = 0; i < v.size(); i += 2) {
         AElement *a = v[i];
         AElement *b = v[i + 1];
         switch (compare(a, b)) {
@@ -64,35 +65,37 @@ void    PmergeMe::solve(std::vector<AElement *> &v) {
         }
     }
 
-    std::cout << pairs.size() << std::endl;
-
     if (pairs.size() > 1) {
-        std::cout << "Entering recursion" << std::endl;
         solve(pairs);
     }
 
-    pairs = v;
-
-    std::cout << pairs.size() << std::endl;
-
+    std::cout << "Input vector      ";
     printSeq(pairs, YELLOW);
-    std::vector<AElement *> pend;
-    std::vector<AElement *> main;
-    for (unsigned int i = 0; i < pairs.size(); i += 2) {
-        pend.push_back(pairs[i]);
-        if (pairs.size() > 1)
-            main.push_back(pairs[i + 1]);
-    }
 
-    printSeq(main, BLUE);
-    printSeq(pend, MAGENTA);
-    printSeq(odds, GREEN);
-    for (unsigned int i = 0; i < odds.size(); i++) {
-        pend.push_back(odds[i]);
-    }
+    {
+        std::vector<AElement *> pend;
+        std::vector<AElement *> main;
+        for (unsigned int i = 0; i < pairs.size(); i++) {
+            pend.push_back(pairs[i]->getB());
+            main.push_back(pairs[i]->getA());
+        }
 
-    insert(main, pend);
-    printSeq(main, BLUE);
+        std::cout << "Main after split  ";
+        printSeq(main, BLUE);
+
+        std::cout << "pend after split  ";
+        printSeq(pend, MAGENTA);
+        /*printSeq(odds, GREEN);*/
+        for (unsigned int i = 0; i < odds.size(); i++) {
+            pend.push_back(odds[i]);
+        }
+
+        insert(main, pend);
+
+        std::cout << "Main after insert ";
+        printSeq(main, BLUE);
+        v = main;
+    }
 }
 
 void PmergeMe::insert(std::vector<AElement *> &main, std::vector<AElement*> &pend) {
@@ -103,11 +106,11 @@ void PmergeMe::insert(std::vector<AElement *> &main, std::vector<AElement*> &pen
             uint32_t center = span_low + (span_high - span_low) / 2;
             switch(compare(pend[i], main[center])) {
                 case LESS:
-                    std::cout << pend[i]->getValue() << " < " << main[center]->getValue() << std::endl;
+                    /*std::cout << pend[i]->getValue() << " < " << main[center]->getValue() << std::endl;*/
                     span_high = center;
                     break;
                 case GREATER:
-                    std::cout << pend[i]->getValue() << " > " << main[center]->getValue() << std::endl;
+                    /*std::cout << pend[i]->getValue() << " > " << main[center]->getValue() << std::endl;*/
                     span_low = center + 1;
                     break;
                 default:
