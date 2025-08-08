@@ -6,12 +6,12 @@
 #    By: vvobis <victorvobis@web.de>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/24 14:12:12 by vvobis            #+#    #+#              #
-#    Updated: 2025/08/07 18:42:33 by vvobis           ###   ########.fr        #
+#    Updated: 2025/08/08 16:42:23 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC := c++
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -g
+CXX := c++
+CXXFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
 
 NAME := PmergeMe
 
@@ -25,14 +25,17 @@ all: $(NAME)
 gdb: all
 	gdb --args ./$(NAME) `shuf -i 1-99 -n 17 | tr "\n" " "`
 
-test: all
-	@valgrind ./$(NAME) `shuf -i 1-99 -n 16 | tr "\n" " "`
+test: debug
+	@valgrind ./$(NAME) `shuf -i 1-50 -r -n 1000 | tr "\n" " "`
 
-$(NAME): $(OBJ) 
-	$(CC) $^ -o $@
+debug: all
+	$(MAKE) CXXFLAGS="$(CXXFLAGS) -g -D DEBUG" re
+
+$(NAME): $(OBJ)
+	$(CXX) $^ -o $@
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $<
 
 clean:
 	rm -rf $(OBJ) $(DEP)

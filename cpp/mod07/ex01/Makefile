@@ -6,12 +6,12 @@
 #    By: vvobis <victorvobis@web.de>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 12:36:15 by vvobis            #+#    #+#              #
-#    Updated: 2025/06/24 12:36:26 by vvobis           ###   ########.fr        #
+#    Updated: 2025/08/08 17:00:20 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC := c++
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
+CXX := c++
+CXXFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
 
 NAME := iter
 
@@ -23,10 +23,10 @@ DEP := $(SRC:%.cpp=%.d)
 all: $(NAME)
 
 $(NAME): $(OBJ) 
-	$(CC) $^ -o $@
+	$(CXX) $^ -o $@
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $<
 
 clean:
 	rm -rf $(OBJ) $(DEP)

@@ -6,16 +6,19 @@
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:23:31 by vvobis            #+#    #+#             */
-/*   Updated: 2025/06/25 17:05:57 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/08/08 17:26:38 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RPN.hpp"
 #include <cctype>
+#include <cerrno>
 #include <cstdio>
+#include <cstdlib>
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
+#include <climits>
 
 RPN::ParseError::~ParseError() throw() {}
 
@@ -41,6 +44,9 @@ RPN::RPN(std::stringstream &ss) {
 
         ss >> std::ws;
         if (std::isdigit(ss.peek())) {
+            num = std::strtol(ss.str().c_str(), NULL, 10);
+            if (errno == ERANGE)
+                throw std::logic_error("[Logic Error] Too large value detected");
             ss >> num;
             this->stack.push(num);
         } else {
@@ -65,18 +71,42 @@ void    RPN::doOp(op op) {
     }
     int b = this->stack.top(); this->stack.pop();
     int a = this->stack.top(); this->stack.pop();
-    int res;
+    long long res;
 
-    if (op == OP_PLUS)
-        res = a + b;
-    else if (op == OP_MINUS)
-        res = a - b;
-    else if (op == OP_MUL)
-        res = a * b;
-    else if (op == OP_DIV)
-        res = a / b;
-    else
-        throw ParseError(std::string("Invalid character '") + static_cast<char>(op) + "'", E_ERROR);
+    switch (op) {
+        case OP_PLUS:
+            if (static_cast<long long>(a) + static_cast<long long>(b) > INT_MAX)
+                throw std::logic_error("[Logic Error] Integer Overflow Detected");
+            else if (static_cast<long long>(a) + static_cast<long long>(b) < INT_MIN)
+                throw std::logic_error("[Logic Error] Integer Underflow Detected");
+            res = a + b;
+            break;
+        case OP_MINUS:
+            if (static_cast<long long>(a) - static_cast<long long>(b) > INT_MAX)
+                throw std::logic_error("[Logic Error] Integer Overflow Detected");
+            else if (static_cast<long long>(a) - static_cast<long long>(b) < INT_MIN)
+                throw std::logic_error("[Logic Error] Integer Underflow Detected");
+            res = a - b;
+            break;
+        case OP_MUL:
+            if (static_cast<long long>(a) * static_cast<long long>(b) > INT_MAX)
+                throw std::logic_error("[Logic Error] Integer Overflow Detected");
+            else if (static_cast<long long>(a) * static_cast<long long>(b) < INT_MIN)
+                throw std::logic_error("[Logic Error] Integer Underflow Detected");
+            res = a * b;
+            break;
+        case OP_DIV:
+            if (b == 0)
+                throw std::logic_error("[Logic Error] Division by zero");
+            if (static_cast<long long>(a) / static_cast<long long>(b) > INT_MAX)
+                throw std::logic_error("[Logic Error] Integer Overflow Detected");
+            else if (static_cast<long long>(a) / static_cast<long long>(b) < INT_MIN)
+                throw std::logic_error("[Logic Error] Integer Underflow Detected");
+            res = a / b;
+            break;
+        default:
+            throw ParseError(std::string("Invalid character '") + static_cast<char>(op) + "'", E_ERROR);
+    }
 
     this->stack.push(res);
 }

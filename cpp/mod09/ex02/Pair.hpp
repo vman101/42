@@ -6,7 +6,7 @@
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:25:17 by vvobis            #+#    #+#             */
-/*   Updated: 2025/08/07 20:47:58 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/08/08 16:34:45 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ public:
     AElement *  getB( void );
     void        print( void );
     void        print_value( void );
-    int         getValue();
+    int         getValue( void );
 
 private:
     std::pair<AElement *, AElement *>   _pair;

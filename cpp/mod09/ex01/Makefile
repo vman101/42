@@ -6,12 +6,12 @@
 #    By: vvobis <victorvobis@web.de>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/25 15:21:36 by vvobis            #+#    #+#              #
-#    Updated: 2025/06/25 16:28:22 by vvobis           ###   ########.fr        #
+#    Updated: 2025/08/08 16:55:15 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC := c++
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -g
+CXX := c++
+CXXFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD
 
 NAME := RPN
 
@@ -23,10 +23,10 @@ DEP := $(SRC:%.cpp=%.d)
 all: $(NAME)
 
 $(NAME): $(OBJ) 
-	$(CC) $^ -o $@
+	$(CXX) $^ -o $@
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $<
 
 clean:
 	rm -rf $(OBJ) $(DEP)

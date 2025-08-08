@@ -6,12 +6,12 @@
 #    By: vvobis <victorvobis@web.de>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/24 16:54:53 by vvobis            #+#    #+#              #
-#    Updated: 2025/06/24 19:23:04 by vvobis           ###   ########.fr        #
+#    Updated: 2025/08/08 17:01:46 by vvobis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC := c++
-CFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -g
+CXX := c++
+CXXFLAGS := -Werror -Wextra -Wall -std=c++98 -MP -MD -g
 
 NAME := mutantstack
 
@@ -22,11 +22,11 @@ DEP := $(SRC:%.cpp=%.d)
 
 all: $(NAME)
 
-$(NAME): $(OBJ) 
-	$(CC) $^ -o $@
+$(NAME): $(OBJ)
+	$(CXX) $^ -o $@
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $<
 
 clean:
 	rm -rf $(OBJ) $(DEP)

@@ -3,6 +3,7 @@
 #include <cstdlib>
 
 #define MAX_VAL 750
+
 int main(int, char**)
 {
     Array<int> numbers(MAX_VAL);
@@ -13,8 +14,10 @@ int main(int, char**)
         const int value = rand();
         numbers[i] = value;
         mirror[i] = value;
+        std::cout << numbers[i] << std::endl;
     }
-    //SCOPE
+
+    // SCOPE
     {
         Array<int> tmp = numbers;
         Array<int> test(tmp);
@@ -49,6 +52,6 @@ int main(int, char**)
     {
         numbers[i] = rand();
     }
-    delete [] mirror;//
+    delete [] mirror;
     return 0;
 }
