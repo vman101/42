@@ -6,7 +6,7 @@
 /*   By: vvobis <victorvobis@web.de>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:23:31 by vvobis            #+#    #+#             */
-/*   Updated: 2025/08/08 17:26:38 by vvobis           ###   ########.fr       */
+/*   Updated: 2025/08/08 17:56:01 by vvobis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ RPN::RPN() {}
 
 RPN::RPN(std::stringstream &ss) {
     while (ss.peek() != EOF) {
-        int num;
-        char op;
+        int     num;
+        char    op;
 
         ss >> std::ws;
         if (std::isdigit(ss.peek())) {
@@ -50,10 +50,9 @@ RPN::RPN(std::stringstream &ss) {
             ss >> num;
             this->stack.push(num);
         } else {
-            ss.clear();
             ss >> op;
-            if (ss.fail()) {
-                throw ParseError(std::string("Invalid character"), E_ERROR);
+            if (ss.fail() || (op != '+' && op != '-' && op != '*' && op != '/')) {
+                throw ParseError(std::string("Invalid character '") + op + '\'', E_ERROR);
             }
             this->doOp(static_cast< ::op >(op));
         }
